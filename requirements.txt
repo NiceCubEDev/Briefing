@@ -1,0 +1,4 @@
+Django
+Pillow
+django-smart-select
+django-tailwind

@@ -1,0 +1,165 @@
+from django.shortcuts import render, redirect
+from .forms import contactForm, EditProfileForm, CreateUserForm
+from django.contrib import messages
+from .models import inst, complex, CustomUser, test
+from django.http import *
+from django.contrib.auth.decorators import login_required
+
+def getLayout(request):
+    template_path = 'main.html'
+    if request.method == 'GET':
+        try:
+            getInstr = inst.get_all_names()
+            getComplex = complex.get_all_names()
+            users = CustomUser.get_count_users()
+        except:
+            getInstr = None
+            getComplex = None
+            users = None
+    if request.method == 'POST':
+        contact = contactForm(data=request.POST)
+        if contact.is_valid():
+            new_message = contact.save()
+            new_message.save()
+            messages.success(request,'Успешно отправлено!')
+            return HttpResponseRedirect('/#link')
+        else:
+            messages.error(request, 'Введите корректные данные')
+            return HttpResponseRedirect('/#link')
+    else:
+        contact = contactForm()
+    values = {
+        'contact':contact,
+        'instr':getInstr, 
+        'complex':getComplex,
+        'countUser':users,
+    }
+    return render(request, template_path, values)
+
+
+#get_about_us
+def getAboutUsPage(request):
+    template_path = 'about.html'
+    return render(request, template_path)
+#get_contact
+def getContactPage(request):
+    template_path = 'contact.html'
+    return render(request, template_path)
+
+# get profile 
+@login_required(login_url='/account/login/') # обязательная авторизация
+def getProfile(request):
+    template_path = 'profile.html'
+    if request.method == 'GET':
+        try:
+            get_user = CustomUser.get_user(request)
+        except:
+            get_user = None 
+    values = {
+        'DataUser':get_user,
+    }
+    return render(request, template_path, values)
+
+@login_required(login_url='/account/login/') # обязательная авторизация
+def getDetailProfile(request):
+    template_path = 'profiile_detail_remaster.html'
+    return render(request,template_path,)
+
+
+@login_required(login_url='account/login/') # обязательная авторизация
+def getEditProfile(request): 
+    template_path = 'profile_edit.html'
+    get_user = CustomUser.get_user(request)
+    if request.method == "GET": 
+        try:
+            edit_form = EditProfileForm
+        except:
+            get_user = None
+    if request.method == "POST":
+        edit_form = EditProfileForm()
+        get_user.username = request.POST.get("username")
+        get_user.phone_number = request.POST.get("phone_number")
+        get_user.email = request.POST.get("email")
+        if request.FILES:
+            get_user.avatar = request.FILES['avatar']
+        get_user.save()
+        messages.success(request, "Прошло успешно!")
+    values = {
+        'form':edit_form,
+        'DataUser':get_user,
+    }
+    return render(request, template_path, values)
+    
+
+@login_required(login_url='account/login/') # обязательная авторизация
+def getThemesTestListPage(request): 
+    template_path = "user_tests/user_themes_tests_list.html"
+    if request.method == 'GET': 
+        try: 
+            themesInstructions = inst.objects.all()
+        except: 
+            themesInstructions = None
+    values = {
+        'themes':themesInstructions,
+    }
+    return render(request, template_path, values)
+
+
+@login_required(login_url='account/login/') # обязательная авторизация
+def getTestListPage(request,id):
+    template_name = 'user_tests/user_tests_list.html'
+    if request.method == 'GET': 
+        try:
+            themesInstructions = inst.objects.get(id = id) # model inst
+            tests = test.get_need_instr(request, id) # model test
+        except:
+            themesInstructions = None
+            tests = None
+    values = {
+        'test' : tests,
+        'themes': themesInstructions,
+    }
+    return render(request, template_name, values)
+
+
+@login_required(login_url='account/login/') # обязательная авторизация
+def getAboutTest(request, num, id): 
+    template_path = 'user_tests/user_tests_intro.html'
+    if request.method == 'GET': 
+        tests = test.objects.filter(instruction = num, type_user=request.user.type_user, pk = id)
+        print(tests)
+    values = {
+        'test':tests,
+    }
+
+    return render(request, template_path, values)
+        
+
+@login_required
+def createUserAdmin(request):
+    template_path = 'admin/createUser.html'
+    if request.user.is_superuser:
+        if request.method == 'POST':
+            newUser = CreateUserForm(request.POST, request.FILES)
+            if newUser.is_valid():
+                newUser.save()
+                messages.success(request, 'Успешно создан!')
+                return redirect('user_create')
+            else:
+                messages.error(request,'Введите корректные данные!')
+                userForm = CreateUserForm()
+        else: 
+            userForm = CreateUserForm()
+        values = {
+            'form':userForm,
+        }
+        return render(request, template_path, values)
+    else:
+        return render(request, "error.html")
+
+
+# этап разработки теста для пользователя
+# создать форму для вопросов в forms.py
+# получать список вопросов, на которые он не ответил.
+# спсок вопросов, список ответов и можно сравнить (вариант) 
+# можно сделать на JS либо на DJANGO . 

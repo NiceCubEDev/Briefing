@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+{% load static tailwind_tags %}
+{% load static %}
+<html lang="ru">
+
+{% block head %}
+	<title>{% block title %}{% endblock %}</title>
+	{% include "blocks/head.html" %}
+{% endblock %}
+
+<body class = "flex flex-col justify-between h-[100vh]">
+	<section class="user-hello">
+		<div class="container  mx-auto">
+			<div class="wrap">
+
+				<!-- header start -->
+				{% include "blocks/header.html" %}
+				<!-- header end -->
+				
+			</div>
+		</div>
+	</section>
+
+    <section class="main-content mt-3">
+        <div class="container mx-auto p-2">
+            {% block content %}
+            {% endblock %}
+        </div>
+    </section>
+
+    <!-- footer start -->
+	{% include "blocks/footer.html" %}
+	<!-- footer end -->
+</body>
+
+</html>

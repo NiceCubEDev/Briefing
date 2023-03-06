@@ -1,0 +1,24 @@
+{% extends "../base.html" %}
+
+
+{% block title %} Выбор тем {% endblock %}
+
+
+{% block content %}
+{% include 'blocks/rotate.html' %}
+<div class="users_themes mt-3">
+    <p class="users_themes-title">
+        Выберите нужный инструктаж
+    </p>
+    <div class="users_themes-box mt-3">
+        <ul class = "uesrs_themes-box_ul">
+            {% for item in themes %}
+
+                <li class="users_themes-box_list mt-1"><a href="{% url 'user_themes_tests' item.id %}" class="users_themes-box_list-link">{{ item.name_instruction }}</a></li>
+
+            {% endfor %}
+        </ul>
+    </div>
+</div>
+
+{% endblock %}

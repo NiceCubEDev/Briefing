@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+{% load static tailwind_tags %}
+{% load static %}
+<html lang="ru">
+
+{% block head %}
+	{% include "blocks/head.html" %}
+	<title>{% block title %} Главная {% endblock %}</title>
+{% endblock %}
+
+<body class="flex flex-col justify-between h-[100vh] w-[100%]">
+	
+	<section class="user-hello">
+		<div class="container  mx-auto">
+			<div class="wrap">
+
+				<!-- header start -->
+				{% include "blocks/header.html" %}
+				<!-- header end -->
+
+				<!-- content center start -->
+				{% include "blocks/main/girl-content.html" %}
+				<!-- content center end -->
+
+			</div>
+		</div>
+		<div class="volna1"></div>
+		<div class="volna2 transform-gpu"></div>
+	</section>
+
+	<!-- content start -->
+
+	<main>
+		<div class="container mx-auto">
+			<!-- about us start -->
+			<div class="about-us">
+				<!-- Plus elements start -->
+				<div id="plus">
+					<div id="elem"></div>
+					<div id="elem"></div>
+				</div>
+				<div id="plus">
+					<div id="elem"></div>
+					<div id="elem"></div>
+				</div>
+				<!-- Plus elements end -->
+
+				<div class="infor-about-us flex justify-evenly flex-wrap">
+					<!-- block  -->
+					<div class="main-block-info flex flex-col justify-center items-center m-3">
+						<p class="main-block-info-title text-white">Пользователей</p>
+						<p class="main-block-info-number text-white">{{	countUser }}</p>
+					</div>
+					<!-- block end -->
+
+					<!-- block  -->
+					<div class="main-block-info flex flex-col justify-center items-center m-3">
+						<p class="main-block-info-title text-white text-center">Число пройденных инструктажей</p>
+						<p class="main-block-info-number text-white">101</p>
+					</div>
+					<!-- block end -->
+
+					<!-- block  -->
+					<div class="main-block-info flex flex-col justify-center items-center m-3">
+						<p class="main-block-info-title text-white">Инструктажей</p>
+						<p class="main-block-info-number text-white">255</p>
+					</div>
+					<!-- block end -->
+
+				</div>
+
+				<!-- Plus elements start -->
+				<div class="second-pls">
+					<div id="elem"></div>
+					<div id="elem"></div>
+				</div>
+				<div class="second-pls">
+					<div id="elem"></div>
+					<div id="elem"></div>
+				</div>
+				<!-- Plus elements end -->
+
+			</div>
+			<!-- about us end -->
+
+			<!-- type instr start -->
+
+			<div class="type-instr">
+				<div class="container mx-auto">
+					<div class="type-instr-content flex flex-wrap">
+						<img class ="" src="{% static 'images/startPage/girl_and_books.svg' %}" alt="girl_and_books.svg">
+						<div class=" type-instr-content-info flex-1">
+							<p class="type-instr-content-info-title">виды инструктажей</p>
+							<div class="type-isntr-content-picture mt-4">
+	
+								<!-- Plus elements start -->
+								<div class="third-pls">
+									<div id="elem"></div>
+									<div id="elem"></div>
+								</div>
+								<div class="third-pls">
+									<div id="elem"></div>
+									<div id="elem"></div>
+								</div>
+	
+								<!-- Plus elements end -->
+								<p class="type-instr-content-picture-text font-bold">Комплексный продукт «Инструктаж» организует
+									автоматизированное проведение:
+								</p>
+								
+								<!-- start for -->
+								<div class="type-instr-content-picture-boxs">
+										{% for inst in instr %}
+										<div class="type-instr-content-picture-box flex flex-col justify-center">
+											<p class="type-instr-content-picture-box-text text-white font-bold text-center"> {{ inst }}</p>
+										</div>
+										{% empty %}
+										<p class = "mt-5 text-red-500 font-bold text-2xl">Пока здесь ничего нет, видимо пусто в БД</p>
+										{% endfor %}
+								</div>
+								<!-- end for -->
+	
+								<!-- Plus elements start -->
+								<div class="fourth-pls">
+									<div id="elem"></div>
+									<div id="elem"></div>
+								</div>
+								<div class="fourth-pls">
+									<div id="elem"></div>
+									<div id="elem"></div>
+								</div>
+								<!-- Plus elements end -->
+	
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<!-- type instr end -->
+
+			<!-- program complex start -->
+
+			<div class="complex-box">
+				<p class="complex-box-content-info-title">программный комплекс</p>
+				<div class="flex justify-evenly flex-wrap">
+					<div class="box-program grid grid-cols-2 gap-4">
+							{% for compl in complex %}
+							<!-- block -->
+							<div class="complex-box-block shadow-md rounded-lg p-4">
+								<img src="{{ compl.image_complex.url }}" alt="1.svg">
+								<p class = "text-center mt-4">{{ compl.name_complex }}</p>
+							</div>
+								{% empty %}
+								<p class = "mt-5 text-red-500 font-bold text-2xl">Пока здесь ничего нет, видимо пусто в БД</p>
+							{% endfor %}
+							<!-- block end-->
+
+						<div class = "complex-box-block">
+							<div class="plus-box">
+								<div class="five-pls">
+									<div id="elem"></div>
+									<div id="elem"></div>
+								</div>
+								<div class="five-pls">
+									<div id="elem"></div>
+									<div id="elem"></div>
+								</div>
+							</div>
+							<div class="plus-box">
+								<div class="six-pls">
+									<div id="elem"></div>
+									<div id="elem"></div>
+								</div>
+								<div class="six-pls">
+									<div id="elem"></div>
+									<div id="elem"></div>
+								</div>
+							</div>
+							<div class="plus-box">
+								<div class="seven-pls">
+									<div id="elem"></div>
+									<div id="elem"></div>
+								</div>
+								<div class="seven-pls">
+									<div id="elem"></div>
+									<div id="elem"></div>
+								</div>
+							</div>
+
+						</div>
+						<!-- block end-->
+
+					</div>
+					<img src="{% static 'images/startPage/girlsidit.svg' %}" alt="girlsidit.svg">
+				</div>
+			</div>
+
+			<!-- program complex end -->
+		</div>
+		<div class="volna4"></div>
+		<div class="volna5"></div>
+		<div class="contact-box">
+			<!-- contact_us start -->
+			<div class="container mx-auto">
+				<a name = "link"></a>
+				<div class="contact_boxes flex flex-wrap justify-evenly">
+					<img src="{% static 'images/startPage/girlandheart.svg'%}" alt="girlandheart.svg">
+					<div class = "flex flex-col justify-center">
+						<a name = "obratsvyaz" class="contact-box-title uppercase">
+							Обратная связь
+						</a>
+						<form class = "flex flex-col " action="." method="post">
+							{% csrf_token %}
+							{% for item in contact %}
+								{{ item.label_tag }}
+								{{ item }}
+							{% endfor %}
+							<div class = "contact-box-counter">
+								<span class="current">0</span>&nbsp;/
+								<span class="total">360</span>
+							</div>
+							<button class = "formButton uppercase text-white">Отправить</button>
+						</form>
+					</div>
+					
+				</div>
+			</div>
+
+			<!-- contact_us end -->
+		</div>
+	</main>
+
+	<!-- content end -->
+
+	<!-- footer start -->
+	{% include "blocks/footer.html" %}
+	<!-- footer end -->
+
+	
+	<!-- connect messages start -->
+	{% include "blocks/message.html" %}
+	<!-- connect messages end -->
+
+
+</body>
+</html>

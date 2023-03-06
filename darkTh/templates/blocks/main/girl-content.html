@@ -1,0 +1,25 @@
+{% load static %}
+<div class="start-inst">
+    <div class="container mx-auto">
+        <div class="salat flex flex-row-reverse max-md:justify-center" style = "max-width:1150px; margin: 0 auto;min-height: 500px;">
+            <div class = "flex flex-col justify-end">
+                <h1 class="start-title uppercase drop-shadow-lg shadow-black">Инструктаж</h1>
+                <p class="start-info drop-shadow-lg shadow-black">
+                    Ознакомление с основными правилами на производстве для обеспечения Вашей безопасности
+                </p>
+                {% if user.is_authenticated %}
+                <a class="start-button text-white font-bold rounded uppercase text-center shadow-2xl" href="{% url 'profile' %}">Пройти
+                    Инструктаж</a>
+                {% else %}
+                <a class="start-button text-white font-bold rounded uppercase text-center shadow-2xl" href="{% url 'login' %}">начать
+                    Инструктаж</a>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- girl content start -->
+<img class="plus-head" src="{% static 'images/startPage/plusess.svg' %}" alt="plus.svg">
+<img class="girl-head" src="{% static 'images/startPage/girl.svg' %}" alt="girl.svg">
+<!-- girl content end -->

@@ -1,0 +1,64 @@
+{% load static %}
+{% include "./message.html" %}
+<section class="footer mt-5">
+    <div class="volna3" style = "height:150px;"></div>
+    <footer class="flex flex-col justify-evenly">
+        <div class="cont container mx-auto flex-1 mt-3">
+            <div class="footer-content-first-boxes flex flex-wrap justify-evenly">
+                <!-- firstblock -->
+                <div class="footer-content-first-box-box">
+                    <p class="footer-content-first-box-box-title text-white uppercase">инструктаж</p>
+                    <p class="footer-content-first-box-box-quote text-white">Ознакомление с основными правилами на
+                        производстве для обеспечения Вашей безопасности</p>
+                </div>
+                <!-- secondblock -->
+                <div class="footer-content-first-box-box flex flex-col justify-center md:mt-5">
+                    <a class="footer-content-first-box-box-button flex justify-between" href="#">
+                        <p class="text-white uppercase">подписаться</p>
+                        <img class="footer-teleg" src="{% static 'images/startPage/footer/socials/telegNoBorder.svg' %}"
+                            alt="telegNoBorder.svg">
+                    </a>
+                    <div class="footer-content-first-box-box-contacts">
+                        <a class="text-white flex" href="tel:+79543214212">
+                            <img class="" src="{% static 'images/startPage/footer/phoneNumber.svg'%}" alt="phoneNumber">
+                            +7(954) 321-42-12
+                        </a>
+                        <a class="text-white flex" href="mailto:saInstr@ya.ru">
+                            <img class="" src="{% static 'images/startPage/footer/email.svg'%}" alt="phoneNumber">
+                            saInstr@ya.ru
+                        </a>
+                    </div>
+                </div>
+
+            </div>
+
+
+        </div>
+
+        <div>
+            <div class="footer-content-second-boxes flex align-items-center">
+                <div class="flex-1"></div>
+                <div class="footer-content-socials flex justify-between">
+                    <a href="https://t.me/YouClickedToMe">
+                        <img src="{% static 'images/startPage/footer/socials/telegNoBorder.svg' %}"
+                            alt="telegNoBorder.svg">
+                    </a>
+                    <a href="https://vk.com/pppppsp">
+                        <img src="{% static 'images/startPage/footer/socials/vk.svg' %}" alt="telegNoBorder.svg">
+                    </a>
+                    <a href="#">
+                        <img src="{% static 'images/startPage/footer/socials/youtube.svg' %}" alt="telegNoBorder.svg">
+                    </a>
+                </div>
+                <div class="flex-1"></div>
+            </div>
+
+            <div class="footer-content-third-boxes text-center mt-5">
+                <p class="text-white">Все права защищены.</p>
+                <p class="text-white">2022-2023</p>
+            </div>
+
+        </div>
+
+    </footer>
+</section>

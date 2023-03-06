@@ -1,0 +1,34 @@
+{% load static tailwind_tags %}
+    {% if messages %}
+        {% for message in messages %}
+            {% if message.level == DEFAULT_MESSAGE_LEVELS.ERROR %}
+            <div id = "message-block" class="message error bg-emerald-800 rounded-lg flex justify-between items-center">
+                <div id = "message-close" class="message-close error-sticks">
+                    <div class="close-stick rounded-lg bg-emerald-800"></div>
+                    <div class="close-stick rounded-lg bg-emerald-800"></div>
+                </div>
+                <p class="message-text error-text font-bold text-rose-600 text-center">{{ message }}</p>
+            </div>
+            {% endif %}
+            {% if message.level == DEFAULT_MESSAGE_LEVELS.SUCCESS %}
+                <div id = "message-block" class="message bg-green-500 rounded-lg flex items-center">
+                    <div id = "message-close" class="message-close">
+                        <div class="close-stick rounded-lg bg-green-800"></div>
+                        <div class="close-stick rounded-lg bg-green-800"></div>
+                    </div>
+                    <p class="message-text text-green-800 font-bold text-center">{{ message }}</p>
+                </div>
+            {% endif %}
+        {% endfor %}
+    {% endif %}
+    {% if form.errors %}
+        <div id = "message-block" class="message error bg-emerald-800 rounded-lg flex items-center">
+            <div id = "message-close" class="message-close error-sticks">
+                <div class="close-stick rounded-lg bg-emerald-800"></div>
+                <div class="close-stick rounded-lg bg-emerald-800"></div>
+            </div>
+            <p class="message-text error-text font-bold text-rose-600 text-center">{{ form.errors }}</p>
+        </div>
+    {% endif %}
+<script src = "{% static 'js/count_letters.js' %}"></script>
+<script src = "{% static 'js/main.js' %}"></script>

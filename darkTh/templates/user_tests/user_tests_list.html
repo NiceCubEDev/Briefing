@@ -1,0 +1,31 @@
+{% extends "../base.html" %}
+
+
+{% block title %} {{ themes.name_instruction }} {% endblock %}
+
+
+{% block content %}
+{% include 'blocks/rotate.html' %}
+<div class="users_themes">
+
+    <p class="users_themes-title">
+        Тесты по теме: <span style = "color:black;">{{ themes.name_instruction }}</span>
+    </p>
+
+    <p class="users_themes-title">
+        Список тестов:
+    </p>    
+
+    <div class="users_themes-box mt-3">
+        <ul class = "uesrs_themes-box_ul">
+            {% for item in test %}
+
+                <li class="users_themes-box_list mt-1"><a href="{% url 'test_info' num=item.instruction.id id=item.id %}" class="users_themes-box_list-link">{{ item.name_test }}</a></li>
+
+            {% endfor %}
+        </ul>
+    </div>
+
+</div>
+
+{% endblock %}

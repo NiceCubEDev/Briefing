@@ -1,0 +1,23 @@
+{% extends "../base.html" %}
+
+
+   {% block title %} {{ t.name_test }}  {% endblock %}
+
+
+{% block content %}
+{% include 'blocks/rotate.html' %}
+
+<div class ="flex justify-center mt-3">
+    {% for t in test %}
+        <div class="users_themes mt-3 flex flex-col items-center" style = "max-width: 350px;">
+            <p class = "users_themes-title">Инструктаж: <span style = "color:black;"> {{ t.instruction.name_instruction }}</span> </p>
+            <p class = "users_themes-title mt-3">Тест: <span style = "color:black;">{{ t.name_test }}</span> </p>
+            <div class = "flex justify-center mt-3">
+                <a class = "bg-transparent hover:bg-orange-500 uppercase text-orange-500 font-semibold hover:text-white py-2 px-4 border border-orange-500 hover:border-transparent rounded transition" href="#">Начать</a>
+            </div>
+        </div>
+    {% endfor %}
+</div>
+
+
+{% endblock %}

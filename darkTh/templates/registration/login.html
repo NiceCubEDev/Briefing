@@ -1,0 +1,29 @@
+{% extends "../base.html" %}
+
+
+{% block title %} Авторизация {% endblock %}
+
+
+{% block content %}
+
+<div class="flex justify-center">
+    <form class = "bg-white shadow-md rounded p-5" action="." method="post" style = "max-width: 350px;">
+        {% csrf_token %}
+        <div class ="mb-2">
+            <h3 class ="text-xl text-center font-bold "><span>Авторизация</span> </h3>
+        </div>
+        <div class = "mb-2">
+            <input class = "form-control block w-full px-3 py-1.5 text-base font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-orange-500 focus:outline-none shadow" placeholder = 'Введите логин пользователя' type="text" name ="username" id="id_username">
+        </div>
+        <div class = "mb-2">
+            <input class = "form-control block w-full px-3 py-1.5 text-base font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-orange-500 focus:outline-none shadow" placeholder = 'Введите пароль' type="password" name ="password" id="id_password">
+        </div>
+        <div>
+            <p class = "p-help text-sm text-center mt-5 font-bold">Забыли пароль? <a class = "text-indigo-600 font-bold" href="{% url 'password_reset' %}">Восстановить пароль</a></p>
+            <button class="px-6 py-2.5 bg-orange-500 text-white font-medium text-sm leading-tight uppercase rounded shadow-md hover:bg-orange-600 hover:shadow-lg focus:bg-orange-500 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-orange-700 active:shadow-lg transition duration-150 ease-in-out text-center" style = "display:block; margin: 15px auto;">Войти</button>
+        </div>
+    </form>
+   
+</div>
+
+{% endblock %}

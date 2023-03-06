@@ -1,0 +1,22 @@
+{% load static tailwind_tags %}
+{% load static %}
+{% block head %}
+    {% include "blocks/head.html" %}
+    <title>{% block title %} Ой {% endblock %}</title>
+{% endblock%}
+
+{% block content %}
+
+    <div class="container mx-auto flex" style ="height:100vh;">
+        <img style ="height:100vh;" src="{% static 'images/error/man.png' %}" alt="man.png">
+        <div style = "height:50vh;" class ="error-block flex items-center flex-start">
+            <div class = "">
+                <p class = "error-message-title">Что-то пошло не так</p>
+                <p class = "error-message font-bold">Попробуй зайти позже.... </p>
+                <p class ="error-message font-bold uppercase mt-5"><a href="{% url 'main' %}">На главную</a></p>
+            </div>
+           
+        </div>
+    </div>
+
+{% endblock %}
