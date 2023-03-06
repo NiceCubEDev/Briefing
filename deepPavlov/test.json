@@ -1,5 +1,0 @@
-{
-  "class_name": "deeppavlov.models.preprocessors.str_lower:str_lower",
-  "in": ["x"],
-  "out": ["x_lower"]
-}
