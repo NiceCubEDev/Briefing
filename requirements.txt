@@ -1,4 +1,5 @@
 Django
 Pillow
-django-smart-select
+django-smart-selects
 django-tailwind
+fontawesomefree

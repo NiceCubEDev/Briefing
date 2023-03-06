@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'tailwind', 
     'darkTh',
     'smart_selects', # city
+    'fontawesomefree',
 ]
 
 USE_DJANGO_JQUERY = True # for city

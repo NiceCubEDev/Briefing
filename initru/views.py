@@ -50,20 +50,12 @@ def getContactPage(request):
 @login_required(login_url='/account/login/') # обязательная авторизация
 def getProfile(request):
     template_path = 'profile.html'
-    if request.method == 'GET':
-        try:
-            get_user = CustomUser.get_user(request)
-        except:
-            get_user = None 
-    values = {
-        'DataUser':get_user,
-    }
-    return render(request, template_path, values)
+    return render(request, template_path)
 
 @login_required(login_url='/account/login/') # обязательная авторизация
 def getDetailProfile(request):
     template_path = 'profiile_detail_remaster.html'
-    return render(request,template_path,)
+    return render(request,template_path)
 
 
 @login_required(login_url='account/login/') # обязательная авторизация
@@ -88,46 +80,44 @@ def getEditProfile(request):
         'form':edit_form,
         'DataUser':get_user,
     }
+
     return render(request, template_path, values)
     
 
 @login_required(login_url='account/login/') # обязательная авторизация
-def getThemesTestListPage(request): 
+def getThemesTestListPage(request):
+
     template_path = "user_tests/user_themes_tests_list.html"
-    if request.method == 'GET': 
-        try: 
-            themesInstructions = inst.objects.all()
-        except: 
-            themesInstructions = None
+    themesInstructions = inst.objects.all()
+
     values = {
         'themes':themesInstructions,
     }
+
     return render(request, template_path, values)
 
 
 @login_required(login_url='account/login/') # обязательная авторизация
 def getTestListPage(request,id):
+
     template_name = 'user_tests/user_tests_list.html'
-    if request.method == 'GET': 
-        try:
-            themesInstructions = inst.objects.get(id = id) # model inst
-            tests = test.get_need_instr(request, id) # model test
-        except:
-            themesInstructions = None
-            tests = None
+    themesInstructions = inst.objects.get(id = id) # model inst
+    tests = test.get_need_instr(request, id) # model test
+
     values = {
         'test' : tests,
         'themes': themesInstructions,
     }
+
     return render(request, template_name, values)
 
 
 @login_required(login_url='account/login/') # обязательная авторизация
 def getAboutTest(request, num, id): 
+
     template_path = 'user_tests/user_tests_intro.html'
-    if request.method == 'GET': 
-        tests = test.objects.filter(instruction = num, type_user=request.user.type_user, pk = id)
-        print(tests)
+    tests = test.objects.filter(instruction = num, type_user=request.user.type_user, pk = id)
+    
     values = {
         'test':tests,
     }
