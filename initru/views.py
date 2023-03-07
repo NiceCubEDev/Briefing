@@ -6,21 +6,17 @@ from django.http import *
 from django.contrib.auth.decorators import login_required
 
 def getLayout(request):
+
     template_path = 'main.html'
-    if request.method == 'GET':
-        try:
-            getInstr = inst.get_all_names()
-            getComplex = complex.get_all_names()
-            users = CustomUser.get_count_users()
-        except:
-            getInstr = None
-            getComplex = None
-            users = None
+    
+    getInstr = inst.get_all_names()
+    getComplex = complex.get_all_names()
+    users = CustomUser.get_count_users()
+
     if request.method == 'POST':
-        contact = contactForm(data=request.POST)
+        contact = contactForm(request.POST or None)
         if contact.is_valid():
-            new_message = contact.save()
-            new_message.save()
+            contact.save()
             messages.success(request,'Успешно отправлено!')
             return HttpResponseRedirect('/#link')
         else:

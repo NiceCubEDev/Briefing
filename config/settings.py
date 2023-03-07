@@ -38,22 +38,13 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-
-    'phonenumber_field',
-    'tailwind', 
-    'darkTh',
+    
     'smart_selects', # city
     'fontawesomefree',
 ]
 
 USE_DJANGO_JQUERY = True # for city
-TAILWIND_APP_NAME = 'darkTh'
 
-INTERNAL_IPS = [
-    "127.0.0.1",
-]
-
-NPM_BIN_PATH = 'D:/Program Files/nodejs/npm.cmd' # path node.js
 
 MEDIA_ROOT = 'darkth/static/'
 MEDIA_URL = '/media/images/user/'
@@ -72,7 +63,8 @@ MIDDLEWARE = [
 ]
 
 ROOT_URLCONF = 'config.urls'
-link = os.path.join(BASE_DIR, 'darkTh/templates/')
+
+link = os.path.join(BASE_DIR, 'initru/templates/')
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',

@@ -1,5 +1,4 @@
 <!DOCTYPE html>
-{% load static tailwind_tags %}
 {% load static %}
 <html lang="ru">
 
@@ -21,16 +20,20 @@
 		</div>
 	</section>
 
-    <section class="main-content mt-3">
-        <div class="container mx-auto p-2">
+    <main class="main-content mt-3">
+        <div>
             {% block content %}
-            {% endblock %}
+            {% endblock content %}
         </div>
-    </section>
+    </main>
 
     <!-- footer start -->
 	{% include "blocks/footer.html" %}
 	<!-- footer end -->
+
+	<!-- connect messages start -->
+	{% include "blocks/message.html" %}
+	<!-- connect messages end -->
 </body>
 
 </html>

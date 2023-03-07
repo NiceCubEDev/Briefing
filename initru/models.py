@@ -1,6 +1,4 @@
 from django.db import models
-from django.contrib.auth.models import User as Us
-from phonenumber_field.modelfields import PhoneNumberField
 from django.contrib.auth.models import AbstractUser
 from smart_selects.db_fields import ChainedForeignKey
 
@@ -54,6 +52,7 @@ class City(models.Model):
 
     def __str__(self):
         return self.name_city
+
 
 # инструктажи
 class inst(models.Model):
@@ -285,10 +284,11 @@ class CustomUser(AbstractUser):  # custom user for Users with django
         blank=True,
     )
     
-    phone_number = PhoneNumberField(
-        'Номер телефона', unique=True, 
+    phone_number = models.TextField(
+        'Номер телефона', max_length=15,unique=True, 
         blank=False, null=True,
     )
+    
     type_user  = models.ForeignKey(
         typeuser, on_delete=models.CASCADE,
         verbose_name='Тип пользователя', null=True,
