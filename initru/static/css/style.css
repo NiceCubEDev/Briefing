@@ -1,13 +1,6 @@
 @font-face {
-    font-family: "Montserrat-SemiBold";
-    src: url("../fonts/Montserrat-SemiBold.ttf");
-}
-a { 
-    text-decoration: none;
-}
-@font-face {
-    font-family: "Montserrat-Regular";
-    src: url("../fonts/Montserrat-Regular.ttf");
+    font-family: "Roboto-medium";
+    src: url("../fonts/Roboto/Roboto-Medium.ttf");
 }
 
 .not-visible { 
@@ -33,9 +26,7 @@ body::-webkit-scrollbar-thumb {
 }
 
 /* style for boxs */
-.box { 
-    background: linear-gradient(85.44deg, #0D6EFD 23.32%, rgba(58, 90, 225, 0.9) 55.15%, #6F42C1 92.62%);
-}
+
 
 .alertt { 
     position: fixed;

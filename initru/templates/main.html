@@ -13,11 +13,20 @@
 
 {% block content %}
 
-<div class="container">
-	<div class="hello_screen">
-		<img src="{% static 'images/' %}" alt="girl">
+<div class="container d-flex justify-content-evenly" style ='height: 700px;'>
+	<img src="{% static 'images/startPage/girl.svg' %}" alt="girl" height="700">
+	<div class = 'd-flex flex-column align-items-center justify-content-center' style ='height: 550px;'>
+		<div class = 'd-flex flex-column'>
+			<h1 class = 'text-uppercase text-center' style = 'font-family: "Roboto-medium"; font-size: 79px; color:#E7882B;'>Инструктаж</h1>
+			<p class = 'text-center' style ='font-size: 23px; max-width: 540px;'>Ознакомление с основными правилами на производстве для обеспечения Вашей безопасности</p>
+			<a class = 'btn btn-primary mx-auto fs-5 text-uppercase' href="#" style = 'font-family: "Roboto-medium";'>
+				<i class="fa-solid fa-file-pen"></i>
+				Начать Инструктаж
+			</a>
+		</div>
 	</div>
 </div>
+
 
 {% endblock content %}
 	
