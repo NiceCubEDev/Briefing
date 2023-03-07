@@ -2,6 +2,10 @@
     font-family: "Roboto-medium";
     src: url("../fonts/Roboto/Roboto-Medium.ttf");
 }
+@font-face {
+    font-family: "Inter-Bold";
+    src: url('../fonts/Inter/Inter-Bold.ttf');
+}
 
 .not-visible { 
     display: none;
@@ -17,11 +21,11 @@ body::-webkit-scrollbar-track {
 }
 
 body::-webkit-scrollbar-thumb {
-    background-color: #6f42c1;
+    background-color: #E7882B;
     /* цвет плашки */
     border-radius: 20px;
     /* закругления плашки */
-    border: 3px solid #6f42c1;
+    border: 3px solid #E7882B;
     /* padding вокруг плашки */
 }
 
@@ -38,3 +42,44 @@ body::-webkit-scrollbar-thumb {
 .not_visible { 
     display: none;
 }
+
+.inst_list-box:nth-child(1) {
+    position: absolute;
+    left:0px;
+    bottom: 0px;
+    background: #F19239;
+    filter: drop-shadow(3px -4px 1px #F19239);
+    box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.45);
+ } 
+.inst_list-box:nth-child(2) {
+    position: absolute;
+    left: 130px;
+    bottom: 80px;
+    background: #F19239;
+    filter: drop-shadow(3px -4px 1px #F19239);
+    box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.45);
+ }
+.inst_list-box:nth-child(3) {
+    position: absolute;
+    left: 250px;
+    bottom: 160px;
+    background: linear-gradient(63.38deg, #F19239 7.7%, #3B5B6F 96.25%);
+    filter: drop-shadow(3px -4px 1px #F19239);
+    box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.45);
+ }
+.inst_list-box:nth-child(4) {
+    position: absolute;
+    left: 370px;
+    bottom: 240px;
+    background: #3B5B6F;
+    filter: drop-shadow(3px -4px 1px #3B5B6F);
+    box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.45);
+ }
+.inst_list-box:nth-child(5) {
+    position: absolute;
+    left: 480px;
+    bottom: 320px;
+    background: #3B5B6F;
+    filter: drop-shadow(3px -4px 1px #3B5B6F);
+    box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.45);
+ }

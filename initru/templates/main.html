@@ -19,12 +19,58 @@
 		<div class = 'd-flex flex-column'>
 			<h1 class = 'text-uppercase text-center' style = 'font-family: "Roboto-medium"; font-size: 79px; color:#E7882B;'>Инструктаж</h1>
 			<p class = 'text-center' style ='font-size: 23px; max-width: 540px;'>Ознакомление с основными правилами на производстве для обеспечения Вашей безопасности</p>
-			<a class = 'btn btn-primary mx-auto fs-5 text-uppercase' href="#" style = 'font-family: "Roboto-medium";'>
-				<i class="fa-solid fa-file-pen"></i>
+			<a class = 'btn btn-outline-pink mx-auto fs-5 text-uppercase ' href="#" style = 'font-family: "Roboto-medium";'>
+				<i class="fa-regular fa-pen mx-2"></i>
 				Начать Инструктаж
 			</a>
 		</div>
 	</div>
+</div>
+<div class = 'mx-auto' style = 'position: relative; top:-175px;'>
+	<img class = 'img-fluid' alt = 'photo' src ="{% static 'images/startPage/volna.svg' %}" style = 'width: 100%; user-select: none;' />
+	<img class = 'img-fluid' alt = 'photo' src ="{% static 'images/startPage/volna.svg' %}" style = 'width: 100%; user-select: none;  transform: scale(1, -1);' />
+</div>
+<div class = 'container d-flex justify-content-evenly flex-wrap'>
+	<!--  -->
+	<div class = 'shadow d-flex flex-column justify-content-center text-white mt-4' style ='max-width: 300px; width: 100%; height: 200px; box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.45); background-color: #E7882B; filter: drop-shadow(15px -10px 1px #E7882B);'>
+		<p class = 'fw-bold fs-5 text-center mt-5' style = 'font-family: "Inter-Bold";min-height: 55px;'>Пользователей</p>
+		<p class="text-center" style = 'font-size: 70px; font-family: "Inter-Bold"; text-shadow: 10px -5px 10px rgba(0, 0, 0, 0.45);'>{{ countUser }}</p>
+	</div>
+	<!--  -->
+
+	<!--  -->
+	<div class = 'shadow d-flex flex-column justify-content-center text-white mt-4' style ='max-width: 300px; width: 100%; height: 200px; box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.45); background-color: #3B5B6F; filter: drop-shadow(15px -10px 1px #3B5B6F);'>
+		<p class = 'fw-bold fs-5 text-center mt-5' style = 'font-family: "Inter-Bold";min-height: 55px;'>Число пройденных инструктажей</p>
+		<p class="text-center" style = 'font-size: 70px; font-family: "Inter-Bold"; text-shadow: 10px -5px 10px rgba(0, 0, 0, 0.45);'>101</p>
+	</div>
+	<!--  -->
+
+	<!--  -->
+	<div class = 'shadow d-flex flex-column justify-content-center text-white mt-4' style ='max-width: 300px; width: 100%; height: 200px; box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.45); background-color: #E7882B; filter: drop-shadow(15px -10px 1px #E7882B);'>
+		<p class = 'fw-bold fs-5 text-center mt-5' style = 'font-family: "Inter-Bold";min-height: 55px;'>Пользователей</p>
+		<p class="text-center" style = 'font-size: 70px; font-family: "Inter-Bold"; text-shadow: 10px -5px 10px rgba(0, 0, 0, 0.45);'>111</p>
+	</div>
+	<!--  -->
+</div>
+
+<div class = 'container d-flex justify-content-center flex-wrap' style="margin-top: 100px;">
+	<img src="{% static 'images/startPage/girl_and_books.svg' %}" alt="girl" style ='user-select: none;'>
+	<div class='flex-fill d-flex flex-column align-items-center'>
+		<p class = 'fs-5 text-center text-uppercase' style="font-family: 'Inter-Bold';">Виды инструктажей</p>
+		<div class="inst_list flex-fill" style="position: relative; max-height: 430px; max-width: 700px; width: 100%;">
+			{% for i in instr %}
+				<div class = 'inst_list-box align-items-center' style = 'height:80px; width: 150px; line-height: 80px;'>
+					<p class ='text-center text-light' style="font-family: 'Inter-Bold';">{{ i }}</p> 
+				</div>
+			{% empty %}
+				<p class = 'text-danger'>Нет данных в бд</p>
+			{% endfor %}
+		</div>
+	</div>
+</div>
+
+<div class='container' style = 'margin-top: 100px;'>
+	<p class = 'fs-5 text-center text-uppercase' style="font-family: 'Inter-Bold';">Программный комплекс</p>
 </div>
 
 
