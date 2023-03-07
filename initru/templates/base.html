@@ -2,38 +2,91 @@
 {% load static %}
 <html lang="ru">
 
-{% block head %}
-	<title>{% block title %}{% endblock %}</title>
-	{% include "blocks/head.html" %}
-{% endblock %}
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<link rel="icon" href="{% static 'images/logo.svg' %}">
+	<link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+	<!-- fontawes start -->
+	<link href="{% static 'fontawesomefree/css/fontawesome.css' %}" rel="stylesheet" type="text/css">
+	<link href="{% static 'fontawesomefree/css/brands.css' %}" rel="stylesheet" type="text/css">
+	<link href="{% static 'fontawesomefree/css/solid.css' %}" rel="stylesheet" type="text/css">
+	<!-- fontawes end -->
+	<title>{% block title %} {% endblock title%}</title>
+	<script defer src="{% static 'js/jquery-3.6.3.min.js' %}"></script>
+	<script defer src="{% static 'js/bootstrap.bundle.js' %}"></script>
+</head>
 
-<body class = "flex flex-col justify-between h-[100vh]">
-	<section class="user-hello">
-		<div class="container  mx-auto">
-			<div class="wrap">
 
-				<!-- header start -->
-				{% include "blocks/header.html" %}
-				<!-- header end -->
-				
+{% block scripts %}
+{% endblock scripts %}
+
+
+<header>
+	<nav class="navbar">
+		<div class="container">
+			<div class='d-flex align-items-center'>
+				<a href="{% url 'main' %}" class="navbar-brand">
+					<img src="{% static 'images/logo.svg' %}" alt="logo" height="75">
+				</a>
+				<div class="d-flex mx-3 flex-wrap">
+					<a class='btn btn-orange mx-2' href="{% url 'main' %}">
+						<i class="fa-solid fa-star"></i>
+						Главная
+					</a>
+					<a class='btn btn-outline-orange mx-2' href="">
+						<i class="fa-solid fa-check"></i>
+						О нас
+					</a>
+					<a class='btn btn-outline-orange mx-2' href="">
+						<i class="fa-regular fa-robot"></i>
+						Бот
+					</a>
+				</div>
+			</div>
+
+			<div class='navbar d-flex justify-content-center'>
+				{% if user.is_authenticated %}
+				<div class="dropdown text-end">
+					<a class="d-block link-dark text-decoration-none dropdown-toggle" id="dropdownUser1"
+						data-bs-toggle="dropdown" aria-expanded="false">
+						<img src="{% static 'images/startPage/user/user.svg' %}" alt="user">
+					</a>
+					<ul class="dropdown-menu text-small" aria-labelledby="dropdownUser1">
+						{% if user.is_authenticated %}
+						<li><a class="dropdown-item" href="#">Мой профиль</a></li>
+						<li><a class="dropdown-item" href="#">Сменить данные</a></li>
+						<li><a class="dropdown-item" href="#">Мои уведомления</a></li>
+						<li>
+							<hr class="dropdown-divider">
+						</li>
+						<li class='d-flex justify-content-center'><a class="btn btn-danger" href="#">Выйти</a></li>
+						{% endif %}
+					</ul>
+				</div>
+				{% else %}
+				<div class="dropdown text-end">
+					<a href="{% url 'login' %}" class="d-block link-dark text-decoration-none">
+						<img src="{% static 'images/startPage/user/user.svg' %}" alt="user">
+					</a>
+				</div>
+				{% endif %}
 			</div>
 		</div>
-	</section>
+	</nav>
+</header>
 
-    <main class="main-content mt-3">
-        <div>
-            {% block content %}
-            {% endblock content %}
-        </div>
-    </main>
-
-    <!-- footer start -->
-	{% include "blocks/footer.html" %}
-	<!-- footer end -->
-
-	<!-- connect messages start -->
-	{% include "blocks/message.html" %}
-	<!-- connect messages end -->
+<body class = 'd-flex flex-column justify-content-between'>
+	<main>
+		
+		{% block content %}
+			
+		{% endblock content %}
+			
+	</main>
 </body>
+
+
 
 </html>

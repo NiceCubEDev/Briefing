@@ -19,6 +19,5 @@ from django.urls import path, include,re_path
 urlpatterns = [
     path('', include('initru.urls')),
     path('admin/', admin.site.urls),
-    path("__reload__/", include("django_browser_reload.urls")),
     re_path(r'^chaining/', include('smart_selects.urls')),
 ]
