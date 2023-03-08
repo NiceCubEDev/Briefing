@@ -5,7 +5,7 @@ from .models import inst, complex, CustomUser, test
 from django.http import *
 from django.contrib.auth.decorators import login_required
 
-def getLayout(request):
+def mainView(request):
 
     template_path = 'main.html'
     
@@ -34,17 +34,18 @@ def getLayout(request):
 
 
 #get_about_us
-def getAboutUsPage(request):
+def aboutPageView(request):
     template_path = 'about.html'
     return render(request, template_path)
+
 #get_contact
-def getContactPage(request):
+def contactPageView(request):
     template_path = 'contact.html'
     return render(request, template_path)
 
 # get profile 
 @login_required(login_url='/account/login/') # обязательная авторизация
-def getProfile(request):
+def profileView(request):
     template_path = 'profile.html'
     return render(request, template_path)
 
@@ -81,7 +82,7 @@ def getEditProfile(request):
     
 
 @login_required(login_url='account/login/') # обязательная авторизация
-def getThemesTestListPage(request):
+def briefPageView(request):
 
     template_path = "user_tests/user_themes_tests_list.html"
     themesInstructions = inst.objects.all()

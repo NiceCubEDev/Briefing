@@ -4,9 +4,14 @@
 {% block title %} Личный кабинет {% endblock %}
 
 
+{% block scripts %}
+    <script src="{% static 'js/profile/profile.js' %}"></script>
+{% endblock scripts %}
+    
+
 {% block content %}
 <p class="text-center fw-bold fs-4" style='color:#E7882B;'>Основная информация</p>
-<div class="container" style="min-height:70vh;">
+<div class="container" style="min-height:50vh;">
     <div class='row mt-5'>
         <div class='col d-flex'>
             <div>
@@ -28,7 +33,7 @@
 
                 <p class='fw-bold' style='font-family: "Inter-Bold"; color:#3B5B6F;'>
                     <i class="fa-solid fa-cake-candles"></i>
-                    {{ request.user.birthday_date }}
+                    <span class = 'mx-2'>{{ request.user.birthday_date }}</span> 
                 </p>
 
                 {% if user.is_superuser %}

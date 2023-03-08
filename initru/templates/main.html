@@ -127,6 +127,48 @@
 	</div>
 </div>
 
+<footer class = 'shadow-sm border d-flex flex-column justify-content-between'>
+    <div class ='container d-flex align-items-center justify-content-around' style="min-height: 450px;">
+        <div class="d-flex flex-column justify-content-center">
+            <p class = 'text-uppercase text-center  fw-bold' style ='font-size: 50px; font-family: "Roboto-bold"; color:#3B5B6F;'>Инструктаж</p>
+            <p class = ' mx-auto text-center' style ='font-family: "Roboto-medium"; color:#E7882B; max-width: 350px;'>Ознакомление с основными правилами на производстве для обеспечения Вашей безопасности</p>
+            {% if user.is_authenticated %}
+			<a class = 'btn btn-outline-primary mx-auto fs-5 text-uppercase ' href="#" style = 'font-family: "Roboto-medium";'>
+				<i class="fa-regular fa-pen mx-2"></i>
+				Пройти инструктаж
+			</a>
+			{% else %}
+			<a class = 'btn btn-outline-pink mx-auto fs-5 text-uppercase ' href="{% url 'login' %}" style = 'font-family: "Roboto-medium";'>
+				<i class="fa-regular fa-pen mx-2"></i>
+				Начать Инструктаж
+			</a>
+			{% endif %}
+        </div>
+        <div class = 'd-flex flex-column'>
+            <button class = 'btn btn-outline-orange fs-5 d-flex align-items-center' style ='font-family: "Roboto-medium";'>
+                Подписаться <i class="fa-brands fa-telegram mx-2 fs-2"></i>
+            </button>
+            <a class = 'text-decoration-none mt-3' href="tel:89543214212" style = 'color:#3B5B6F;'> <i class="fa-solid fa-phone mx-2"></i> +7 (954) 321-42-12</a>
+            <a class = 'text-decoration-none mt-3' href="mailto:saInstr@ya.ru"  style = 'color:#3B5B6F;'> <i class="fa-regular fa-envelope mx-2"></i> saInstr@ya.ru</a>
+            <div class = 'd-flex justify-content-center mt-5'>
+                <a class = 'text-decoration-none fs-3 mx-2' href="#" style = 'color:#E7882B;'>
+                    <i class="fa-brands fa-telegram"></i>
+                </a>
+                <a class = 'text-decoration-none fs-3 mx-2' href="#" style = 'color:#E7882B;'>
+                    <i class="fa-brands fa-vk"></i>
+                </a>
+                <a class = 'text-decoration-none fs-3 mx-2' href="#" style = 'color:#E7882B;'>
+                    <i class="fa-brands fa-discord"></i>
+                </a>
+            </div>
+        </div>
+    </div>
+</footer>
+
+
+
+
+
 {% endblock content %}
 	
 	

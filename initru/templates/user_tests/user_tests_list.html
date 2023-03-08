@@ -5,27 +5,41 @@
 
 
 {% block content %}
-{% include 'blocks/rotate.html' %}
-<div class="users_themes">
 
-    <p class="users_themes-title">
+<div class="container mt-3">
+    <a class = 'btn btn-outline-orange mb-2 fw-bold' onclick="javascript:history.back(); return false;" href ="#">
+        Назад
+    </a>
+    <p class = 'fs-5 text-uppercase mt-3' style="font-family: 'Inter-Bold'; color:#E7882B;">
         Тесты по теме: <span style = "color:black;">{{ themes.name_instruction }}</span>
     </p>
 
-    <p class="users_themes-title">
+    <p class = 'fs-5 text-uppercase' style="font-family: 'Inter-Bold'; color:#E7882B;">
         Список тестов:
     </p>    
 
-    <div class="users_themes-box mt-3">
-        <ul class = "uesrs_themes-box_ul">
-            {% for item in test %}
-
-                <li class="users_themes-box_list mt-1"><a href="{% url 'test_info' num=item.instruction.id id=item.id %}" class="users_themes-box_list-link">{{ item.name_test }}</a></li>
-
-            {% endfor %}
-        </ul>
+    <div class="list-group mt-3">
+        {% for item in test %}
+            <button class="list-group-item list-group-item-action" data-bs-target="#staticBackdrop" data-bs-toggle="modal">{{ item.name_test }}</button>
+        {% endfor %}
     </div>
-
+      
+      <!-- Modal -->
+      <div class="modal fade " id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h1 class="modal-title fs-5" id="staticBackdropLabel">Меню</h1>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div id = 'body-form' class="modal-body"></div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Закрыть</button>
+              <button type="button" class="btn btn-primary">Начать</button>
+            </div>
+          </div>
+        </div>
+      </div>
 </div>
 
 {% endblock %}
