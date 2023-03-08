@@ -114,9 +114,9 @@ def testsPageView(request, id):
 def testView(request, num, id): 
 
     page_name = 'user_tests/user_tests_test.html'
-    tests = test.objects.get(instruction = id, type_user=request.user.type_user, pk = num)
+    quiz = test.objects.get(instruction = id, type_user=request.user.type_user, pk = num)
     values = {
-        'test':tests,
+        'test':quiz,
     }
 
     return render(request, page_name, values)
@@ -143,3 +143,17 @@ def createUserAdmin(request):
         return render(request, page_name, values)
     else:
         return render(request, "error.html")
+
+
+def testDataView(request, num, id):
+    quiz = test.objects.get(instruction = id, type_user=request.user.type_user, pk = num)
+    questions = []
+    for q in quiz.get_questions():
+        answers = []
+        for a in q.get_answers():
+            answers.append(a.text)
+        questions.append({str(q):answers})
+    return JsonResponse({
+        'data':questions,
+        'time':quiz.time
+    })

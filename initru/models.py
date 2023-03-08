@@ -1,7 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser
 from smart_selects.db_fields import ChainedForeignKey
-
+import random
 
 # Регионы
 class Region(models.Model):
@@ -160,35 +160,16 @@ class test(models.Model):
     def get_need_instr(request, id):
         return test.objects.all().filter(
             instruction = id
-            ).filter(type_user = request.user.type_user)
+            ).filter(type_user = request.user.type_user) 
     
     def get_questions(self):
-        pass 
+        questions = list(self.question_set.all()) # получение вопросов 
+        random.shuffle(questions) # перемешать местами вопросы.
+        return questions[:self.number_of_questions] # get опред колво вопросов
 
 # вопросы
-class question(models.Model):
-    test  = models.ForeignKey(
-        test, on_delete=models.CASCADE,
-        verbose_name='Номер теста'
-    )
-    question = models.CharField(
-        'Вопрос',
-        max_length=255
-    )
-    answer = models.CharField(
-        'Ответы',
-        max_length=64
-    )
-    score = models.FloatField(
-        'балл'
-    )
 
-    class Meta:
-        verbose_name = 'Вопрос'
-        verbose_name_plural = 'Вопросы'
 
-    def __str__(self):
-        return f'{self.test } - {self.question}'
 
 # обратная связь
 class contact_us(models.Model):
@@ -340,20 +321,45 @@ class res(models.Model):
         verbose_name = 'Результат'
         verbose_name_plural = 'Результаты'
 
+
+class question(models.Model):
+    test = models.ForeignKey(test, on_delete=models.CASCADE, verbose_name='Номер теста')
+    name = models.CharField('Вопрос', max_length=255 )
+    created = models.DateTimeField('Вопрос создан',auto_now_add=True)
+
+
+    def __str__(self):
+        return f'{self.name}'
+    
+    def get_answers(self):
+        return self.answers_set.all()
+
+
+    class Meta:
+        verbose_name = 'Вопрос'
+        verbose_name_plural = 'Вопросы' 
+    
+
 # ответы на вопросы
 class answers(models.Model):
     question  = models.ForeignKey(
         question, on_delete=models.CASCADE,
         verbose_name='Вопрос'
     )
-    result  = models.ForeignKey(
-        res,
-        on_delete=models.CASCADE,
-        verbose_name='Результат'
-    )
-    score = models.IntegerField(
-        'Балл'
-    )
+    text = models.CharField('Ответ', max_length=200)
+    correct = models.BooleanField('Правильный или нет', default=False)
+    created = models.DateTimeField(auto_now_add=True)
+    # result  = models.ForeignKey(
+    #     res,
+    #     on_delete=models.CASCADE,
+    #     verbose_name='Результат'
+    # )
+    # score = models.IntegerField(
+    #     'Балл'
+    # )
+
+    def __str__(self):
+        return f"{self.question.name}, ответ:{self.text}"
 
     class Meta:
         verbose_name = 'Ответ'

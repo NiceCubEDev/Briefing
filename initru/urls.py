@@ -14,6 +14,7 @@ urlpatterns = [
     path('createUser/', createUserAdmin, name ='user_create'),
 
     # user urls
+    path('account/themes_inst/test/<int:id>/<int:num>/data', testDataView, name = 'get_data_test'),
     path('account/themes_inst/test/<int:id>/<int:num>', testView, name = 'start_test'),
     path('account/themes_inst/test/<int:id>/', testsPageView, name = "test_list"),
     path('account/themes_inst/', briefPageView, name = "brief"),

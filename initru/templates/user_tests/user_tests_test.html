@@ -1,21 +1,30 @@
 {% extends "../base.html" %}
+{% load static %}
+
+{% block title %} {{ test.name_test }} {% endblock %}
 
 
-   {% block title %} {{ test.name_test }} {% endblock %}
-
+{% block scripts %}
+    <script defer src="{% static 'js/brief/quiz.js' %}"></script>
+{% endblock scripts %}
+    
 
 {% block content %}
-{% include 'blocks/rotate.html' %}
-
-<div class ="container">
+<div class ="container mt-3">
     <a class = 'btn btn-outline-orange mb-2 fw-bold' onclick="javascript:history.back(); return false;" href ="#">
+        <i class="fa-solid fa-circle-left mx-2"></i>
         Назад
     </a>
     <p class = 'fs-5 text-uppercase mt-3' style="font-family: 'Inter-Bold'; color:#E7882B;">{{ test.name_test }}</p>
     <div class="content">
-
+        <form class = 'mt-3' id ='quiz-form'>
+            {% csrf_token %}
+            <div class ='mb-5' id = 'quiz-box'></div>
+            <button class ='btn btn-success'>
+                <i class="fa-regular fa-floppy-disk mx-2"></i>
+                Сохранить</button>
+        </form>
+        
     </div>
 </div>
-
-
-{% endblock %}
+{% endblock content %}

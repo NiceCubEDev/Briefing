@@ -50,15 +50,18 @@ class res(admin.ModelAdmin):
 class test(admin.ModelAdmin):
     list_display = ['instruction', 'name_test', 'type_user','file']
 
+class AnswerInline(admin.TabularInline):
+    model = answers
 
 @admin.register(question)
 class question(admin.ModelAdmin):
-    list_display = ['test', 'question', 'answer', 'score']
+    inlines = [AnswerInline]
+    list_display = ['test', 'name', 'created']
 
 
 @admin.register(answers)
 class answer(admin.ModelAdmin):
-    list_display = ['question', 'result', 'score']
+    list_display = ['question', 'text', 'correct', 'created']
 
 
 @admin.register(contact_us)
