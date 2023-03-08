@@ -1,5 +1,7 @@
+from django.contrib.auth.admin import UserAdmin
 from django.contrib import admin
 from .models import *
+
 
 
 @admin.register(Region)
@@ -13,6 +15,7 @@ class City(admin.ModelAdmin):
 @admin.register(Street)
 class Street(admin.ModelAdmin):
     list_display = ['name_street']
+
 
 admin.site.register(CustomUser)
 

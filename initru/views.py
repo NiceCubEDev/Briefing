@@ -95,10 +95,11 @@ def briefPageView(request):
 
 
 @login_required(login_url='account/login/') # обязательная авторизация
-def getTestListPage(request,id):
+def testsPageView(request, id):
 
     template_name = 'user_tests/user_tests_list.html'
     themesInstructions = inst.objects.get(id = id) # model inst
+
     tests = test.get_need_instr(request, id) # model test
 
     values = {

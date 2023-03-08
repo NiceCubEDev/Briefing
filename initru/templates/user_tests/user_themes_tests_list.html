@@ -13,8 +13,7 @@
     <p class = 'fs-5 text-uppercase mt-3' style="font-family: 'Inter-Bold'; color:#E7882B;">Выберите инструктаж</p>
     <div class="list-group mt-3">
         {% for item in themes %}
-            <a class="list-group-item list-group-item-action" href="{% url 'user_themes_tests' item.id %}" class="users_themes-box_list-link">{{ item.name_instruction }}</a>
-
+            <a class="list-group-item list-group-item-action" href="{% url 'test_list' item.id %}" class="users_themes-box_list-link">{{ item.name_instruction }}</a>
         {% endfor %}
     </div>
 </div>
