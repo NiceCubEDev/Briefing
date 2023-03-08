@@ -7,7 +7,7 @@ from django.contrib.auth.decorators import login_required
 
 def mainView(request):
 
-    template_path = 'main.html'
+    page_name = 'main.html'
     
     getInstr = inst.get_all_names()
     getComplex = complex.get_all_names()
@@ -30,34 +30,34 @@ def mainView(request):
         'complex':getComplex,
         'countUser':users,
     }
-    return render(request, template_path, values)
+    return render(request, page_name, values)
 
 
 #get_about_us
 def aboutPageView(request):
-    template_path = 'about.html'
-    return render(request, template_path)
+    page_name = 'about.html'
+    return render(request, page_name)
 
 #get_contact
 def contactPageView(request):
-    template_path = 'contact.html'
-    return render(request, template_path)
+    page_name = 'contact.html'
+    return render(request, page_name)
 
 # get profile 
-@login_required(login_url='/account/login/') # обязательная авторизация
+@login_required  # обязательная авторизация
 def profileView(request):
-    template_path = 'profile.html'
-    return render(request, template_path)
+    page_name = 'profile.html'
+    return render(request, page_name)
 
-@login_required(login_url='/account/login/') # обязательная авторизация
+@login_required  # обязательная авторизация
 def getDetailProfile(request):
-    template_path = 'profiile_detail_remaster.html'
-    return render(request,template_path)
+    page_name = 'profiile_detail_remaster.html'
+    return render(request,page_name)
 
 
-@login_required(login_url='account/login/') # обязательная авторизация
+@login_required  # обязательная авторизация
 def getEditProfile(request): 
-    template_path = 'profile_edit.html'
+    page_name = 'profile_edit.html'
     get_user = CustomUser.get_user(request)
     if request.method == "GET": 
         try:
@@ -78,23 +78,23 @@ def getEditProfile(request):
         'DataUser':get_user,
     }
 
-    return render(request, template_path, values)
+    return render(request, page_name, values)
     
 
-@login_required(login_url='account/login/') # обязательная авторизация
+@login_required  # обязательная авторизация
 def briefPageView(request):
 
-    template_path = "user_tests/user_themes_tests_list.html"
+    page_name = "user_tests/user_themes_tests_list.html"
     themesInstructions = inst.objects.all()
 
     values = {
         'themes':themesInstructions,
     }
 
-    return render(request, template_path, values)
+    return render(request, page_name, values)
 
 
-@login_required(login_url='account/login/') # обязательная авторизация
+@login_required  # обязательная авторизация
 def testsPageView(request, id):
 
     template_name = 'user_tests/user_tests_list.html'
@@ -110,22 +110,21 @@ def testsPageView(request, id):
     return render(request, template_name, values)
 
 
-@login_required(login_url='account/login/') # обязательная авторизация
+@login_required  # обязательная авторизация
 def testView(request, num, id): 
 
-    template_path = 'user_tests/user_tests_intro.html'
-    tests = test.objects.filter(instruction = num, type_user=request.user.type_user, pk = id)
-    
+    page_name = 'user_tests/user_tests_test.html'
+    tests = test.objects.get(instruction = id, type_user=request.user.type_user, pk = num)
     values = {
         'test':tests,
     }
 
-    return render(request, template_path, values)
+    return render(request, page_name, values)
         
 
 @login_required
 def createUserAdmin(request):
-    template_path = 'admin/createUser.html'
+    page_name = 'admin/createUser.html'
     if request.user.is_superuser:
         if request.method == 'POST':
             newUser = CreateUserForm(request.POST, request.FILES)
@@ -141,13 +140,6 @@ def createUserAdmin(request):
         values = {
             'form':userForm,
         }
-        return render(request, template_path, values)
+        return render(request, page_name, values)
     else:
         return render(request, "error.html")
-
-
-# этап разработки теста для пользователя
-# создать форму для вопросов в forms.py
-# получать список вопросов, на которые он не ответил.
-# спсок вопросов, список ответов и можно сравнить (вариант) 
-# можно сделать на JS либо на DJANGO . 

@@ -1,0 +1,21 @@
+{% extends "../base.html" %}
+
+
+   {% block title %} {{ test.name_test }} {% endblock %}
+
+
+{% block content %}
+{% include 'blocks/rotate.html' %}
+
+<div class ="container">
+    <a class = 'btn btn-outline-orange mb-2 fw-bold' onclick="javascript:history.back(); return false;" href ="#">
+        Назад
+    </a>
+    <p class = 'fs-5 text-uppercase mt-3' style="font-family: 'Inter-Bold'; color:#E7882B;">{{ test.name_test }}</p>
+    <div class="content">
+
+    </div>
+</div>
+
+
+{% endblock %}

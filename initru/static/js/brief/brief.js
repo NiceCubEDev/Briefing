@@ -4,6 +4,10 @@ const modalBtns = [...document.getElementsByClassName('btn-quiz')]; // масс�
 const modalBody = document.getElementById('body-form'); // тело модального окна
 const startBtn = document.getElementById('start-button');
 
+
+const url = window.location.href 
+console.log(url)
+
 modalBtns.forEach(modalBtn=>modalBtn.addEventListener('click', ()=>{
     const briefPk = modalBtn.getAttribute('data-brief-pk');
     const briefName = modalBtn.getAttribute('data-brief-name');
@@ -25,5 +29,9 @@ modalBtns.forEach(modalBtn=>modalBtn.addEventListener('click', ()=>{
             <li>Время: <b>${quizTime} мин. </b></li>
         </ul>
     </div>
-    `
+    `;
+
+    startBtn.addEventListener('click', ()=>{
+        window.location.href = url + quizPk;
+    });
 }));
