@@ -43,7 +43,7 @@ class inst(admin.ModelAdmin):
 
 @admin.register(res)
 class res(admin.ModelAdmin):
-    list_display = ['user', 'instruction', 'date_instruction', 'result', 'cause']
+    list_display = ['user', 'instruction', 'quiz','date_instruction', 'result', 'mark']
 
 
 @admin.register(test)

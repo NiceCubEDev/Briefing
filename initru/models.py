@@ -298,24 +298,13 @@ class CustomUser(AbstractUser):  # custom user for Users with django
 
 # результаты
 class res(models.Model):
-    user  = models.ForeignKey(
-        CustomUser, on_delete=models.CASCADE,
-        verbose_name='Пользователь'
-    )
-    instruction  = models.ForeignKey(
-        inst, on_delete=models.CASCADE,
-        verbose_name='Инструктаж'
-    )
-    date_instruction = models.DateTimeField(
-        'Дата начала инструктажа'
-    )
-    result = models.IntegerField(
-        'Результат'
-    )
-    cause = models.CharField(
-        'Причина',
-        max_length=255
-    )
+    user  = models.ForeignKey( CustomUser, on_delete=models.CASCADE, verbose_name='Пользователь')
+    instruction  = models.ForeignKey( inst, on_delete=models.CASCADE, verbose_name='Инструктаж')
+    quiz = models.ForeignKey(test, on_delete=models.CASCADE, verbose_name= 'Тест')
+    date_instruction = models.DateTimeField( 'Дата прохождения инструктажа')
+    result = models.IntegerField( 'Результат')
+    mark = models.CharField('Причина', max_length=255)
+
 
     class Meta:
         verbose_name = 'Результат'

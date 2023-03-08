@@ -56,7 +56,17 @@ const sendData = () => {
 
     console.log(data)
 
-    
+    $.ajax({
+        type:'POST',
+        url:`${url}/save`,
+        data: data,
+        success: (res)=>{
+            console.log(res)
+        },
+        error: (res)=>{
+            console.log(res)
+        }
+    })
 };
 
 quizForm.addEventListener('submit', e => {

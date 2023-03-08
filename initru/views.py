@@ -1,9 +1,10 @@
 from django.shortcuts import render, redirect
 from .forms import contactForm, EditProfileForm, CreateUserForm
 from django.contrib import messages
-from .models import inst, complex, CustomUser, test
+from .models import inst, complex, CustomUser, test, question, answers, res
 from django.http import *
 from django.contrib.auth.decorators import login_required
+from django.utils import timezone
 
 def mainView(request):
 
@@ -157,3 +158,63 @@ def testDataView(request, num, id):
         'data':questions,
         'time':quiz.time
     })
+
+
+def testDataSaveView(request, num, id): # id - инструктаж # num - номер теста
+    if request.method == 'POST':
+        questions = [] # list с в вопросами
+        data = request.POST
+        data_ = dict(data.lists()) # в хороший список
+        data_.pop('csrfmiddlewaretoken')
+        print(data_)
+
+        for k in data_.keys(): # прогонка по вопросам 
+            print('Вопрос ключ:', k)
+            quest = question.objects.get(name=k)
+            questions.append(quest) # Добавляем в список вопросов
+        
+        user = request.user
+        quiz = test.objects.get(pk=num) # получение нужного теста
+
+        score = 0 # балл
+        multiper = 100 / quiz.number_of_questions
+        results = []
+        correct_answer = None
+
+        for q in questions:
+            a_selected = request.POST.get(q.name) # выбранные ответы
+
+            if a_selected !="":
+                question_answers = answers.objects.filter(question=q)
+                for a in question_answers:
+                    if a_selected == a.text:
+                        if a.correct:
+                            score += 1
+                            correct_answer = a.text
+                    else:
+                        if a.correct: 
+                            correct_answer = a.text
+                results.append({str(q):{'correct_answer':correct_answer, 'answered':a_selected}})
+            else:
+                results.append({str(q):'not answered'})
+        
+        score_ = score * multiper
+        print('err',score_)
+        res.objects.create(
+            user = user,
+            instruction_id = quiz.instruction.id,
+            quiz = quiz,
+            date_instruction = timezone.now(),
+            result = score_,
+            mark = '123',
+        )
+
+        if score_ >= quiz.required_score_to_pass:
+            return JsonResponse({'passed':True, 'score':score_, 'results':results})
+        else:
+            return JsonResponse({'passed':False, 'score':score_, 'results':results})
+
+
+                
+
+
