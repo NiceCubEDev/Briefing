@@ -5,87 +5,91 @@
 
 
 {% block content %}
-<p class = "account_user-info_title text-center">Основная информация</p>
-<div class="login-form flex justify-center mt-5 flex-wrap">
+<p class="text-center fw-bold fs-4" style='color:#E7882B;'>Основная информация</p>
+<div class="container" style="min-height:70vh;">
+    <div class='row mt-5'>
+        <div class='col d-flex'>
+            <div>
+                {% if request.user.avatar %}
+                <div class="rounded" style="
+                    width:250px;
+                    height:250px;
+                    background-image: url('{{ request.user.avatar.url }}');
+                    background-size: cover;
+                    background-position: center;
+                ">
+                </div>
+                {% endif %}
+            </div>
 
-    <div class="account_image">
-        {% if request.user.avatar %}
-        <div class="account_image-image_url" style="
-            width:250px;
-            height:250px;
-            background-image: url('{{ request.user.avatar.url }}');
-            background-size: cover;
-            background-position: center;
-        ">
-        </div>
-        {% else %}
-        <div class="account_image-image_url" style="
-            width:250px;
-            height:250px;
-            background-image: url('{% static 'images/startPage/user/user.svg' %}');
-            background-size: cover;
-            background-position: center;
-        ">
-        </div>
-        {% endif %}
-    </div>
+            <div class='mx-4'>
+                <p class='fw-bold fs-5' style='font-family: "Inter-Bold"; color:#E7882B;'>{{ request.user.first_name }}
+                    {{ request.user.last_name }} {{ request.user.patronymic }}</p>
 
-    <div class="account_user-info m-4">
-        
-        <div class="account_user-info_container flex">
-            <p class="account_user-info_user_name">
-                {{ request.user.first_name }}
-            </p>
-            <p class="account_user-info_user_name">
-                {{ request.user.last_name }}
-            </p>
-        </div>
-        
-        <p class = "account_user-info_date_birth mt-3">
-            {{ request.user.birthday_date }}
-        </p>
+                <p class='fw-bold' style='font-family: "Inter-Bold"; color:#3B5B6F;'>
+                    <i class="fa-solid fa-cake-candles"></i>
+                    {{ request.user.birthday_date }}
+                </p>
 
+                {% if user.is_superuser %}
+                <div class='d-flex'>
+                    {% if request.user.groupStud %}
+                    <p style='font-family: "Inter-Bold"; color:#E7882B;'>гр. {{ request.user.groupStud }}</p>
+                    {% endif %}
+                    <p class='text-danger mx-3' style='font-family: "Inter-Bold";'> Администратор</p>
+                </div>
+                {% else %}
+                {% if request.user.groupStud %}
+                <p style='font-family: "Inter-Bold"; color:#E7882B;'>гр. {{ request.user.groupStud }}</p>
+                {% endif %}
+                <p class='text-danger mx-3' style='font-family: "Inter-Bold";'> Администратор</p>
+                {% endif %}
 
-        <div class="account_user-info_container flex mt-2">
-            <p class ="account_user-info_group">
-                <span>гр. {{ request.user.groupStud  }}</span>
-            </p>
-            <p class ="account_user-info_role">
-                <span class = "account_role">Роль: {{ request.user.role  }}</span>
-            </p>
-            {% if user.is_superuser %}
-            <p class ="account_user-info_role">
-                <span class = "text-red-600">Администратор</span>
-            </p>
-            {% endif %}
-        </div>
+                {% if request.user.phone_number %}
+                <div class='d-flex'>
+                    <p class='d-flex align-items-center' style='font-family: "Inter-Regular"; color:#3B5B6F;'>
+                        <i class="fa-solid fa-phone mx-2"></i>
+                        {{ request.user.phone_number }}
+                    </p>
+                    <p class='d-flex align-items-center mx-3' style='font-family: "Inter-Regular"; color:#3B5B6F;'>
+                        <i class="fa-regular fa-envelope mx-2"></i>
+                        {{ request.user.email }}
+                    </p>
+                </div>
 
-        <div class="account_user-info_container flex mt-2">
-            <p class="account_user-info_contact ml-2 flex">
-                <img width = "17px" src="{% static 'images/startPage/footer/phoneNumber.svg' %}" alt="phone">
-                <a href="tel:{{ item.phone_number }}"> {{ request.user.phone_number }}</a>
-            </p>
-            <p class = "account_user-info_contact ml-2 flex">
-                <img width = "17px" src="{% static 'images/startPage/footer/email.svg' %}" alt="e-mail">
-                <a href="mail:{{ item.email }}"> {{ request.user.email }}</a>
-            </p>
+                {% endif %}
+
+            </div>
         </div>
 
-        <p class = "mt-2">
-            <a class = "link-about_width_me" href="{% url 'profile_detail' %}"> 
-                <span>Дополнительная информация  <</span> 
-            </a>
-        </p>
-
-        {% if user.is_superuser %}
-        <div class = "mt-3">
-            <a class="inline-block px-6 py-2.5 bg-blue-600 text-white font-medium text-xs leading-tight uppercase rounded shadow-md hover:bg-blue-700 hover:shadow-lg focus:bg-blue-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-orange-700 active:shadow-lg transition duration-150 ease-in-out" href ="{% url 'admin:index' %}">Панель администратора</a>
+        <div class='col-5 d-flex align-items-center' style="max-width:350px;">
+            <div class="list-group">
+                <a href="" class="list-group-item list-group-item-action">
+                    <i class="fa-solid fa-square-pen mx-2 text-primary"></i>
+                    Сменить данные
+                </a>
+                <a href="{% url 'profile_detail' %}" class="list-group-item list-group-item-action">
+                    <i class="fa-regular fa-address-card mx-2 text-success"></i>
+                    Мои данные
+                </a>
+                <a href="#" class="list-group-item d-flex justify-content-between align-items-center">
+                    <div>
+                        <i class="fa-regular fa-bell mx-2 text-warning"></i>
+                        Уведомления
+                    </div>
+                    
+                    <span class="badge rounded-pill text-white" style="color:#E7882B; background-color:#E7882B;">2</span>
+                </a>
+                <a href="#" class="list-group-item list-group-item-action">
+                    <i class="fa-solid fa-square-pen mx-2 text-secondary"></i>
+                    Пройденные инструктажи
+                </a>
+                <a href = "{% url 'logout' %}" class="list-group-item list-group-item-danger list-group-item-action">
+                    <i class="fa-solid fa-door-open mx-2"></i>
+                    Выйти
+                </a>
+            </div>
         </div>
-        <div class = "mt-3">
-            <a class="inline-block px-6 py-2.5 bg-orange-500 text-white font-medium text-xs leading-tight uppercase rounded shadow-md hover:bg-orange-600 hover:shadow-lg focus:bg-orange-500 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-orange-700 active:shadow-lg transition duration-150 ease-in-out" href ="{% url 'user_create' %}">Создать пользователя</a>
-        </div>
-        {% endif %}
-        <a class="inline-block px-6 py-2.5 bg-red-600 text-white font-medium text-xs leading-tight uppercase rounded shadow-md hover:bg-red-700 hover:shadow-lg focus:bg-red-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-red-800 active:shadow-lg transition duration-150 ease-in-out mt-3" href = "{% url 'logout' %}">Выйти</a>
     </div>
 
 </div>

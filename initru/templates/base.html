@@ -74,11 +74,11 @@
 						'></div>
 						<!-- <i class="fa-solid fa-arrow-down-wide-short fs-4 text-primary"></i> -->
 					</a>
-					<ul class="dropdown-menu text-small" aria-labelledby="dropdownUser1">
+					<ul class="dropdown-menu text-small dropdown-menu-end" aria-labelledby="dropdownUser1">
 						{% if user.is_authenticated %}
 						<li>
 							<a class="dropdown-item" href="{% url 'profile' %}">
-								<i class="fa-regular fa-user mx-2 text-secondary"></i> 
+								<i class="fa-regular fa-user mx-2" style = 'color:#E7882B;'></i> 
 								Мой профиль
 							</a>
 						</li>
@@ -90,14 +90,19 @@
 						</li>
 						<li>
 							<a class="dropdown-item" href="#">
-								<i class="fa-solid fa-pen-to-square mx-2 text-secondary"></i>
+								<i class="fa-solid fa-pen-to-square mx-2 text-primary" style = 'color:#E7882B;'></i>
 								Сменить данные
 							</a>
 						</li>
 						<li>
 							<hr class="dropdown-divider">
 						</li>
-						<li class='d-flex justify-content-center mt-2'><a class="btn btn-danger" href="{% url 'logout' %}">Выйти</a></li>
+						<li class='d-flex justify-content-center mt-2'>
+							<a class="btn btn-danger" href="{% url 'logout' %}">
+								<i class="fa-solid fa-door-open mx-2"></i>
+								Выйти
+							</a>
+						</li>
 							
 						{% endif %}
 					</ul>

@@ -3,6 +3,10 @@
     src: url("../fonts/Roboto/Roboto-Medium.ttf");
 }
 @font-face {
+    font-family: "Inter-Regular";
+    src: url("../fonts/Inter/Inter-Regular.ttf");
+}
+@font-face {
     font-family: "Roboto-bold";
     src: url("../fonts/Roboto/Roboto-bold.ttf");
 }

@@ -65,7 +65,7 @@
 <div class = 'container d-flex justify-content-center flex-wrap' style="margin-top: 100px;">
 	<img src="{% static 'images/startPage/girl_and_books.svg' %}" alt="girl" style ='user-select: none;'>
 	<div class='flex-fill d-flex flex-column align-items-center'>
-		<p class = 'fs-5 text-center text-uppercase' style="font-family: 'Inter-Bold';">Виды инструктажей</p>
+		<p class = 'fs-5 text-center text-uppercase' style="font-family: 'Inter-Bold'; color:#E7882B;">Виды инструктажей</p>
 		<div class="inst_list flex-fill" style="position: relative; max-height: 430px; max-width: 700px; width: 100%;">
 			{% for i in instr %}
 				<div class = 'inst_list-box align-items-center' style = 'height:80px; width: 150px; line-height: 80px;'>
@@ -79,7 +79,7 @@
 </div>
 
 <div class='container' style = 'margin-top: 100px;'>
-	<p class = 'fs-5 text-center text-uppercase' style="font-family: 'Inter-Bold';">Программный комплекс</p>
+	<p class = 'fs-5 text-center text-uppercase' style="font-family: 'Inter-Bold'; color:#E7882B;">Программный комплекс</p>
 	<div class = 'complex d-flex justify-content-evenly align-items-center'>
 		<div class = 'row row-cols-2' style="max-width:500px;">
 			{% for c in complex %}
@@ -107,7 +107,7 @@
 <div class = 'container d-flex justify-content-evenly align-items-center flex-wrap'>
 	<img src="{% static 'images/startPage/girlandheart.svg' %}" alt="photo">
 	<div>
-		<p class = 'fs-5 text-center text-uppercase' style="font-family: 'Inter-Bold';">Обратная связь</p>
+		<p class = 'fs-5 text-center text-uppercase' style="font-family: 'Inter-Bold'; color:#E7882B;">Обратная связь</p>
 		<form>
 			{% csrf_token %}
 			<div class="mb-2">
