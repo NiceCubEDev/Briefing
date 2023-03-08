@@ -10,9 +10,19 @@ class contactForm(forms.ModelForm):
         model = contact_us
         fields = '__all__'
         widgets = {
-            'name_contact': forms.TextInput(attrs={'placeholder': 'Имя'}),
-            'email_contact': forms.EmailInput(attrs={'placeholder': 'Электронная почта'}),
-            'text_contact': forms.Textarea(attrs={'placeholder': 'Сообщение'})
+            'name_contact': forms.TextInput(attrs={
+                'placeholder': 'Имя',
+                'class':'form-control',
+            }),
+            'email_contact': forms.EmailInput(attrs={
+                'placeholder': 'Электронная почта',
+                'class':'form-control',
+            }),
+            'text_contact': forms.Textarea(attrs={
+                'placeholder': 'Сообщение',
+                'class':'form-control',
+                'style':'resize:none;'
+            })
         }
 
 

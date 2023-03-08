@@ -25,7 +25,7 @@
 				Пройти инструктаж
 			</a>
 			{% else %}
-			<a class = 'btn btn-outline-pink mx-auto fs-5 text-uppercase ' href="#" style = 'font-family: "Roboto-medium";'>
+			<a class = 'btn btn-outline-pink mx-auto fs-5 text-uppercase ' href="{% url 'login' %}" style = 'font-family: "Roboto-medium";'>
 				<i class="fa-regular fa-pen mx-2"></i>
 				Начать Инструктаж
 			</a>
@@ -104,10 +104,26 @@
 	<img class = 'img-fluid' alt = 'photo' src ="{% static 'images/startPage/volna.svg' %}" style = 'width: 100%; user-select: none;  transform: scale(1, -1);' />
 </div>
 
-<div class = 'container d-flex'>
+<div class = 'container d-flex justify-content-evenly align-items-center flex-wrap'>
 	<img src="{% static 'images/startPage/girlandheart.svg' %}" alt="photo">
 	<div>
 		<p class = 'fs-5 text-center text-uppercase' style="font-family: 'Inter-Bold';">Обратная связь</p>
+		<form>
+			{% csrf_token %}
+			<div class="mb-2">
+				{{ contact.name_contact }}
+			</div>
+			<div class="mb-2">
+				{{ contact.email_contact }}
+			</div>
+			<div class="mb-2">
+				{{ contact.text_contact }}
+			</div>
+			<button class = 'btn btn-outline-pink text-uppercase mt-2' style="font-family: 'Inter-Bold';"> 
+				<i class="fa-regular fa-envelope mx-2"></i>
+				Отправить 
+			</button>
+		</form>
 	</div>
 </div>
 

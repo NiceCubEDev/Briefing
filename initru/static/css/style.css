@@ -3,6 +3,10 @@
     src: url("../fonts/Roboto/Roboto-Medium.ttf");
 }
 @font-face {
+    font-family: "Roboto-bold";
+    src: url("../fonts/Roboto/Roboto-bold.ttf");
+}
+@font-face {
     font-family: "Inter-Bold";
     src: url('../fonts/Inter/Inter-Bold.ttf');
 }
@@ -87,3 +91,4 @@ body::-webkit-scrollbar-thumb {
  .complex_box:nth-child(2), .complex_box:nth-child(4){ 
     position: relative; top:100px; width: 200px; height: 150px;
  } 
+
