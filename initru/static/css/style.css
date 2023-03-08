@@ -14,7 +14,9 @@
     font-family: "Inter-Bold";
     src: url('../fonts/Inter/Inter-Bold.ttf');
 }
-
+li { 
+    list-style-type: none;
+}
 .not-visible { 
     display: none;
 }

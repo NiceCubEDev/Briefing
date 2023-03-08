@@ -1,17 +1,39 @@
 {% extends "../base.html" %}
-
+{% load static %}
 
 {% block title %} {{ themes.name_instruction }} {% endblock %}
 
 
+
+{% block scripts %}
+  <script defer src="{% static 'js/brief/brief.js' %}"></script>
+{% endblock scripts %}
+  
+
 {% block content %}
+<!-- Modal -->
+<div class="modal fade " id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="staticBackdropLabel">Меню</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div id = 'body-form' class="modal-body"></div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Закрыть</button>
+        <button type="button" id='start-button' class="btn btn-success">Начать</button>
+      </div>
+    </div>
+  </div>
+</div>
 
 <div class="container mt-3">
     <a class = 'btn btn-outline-orange mb-2 fw-bold' onclick="javascript:history.back(); return false;" href ="#">
         Назад
     </a>
     <p class = 'fs-5 text-uppercase mt-3' style="font-family: 'Inter-Bold'; color:#E7882B;">
-        Тесты по теме: <span style = "color:black;">{{ themes.name_instruction }}</span>
+        Тесты по категории: <span style = "color:black;">{{ themes.name_instruction }}</span>
     </p>
 
     <p class = 'fs-5 text-uppercase' style="font-family: 'Inter-Bold'; color:#E7882B;">
@@ -20,26 +42,10 @@
 
     <div class="list-group mt-3">
         {% for item in test %}
-            <button class="list-group-item list-group-item-action" data-bs-target="#staticBackdrop" data-bs-toggle="modal">{{ item.name_test }}</button>
+            <button class="btn-quiz list-group-item list-group-item-action" data-brief-name = "{{item.instruction.name_instruction }}" data-brief-pk='{{item.instruction.pk }}' data-quiz-pk="{{ item.id }}" data-quiz-name="{{item.name_test}}" data-quiz-time = "{{ item.time }}" data-pass ="{{ item.required_score_to_pass }}" data-questions='{{ item.number_of_questions }}' data-bs-target="#staticBackdrop" data-bs-toggle="modal">{{ item.name_test }}</button>
         {% endfor %}
     </div>
       
-      <!-- Modal -->
-      <div class="modal fade " id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered">
-          <div class="modal-content">
-            <div class="modal-header">
-              <h1 class="modal-title fs-5" id="staticBackdropLabel">Меню</h1>
-              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div id = 'body-form' class="modal-body"></div>
-            <div class="modal-footer">
-              <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Закрыть</button>
-              <button type="button" class="btn btn-success">Начать</button>
-            </div>
-          </div>
-        </div>
-      </div>
 </div>
 
 {% endblock %}

@@ -141,24 +141,13 @@ class typeuser(models.Model):
 
 # тест
 class test(models.Model):
-    instruction = models.ForeignKey(
-        inst, on_delete=models.CASCADE,
-        verbose_name='Инструктаж'
-    )
-    name_test = models.CharField(
-        'Название теста инструктажа',
-        max_length=125
-    )
-    type_user  = models.ForeignKey(
-        typeuser, on_delete=models.CASCADE,
-        verbose_name='Тип пользователя'
-    )
-    file = models.FileField(
-        'Файл к тесту',
-        upload_to='instr/',
-        null=True,
-        blank=True,
-    )
+    instruction = models.ForeignKey( inst, on_delete=models.CASCADE, verbose_name='Инструктаж' )
+    name_test = models.CharField( 'Название теста инструктажа', max_length=125 )
+    number_of_questions = models.IntegerField('Количество вопросов') ##
+    time = models.IntegerField('Ограничение по времени') ##
+    required_score_to_pass = models.IntegerField('Рекомендуемый балл в %', help_text='Рекомендуемый балл в %')
+    type_user  = models.ForeignKey(typeuser, on_delete=models.CASCADE, verbose_name='Тип пользователя')
+    file = models.FileField( 'Файл к тесту', upload_to='instr/', null=True, blank=True)
 
     class Meta:
         verbose_name = 'Тест'
@@ -172,6 +161,9 @@ class test(models.Model):
         return test.objects.all().filter(
             instruction = id
             ).filter(type_user = request.user.type_user)
+    
+    def get_questions(self):
+        pass 
 
 # вопросы
 class question(models.Model):

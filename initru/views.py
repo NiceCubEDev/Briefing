@@ -111,7 +111,7 @@ def testsPageView(request, id):
 
 
 @login_required(login_url='account/login/') # обязательная авторизация
-def getAboutTest(request, num, id): 
+def testView(request, num, id): 
 
     template_path = 'user_tests/user_tests_intro.html'
     tests = test.objects.filter(instruction = num, type_user=request.user.type_user, pk = id)
