@@ -1,14 +1,39 @@
 {% extends "./base.html" %}
-
+{% load static %}
 
 {% block title %} О нас {% endblock %}
 
 
 {% block content %}
 
-<div class="login-form flex justify-center">
-    <div class ="about_us">
-        <p class ="about_us-text">Данная информационная система еще разрабатывается и здесь, в скором времени, будет информация про разработчика и все самое основное</p>
+<div class="container d-flex flex-column justify-content-center rounded mb-2" style = 'min-height: 70vh;'>
+    <p class = 'fs-4 text-center fw-bold' style= 'color:#E7882B;'>О нас</p>
+    <div class="d-flex align-items-center justify-content-center">
+        <div class="mx-2" style = "
+            width:250px;
+            height:250px;
+            background-image: url('{% static 'images/hotBoy.jpg' %}');
+            background-size: cover;
+            background-position: center;
+            border-radius:100%;
+        "></div>
+        <div>
+            <p class = 'fw-bold fs-5'>Гайфиев Салават Артурович</p>
+            <p class = 'fw-bold'>Разработчик</p>
+            <a class = 'text-decoration-none mt-3' href="tel:89543214212" style = 'color:#3B5B6F;'> <i class="fa-solid fa-phone mx-2 mt-2"></i> +7 (225) 123-42-12</a>
+            <a class = 'text-decoration-none mt-3' href="mailto:saInstr@ya.ru"  style = 'color:#3B5B6F;'> <i class="fa-regular fa-envelope mx-2"></i> nicecube11@ya.ru</a>
+            <div class = 'd-flex  mt-2'>
+                <a class = 'text-decoration-none fs-3 mx-2' href="#" style = 'color:#E7882B;'>
+                    <i class="fa-brands fa-telegram"></i>
+                </a>
+                <a class = 'text-decoration-none fs-3 mx-2' href="#" style = 'color:#E7882B;'>
+                    <i class="fa-brands fa-vk"></i>
+                </a>
+                <a class = 'text-decoration-none fs-3 mx-2' href="#" style = 'color:#E7882B;'>
+                    <i class="fa-brands fa-discord"></i>
+                </a>
+            </div>
+        </div>
     </div>
 </div>
 

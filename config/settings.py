@@ -46,7 +46,7 @@ INSTALLED_APPS = [
 USE_DJANGO_JQUERY = True # for city
 
 
-MEDIA_ROOT = 'darkth/static/'
+MEDIA_ROOT = 'initru/static/'
 MEDIA_URL = '/media/images/user/'
 
 AUTH_USER_MODEL = "initru.CustomUser"
