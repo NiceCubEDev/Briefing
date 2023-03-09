@@ -305,6 +305,8 @@ class res(models.Model):
     result = models.IntegerField( 'Результат')
     mark = models.CharField('Причина', max_length=255)
 
+    def __str__(self):
+        return f'{self.user} | Название теста: {self.quiz}'
 
     class Meta:
         verbose_name = 'Результат'
