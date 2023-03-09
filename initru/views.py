@@ -217,4 +217,3 @@ def testDataSaveView(request, num, id): # id - инструктаж # num - но
 
                 
 
-

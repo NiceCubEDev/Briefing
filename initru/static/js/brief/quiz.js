@@ -2,6 +2,9 @@ console.log('hello')
 const url = window.location.href
 
 const quizBox = document.getElementById('quiz-box');
+const scoreBox = document.getElementById('score-box');
+const resultBox = document.getElementById('result-box')
+
 
 console.log()
 $.ajax({
@@ -20,7 +23,7 @@ $.ajax({
                 answers.forEach(answer => {
                     quizBox.innerHTML += `
                     <div class = ''>
-                        <input class = "ans" id = '${question}-${answer}' name = '${question}' value = '${answer}' type = 'radio'
+                        <input class = "ans" id = '${question}-${answer}' name = '${question}' value = '${answer}' type = 'radio'/>
                         <label for = "${question}">${answer} </label>
                     </div>
                     `;
@@ -61,7 +64,21 @@ const sendData = () => {
         url:`${url}/save`,
         data: data,
         success: (res)=>{
-            console.log(res)
+            const results = res.results
+            console.log(results)
+            quizForm.remove(); // удаление формы
+            
+            scoreBox.innerHTML = `<p class = 'fs-5'> ${res.passed ? '<b>Вы сдали!</b>' : '<b>Вы не сдали!</b>'} Ваш результат: <b>${res.score}%</b> </p>`;
+            
+
+            results.forEach(res=>{
+                const resDiv = document.createElement("div");
+                for (const [question, resp] of Object.entries(res)){
+                    // console.log(question)
+                    // console.log(resp)
+                };
+            })
+
         },
         error: (res)=>{
             console.log(res)
