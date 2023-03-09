@@ -25,15 +25,15 @@
         <div class = 'col'>
             <p id = 'score-box' style="font-family: 'Inter-Bold';">Рекомендуемый процент для сдачи теста: {{ test.required_score_to_pass }}%</p>
         </div>
-        <div class = 'col' style = 'max-width: 130px;'>
-            <p class ='fw-bold' style="font-family: 'Inter-Bold';">Время: <span>01:00</span></p>
+        <div class = 'col' style = 'max-width: 140px;'>
+            <p class ='fw-bold' style="font-family: 'Inter-Bold';">Время: <span id="timerParag">01:00</span></p>
         </div>
     </div>
     <div class="content">
         <form class = 'mt-2 rounded bg-light p-3' id ='quiz-form'>
             {% csrf_token %}
-            <div class ='bg-light p-3' id = 'quiz-box'></div>
-            <button class ='btn btn-success'>
+            <div class ='bg-light' id = 'quiz-box'></div>
+            <button class ='btn btn-success mt-5'>
                 <i class="fa-regular fa-floppy-disk mx-2"></i>
                 Сохранить</button>
         </form>

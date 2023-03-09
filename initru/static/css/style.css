@@ -98,3 +98,6 @@ body::-webkit-scrollbar-thumb {
     position: relative; top:100px; width: 200px; height: 150px;
  } 
 
+/* notification  */
+
+.notifContainer { position: fixed; left:5px; top:5px;}
