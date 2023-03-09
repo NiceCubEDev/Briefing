@@ -1,23 +1,23 @@
-{% extends "./base.html" %}
-{% load static %}
-
-{% block title %} Личный кабинет {% endblock %}
-
-
-{% block content %}
-{% include 'blocks/rotate.html' %}
-<p class = "account_user-info_title text-center">Смена данных</p>
-<div class="login-form flex align-center edit_box mt-4">
-    <form class = "flex flex-col justify-center items-center" style = "margin:0 auto;" action="." method="POST" enctype='multipart/form-data'>
-        {% csrf_token %}
-            <input class = "input_edit mt-5" placeholder = "Введите новый логин" type = "text" name = "username" value = "{{ request.user.username }}" required id ="id_username"/>
-            <input class = "input_edit mt-5" type = "file" name = "avatar" accept="image/*" id ="id_avatar"/>
-            <input class = "input_edit mt-5" placeholder = "Введите номер телефона" type = "tel" name = "phone_number" required id ="id_numberPhone" value = "{{ request.user.phone_number }}"/>
-            <input class = "input_edit mt-5" placeholder = "Введите электронную почту" type = "email" name = "email" required id ="email" value = "{{ request.user.email }}"/>
-        {{ form.non_field_errors }}
-        <button class = "inline-block px-6 py-2.5 bg-orange-500 text-white font-medium text-xs leading-tight uppercase rounded shadow-md hover:bg-orange-600 hover:shadow-lg focus:bg-orange-500 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-orange-700 active:shadow-lg transition duration-150 ease-in-out mt-5" type="submit">Изменить</button>
-    </form>
-
+<div>
+    <p class = 'text-uppercase' style="font-family: 'Inter-Bold'; color:#E7882B;">Смена данных</p>
+    <div class="d-flex justify-content-center">
+        <form class = 'd-flex flex-column'>
+            {% csrf_token %}
+            <div class = 'mb-2'>
+                <input class = "form-control" placeholder = "Введите новый логин" type = "text" name = "username" value = "{{ request.user.username }}" required id ="id_username"/>
+            </div>
+            <div class = 'mb-2'>
+                <input class = "form-control" type = "file" name = "avatar" accept="image/*" id ="id_avatar"/>
+            </div>
+            <div class = 'mb-2'>
+                <input class = "form-control" placeholder = "Введите номер телефона" type = "tel" name = "phone_number" required id ="id_numberPhone" value = "{{ request.user.phone_number }}"/>
+            </div>
+            <div class = 'mb-2'>
+                <input class = "form-control" placeholder = "Введите электронную почту" type = "email" name = "email" required id ="email" value = "{{ request.user.email }}"/>
+            </div>
+             
+            {{ form.non_field_errors }}
+            <button class = "btn btn-orange mx-auto" type="submit">Изменить</button>
+        </form>
+    </div>
 </div>
-
-{% endblock %}

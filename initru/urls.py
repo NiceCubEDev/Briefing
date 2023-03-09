@@ -20,8 +20,8 @@ urlpatterns = [
     path('account/themes_inst/test/<int:id>/', testsPageView, name = "test_list"),
     path('account/themes_inst/', briefPageView, name = "brief"),
     path('account/profile/', profileView, name="profile"),
-    path('account/profile_detail/', getDetailProfile, name="profile_detail"),
-    path('account/profile_edit/', getEditProfile, name="profile_edit"),
+    path('account/profile/detail/', getDetailProfile, name="profile_detail"),
+    path('account/profile/edit/', getEditProfile, name="profile_edit"),
     path('account/login/', auth_views.LoginView.as_view(redirect_authenticated_user=True), name='login'),
     path('account/', include('django.contrib.auth.urls')),
 ]

@@ -53,7 +53,7 @@ def profileView(request):
 @login_required  # обязательная авторизация
 def getDetailProfile(request):
     page_name = 'profiile_detail_remaster.html'
-    return render(request,page_name)
+    return render(request, page_name)
 
 
 @login_required  # обязательная авторизация
