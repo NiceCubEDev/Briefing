@@ -23,10 +23,10 @@
     <p class = 'fs-5 text-uppercase mt-3' style="font-family: 'Inter-Bold'; color:#E7882B;">{{ test.name_test }}</p>
     <div class = 'border-bottom row'>
         <div class = 'col'>
-            <p style="font-family: 'Inter-Bold';">Рекомендуемый процент для сдачи теста: {{ test.required_score_to_pass }}%</p>
+            <p id = 'score-box' style="font-family: 'Inter-Bold';">Рекомендуемый процент для сдачи теста: {{ test.required_score_to_pass }}%</p>
         </div>
         <div class = 'col' style = 'max-width: 130px;'>
-            <p class ='fw-bold' style="font-family: 'Inter-Bold';">Время: 01:00</p>
+            <p class ='fw-bold' style="font-family: 'Inter-Bold';">Время: <span>01:00</span></p>
         </div>
     </div>
     <div class="content">
@@ -37,9 +37,7 @@
                 <i class="fa-regular fa-floppy-disk mx-2"></i>
                 Сохранить</button>
         </form>
-
-        <div class = 'mt-5 salat' id="score-box"></div>  <!-- элемент с очками -->
-        <div id='result-box'></div> <!-- элемент с результатом -->
+        <div class = 'mt-3 fs-5' id='result-box'></div> <!-- элемент с результатом -->
     </div>
 </div>
 {% endblock content %}

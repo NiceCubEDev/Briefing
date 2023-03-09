@@ -1,12 +1,17 @@
-console.log('hello')
 const url = window.location.href
 
 const quizBox = document.getElementById('quiz-box');
 const scoreBox = document.getElementById('score-box');
-const resultBox = document.getElementById('result-box')
+const resultBox = document.getElementById('result-box');
+const timerBox = document.getElementById('timerParag');
+
+const activateTimer = (time) => { 
+    if (time.toString().length < 2) { 
+        timerBox.innerHTML = `Время: 0`
+    }
+};
 
 
-console.log()
 $.ajax({
     type: 'GET',
     url:`${url}/data`,
@@ -65,10 +70,10 @@ const sendData = () => {
         data: data,
         success: (res)=>{
             const results = res.results
-            console.log(results)
+            console.log(res)
             quizForm.remove(); // удаление формы
             
-            scoreBox.innerHTML = `<p class = 'fs-5'> ${res.passed ? '<b>Вы сдали!</b>' : '<b>Вы не сдали!</b>'} Ваш результат: <b>${res.score}%</b> </p>`;
+            scoreBox.innerHTML = `Итог: ${res.passed ? '<b class = "text-success">Вы сдали!</b>' : '<b class = "text-danger">Вы не сдали!</b>'} <br/> Ваш результат: <b>${res.score.toFixed(2)}%</b> <br/> Количество верных ответов: ${res.countAnswers} шт.`;
             
 
             results.forEach(res=>{
@@ -76,7 +81,30 @@ const sendData = () => {
                 for (const [question, resp] of Object.entries(res)){
                     // console.log(question)
                     // console.log(resp)
+
+                    resDiv.innerHTML += `<b>${question}</b>` + '<br/>' // добавление вопросов в див
+                    const cls = ['container', 'p-3', 'text-white', 'mt-2'] // классы для див
+                    resDiv.classList.add(...cls)
+
+                    if (resp == 'not answered') {  // если ответ пустой
+                        resDiv.innerHTML += '- нет ответа';
+                        resDiv.classList.add('bg-danger');
+                    } else { 
+                        const answer = resp['answered']; // ответ пользователя
+                        const correct = resp['correct_answer'] // ответ из бд
+
+                        if (answer == correct) {
+                            resDiv.classList.add('bg-success');
+                            resDiv.innerHTML += `Ваш ответ: ${answer}`
+                        } else {
+                            resDiv.classList.add('bg-danger');
+                            resDiv.innerHTML += `Правильный ответ: ${correct} <br/>`;
+                            resDiv.innerHTML += `Ваш ответ: ${answer}`;
+                        };
+                    };
+
                 };
+                resultBox.append(resDiv)
             })
 
         },

@@ -169,7 +169,7 @@ def testDataSaveView(request, num, id): # id - инструктаж # num - но
         print(data_)
 
         for k in data_.keys(): # прогонка по вопросам 
-            print('Вопрос ключ:', k)
+            # print('Вопрос ключ:', k)
             quest = question.objects.get(name=k)
             questions.append(quest) # Добавляем в список вопросов
         
@@ -198,8 +198,8 @@ def testDataSaveView(request, num, id): # id - инструктаж # num - но
             else:
                 results.append({str(q):'not answered'})
         
+        countAnswers = score
         score_ = score * multiper
-        print('err',score_)
         res.objects.create(
             user = user,
             instruction_id = quiz.instruction.id,
@@ -210,9 +210,9 @@ def testDataSaveView(request, num, id): # id - инструктаж # num - но
         )
 
         if score_ >= quiz.required_score_to_pass:
-            return JsonResponse({'passed':True, 'score':score_, 'results':results})
+            return JsonResponse({'passed':True, 'score':score_, 'results':results, 'countAnswers':countAnswers})
         else:
-            return JsonResponse({'passed':False, 'score':score_, 'results':results})
+            return JsonResponse({'passed':False, 'score':score_, 'results':results, 'countAnswers':countAnswers})
 
 
                 
