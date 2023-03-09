@@ -5,7 +5,7 @@
 
 
 {% block scripts %}
-    <script src="{% static 'js/profile/profile.js' %}"></script>
+    <script defer src="{% static 'js/profile/profile.js' %}"></script>
 {% endblock scripts %}
     
 
@@ -13,59 +13,64 @@
 <p class="text-center fw-bold fs-4" style='color:#E7882B;'>Основная информация</p>
 <div class="container border rounded" style="min-height:50vh;">
     <div class='row mt-5'>
-        <div class='col d-flex'>
-            <div>
-                {% if request.user.avatar %}
-                <div class="rounded" style="
-                    width:250px;
-                    height:250px;
-                    background-image: url('{{ request.user.avatar.url }}');
-                    background-size: cover;
-                    background-position: center;
-                ">
+        <div id = 'box' class='col d-flex'>
+            <div class = 'd-flex'>
+                <div>
+                    {% if request.user.avatar %}
+                    <div class="rounded" style="
+                        width:250px;
+                        height:250px;
+                        background-image: url('{{ request.user.avatar.url }}');
+                        background-size: cover;
+                        background-position: center;
+                    ">
+                    </div>
+                    {% endif %}
                 </div>
-                {% endif %}
-            </div>
-
-            <div class='mx-4'>
-                <p class='fw-bold fs-5' style='font-family: "Inter-Bold"; color:#E7882B;'>{{ request.user.first_name }}
-                    {{ request.user.last_name }} {{ request.user.patronymic }}</p>
-
-                <p class='fw-bold' style='font-family: "Inter-Bold"; color:#3B5B6F;'>
-                    <i class="fa-solid fa-cake-candles"></i>
-                    <span class = 'mx-2'>{{ request.user.birthday_date }}</span> 
-                </p>
-
-                {% if user.is_superuser %}
-                <div class='d-flex'>
+    
+                <div class='mx-4'>
+                    <p class='fw-bold fs-5' style='font-family: "Inter-Bold"; color:#E7882B;'>{{ request.user.first_name }}
+                        {{ request.user.last_name }} {{ request.user.patronymic }}</p>
+    
+                    <p class='fw-bold' style='font-family: "Inter-Bold"; color:#3B5B6F;'>
+                        <i class="fa-solid fa-cake-candles"></i>
+                        <span class = 'mx-2'>{{ request.user.birthday_date }}</span> 
+                    </p>
+    
+                    {% if user.is_superuser %}
+                    <div class='d-flex'>
+                        {% if request.user.groupStud %}
+                        <p style='font-family: "Inter-Bold"; color:#E7882B;'>гр. {{ request.user.groupStud }}</p>
+                        {% endif %}
+                        <p class='text-danger mx-3' style='font-family: "Inter-Bold";'> Администратор</p>
+                    </div>
+                    {% else %}
                     {% if request.user.groupStud %}
                     <p style='font-family: "Inter-Bold"; color:#E7882B;'>гр. {{ request.user.groupStud }}</p>
                     {% endif %}
                     <p class='text-danger mx-3' style='font-family: "Inter-Bold";'> Администратор</p>
+                    {% endif %}
+    
+                    {% if request.user.phone_number %}
+                    <div class='d-flex'>
+                        <p class='d-flex align-items-center' style='font-family: "Inter-Regular"; color:#3B5B6F;'>
+                            <i class="fa-solid fa-phone mx-2"></i>
+                            {{ request.user.phone_number }}
+                        </p>
+                        <p class='d-flex align-items-center mx-3' style='font-family: "Inter-Regular"; color:#3B5B6F;'>
+                            <i class="fa-regular fa-envelope mx-2"></i>
+                            {{ request.user.email }}
+                        </p>
+                    </div>
+    
+                    {% endif %}
+    
                 </div>
-                {% else %}
-                {% if request.user.groupStud %}
-                <p style='font-family: "Inter-Bold"; color:#E7882B;'>гр. {{ request.user.groupStud }}</p>
-                {% endif %}
-                <p class='text-danger mx-3' style='font-family: "Inter-Bold";'> Администратор</p>
-                {% endif %}
-
-                {% if request.user.phone_number %}
-                <div class='d-flex'>
-                    <p class='d-flex align-items-center' style='font-family: "Inter-Regular"; color:#3B5B6F;'>
-                        <i class="fa-solid fa-phone mx-2"></i>
-                        {{ request.user.phone_number }}
-                    </p>
-                    <p class='d-flex align-items-center mx-3' style='font-family: "Inter-Regular"; color:#3B5B6F;'>
-                        <i class="fa-regular fa-envelope mx-2"></i>
-                        {{ request.user.email }}
-                    </p>
-                </div>
-
-                {% endif %}
-
             </div>
+           <form action=""></form>
         </div>
+
+        
 
         <div class='col-5 d-flex align-items-center' style="max-width:350px;">
             <div class="list-group">
@@ -73,7 +78,7 @@
                     <i class="fa-regular fa-user mx-2" style = 'color:#E7882B;'></i> 
                     Мой профиль
                 </a>
-                <a href="" class="list-group-item list-group-item-action">
+                <a class="list-group-item list-group-item-action" id = 'change_data'>
                     <i class="fa-solid fa-square-pen mx-2 text-primary"></i>
                     Сменить данные
                 </a>

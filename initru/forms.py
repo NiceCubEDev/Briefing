@@ -26,40 +26,16 @@ class contactForm(forms.ModelForm):
         }
 
 
-class EditProfileForm(forms.Form):
-    id_edit = forms.IntegerField(widget=forms.NumberInput(attrs={
-        "placeholder": "Номер пользователя",
-    }))
-    username = forms.CharField(label="Введите логин", widget=forms.TextInput(
-        attrs={
-            'class': "input_edit",
-            'placeholder': "Введите логин пользователя",
-        }
-    ))
-    avatar = forms.ImageField(label="Выберите фотографию для профиля")
-    phone_number = PhoneNumberField(label="Введите номер телефона", widget=forms.TextInput(
-        attrs={
-            'class': "input_edit",
-            'placeholder': "Введите номер телефона",
-        }
-    ))
-    email = forms.EmailField(label="Введите электронную почту", widget=forms.TextInput(
-        attrs={
-            "class": "input_edit",
-            "placeholder": "Введите электронную почту",
-            'value': '{{item.username}}'
-        }
-    ))
-
+class EditProfileForm(forms.ModelForm):
     class Meta:
         model = CustomUser
-        fields = [
-            'username',
-            'avatar',
-            'phone_number',
-            'email'
-        ]
-
+        fields = [ 'username', 'avatar', 'phone_number', 'email']
+        widgets = {
+            'username':forms.TextInput(attrs={
+                'placeholder':'Введите логин',
+                'class':'form-control'
+            })
+        }
 
 class CreateUserForm(UserCreationForm):
     def __init__(self, *args, **kwargs):
