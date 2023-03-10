@@ -42,13 +42,15 @@
                         {% if request.user.groupStud %}
                         <p style='font-family: "Inter-Bold"; color:#E7882B;'>гр. {{ request.user.groupStud }}</p>
                         {% endif %}
-                        <p class='text-danger mx-3' style='font-family: "Inter-Bold";'> Администратор</p>
+                        <p class='text-danger mx-3' style='font-family: "Inter-Bold";'>Роль: Администратор</p>
                     </div>
                     {% else %}
-                    {% if request.user.groupStud %}
-                    <p style='font-family: "Inter-Bold"; color:#E7882B;'>гр. {{ request.user.groupStud }}</p>
-                    {% endif %}
-                    <p class='text-danger mx-3' style='font-family: "Inter-Bold";'> Администратор</p>
+                    <div class='d-flex'>
+                        {% if request.user.groupStud %}
+                        <p style='font-family: "Inter-Bold"; color:#E7882B;'>гр. {{ request.user.groupStud }}</p>
+                        {% endif %}
+                        <p class='text-primary mx-3' style='font-family: "Inter-Bold";'>Роль: {{ request.user.role }}</p>
+                    </div>
                     {% endif %}
 
                     {% if request.user.phone_number %}
