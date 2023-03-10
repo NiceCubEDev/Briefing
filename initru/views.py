@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect
-from .forms import contactForm, CreateUserForm
+from .forms import contactForm, CreateUserForm, ChangeNumberUser, ChangeEmailUser
 from django.contrib import messages
 from .models import inst, complex, CustomUser, test, question, answers, res
 from django.http import *
@@ -52,9 +52,53 @@ def profileView(request):
     if request.method == 'POST': 
         data = {} # for messages
         user = request.user
+        print(request.FILES)
         if user.check_password(request.POST['password']):
-            print(request.POST)
+
+
+            if request.POST.get('phone_number'): # если отправили номер телефона
+                if user.phone_number != request.POST['phone_number']: 
+                    form = ChangeNumberUser(request.POST)
+                    if form.is_valid():
+                        print(request.POST['phone_number'])
+                        user.phone_number = request.POST['phone_number']
+                        user.save()
+                        data['message'] = f'Вы успешно сменили номер телефона, {user.first_name}!'
+                        data['status'] = 'ok'
+                        return JsonResponse(data)
+                    else: 
+                        data['message'] = 'Введите правильный номер телефона!'
+                        data['status'] = 'error'
+                        return JsonResponse(data)
+                else: 
+                    data['message'] = 'Вы ввели настоящий номер телефона!'
+                    data['status'] = 'error'
+                    return JsonResponse(data)
+
+
+            if request.POST.get('email'): # если отправили почту
+                if user.email != request.POST['email']:
+                    form = ChangeEmailUser(request.POST)
+                    if form.is_valid():
+                        print(request.POST['email'])
+                        user.email = request.POST['email']
+                        user.save()
+                        data['message'] = f'Вы успешно сменили электронную почту, {user.first_name}!'
+                        data['status'] = 'ok'
+                        return JsonResponse(data)
+                    else:
+                        data['message'] = 'Введите корректную электронную почту!'
+                        data['status'] = 'error'
+                        return JsonResponse(data)
+                else: 
+                    data['message'] = 'Одинаковая электронная почта, введите правильную!'
+                    data['status'] = 'error'
+                    return JsonResponse(data)
+
+
         else: 
+            data['message'] = 'Введите корректный пароль!'
+            data['status'] = 'error'
             print('false')
 
 

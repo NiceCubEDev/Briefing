@@ -257,8 +257,8 @@ class CustomUser(AbstractUser):  # custom user for Users with django
         blank=True,
     )
     
-    phone_number = models.TextField(
-        'Номер телефона', max_length=15,unique=True, 
+    phone_number = models.CharField(
+        'Номер телефона', max_length=20,unique=True, 
         blank=False, null=True,
     )
     

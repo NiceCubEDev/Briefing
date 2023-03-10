@@ -16,8 +16,7 @@
                 <form>{% csrf_token %} <div id = 'change-form'></div></form>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Закрыть</button>
-                <button type="button" id='start-button' data-bs-dismiss="modal" class="btn btn-primary">Начать</button>
+                <button type="button" id='start-button' data-bs-dismiss="modal" class="btn btn-primary">Сменить</button>
             </div>
         </div>
     </div>
@@ -33,10 +32,17 @@
                 <i class="fa-solid fa-chevron-right mx-2"></i>
             </a>
         </div>
-        <div>
+        <div class = 'mb-2'>
             <a class='btn btn-outline-primary' name = 'change-data' data-content='{{ request.user.email }}'  data-type-name="email" data-type = 'email' data-bs-target="#staticBackdrop" data-bs-toggle="modal" style="padding: 5px 10px;">
                 <i class="fa-solid fa-square-envelope mx-2"></i>
                 Электронная почта
+                <i class="fa-solid fa-chevron-right mx-2"></i>
+            </a>
+        </div>
+        <div>
+            <a class='btn btn-outline-primary' name = 'change-data' data-content='{{ request.user.email }}'  data-type-name="avatar" data-type = 'file' data-bs-target="#staticBackdrop" data-bs-toggle="modal" style="padding: 5px 10px;">
+                <i class="fa-solid fa-face-grin-hearts mx-2"></i>
+                Сменить аватарку
                 <i class="fa-solid fa-chevron-right mx-2"></i>
             </a>
         </div>

@@ -27,10 +27,16 @@ class contactForm(forms.ModelForm):
 
 
 
-class ChangeDatasUser(forms.ModelForm):
+class ChangeNumberUser(forms.ModelForm):
     class Meta: 
         model = CustomUser
-        fields = ['phone_number','email']
+        fields = ['phone_number']
+
+
+class ChangeEmailUser(forms.ModelForm): 
+    class Meta: 
+        model = CustomUser
+        fields = ['email']
 
 
 class CreateUserForm(UserCreationForm):
