@@ -26,16 +26,12 @@ class contactForm(forms.ModelForm):
         }
 
 
-class EditProfileForm(forms.ModelForm):
-    class Meta:
+
+class ChangeNumberUser(forms.ModelForm):
+    class Meta: 
         model = CustomUser
-        fields = [ 'username', 'avatar', 'phone_number', 'email']
-        widgets = {
-            'username':forms.TextInput(attrs={
-                'placeholder':'Введите логин',
-                'class':'form-control'
-            })
-        }
+        fields = ['phone_number',]
+
 
 class CreateUserForm(UserCreationForm):
     def __init__(self, *args, **kwargs):

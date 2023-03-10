@@ -1,7 +1,10 @@
-const changeData = [...document.getElementById('change-data')]
-const myData = document.getElementById('my-data')
+const menuProfileBtn =  [...document.getElementsByName('menu-profile')]
 const url = window.location.href 
-console.log(changeData)
+
+menuProfileBtn.forEach(btn=>btn.addEventListener('click',()=>{ // события на кнопки
+    const namePage = btn.getAttribute('data-name'); // получение названий
+    $('#box').load(`${url}${namePage}/`); // в контейнер бокс помещаем данные из ссылки.
+}));
 // console.log(`${url}detail/`)
 // changeData.addEventListener('click', (e)=>{
 //     e.preventDefault();

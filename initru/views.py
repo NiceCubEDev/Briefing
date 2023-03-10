@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect
-from .forms import contactForm, EditProfileForm, CreateUserForm
+from .forms import contactForm, CreateUserForm
 from django.contrib import messages
 from .models import inst, complex, CustomUser, test, question, answers, res
 from django.http import *
@@ -59,27 +59,12 @@ def getDetailProfile(request):
 @login_required  # обязательная авторизация
 def getEditProfile(request): 
     page_name = 'profile_edit.html'
-    get_user = CustomUser.get_user(request)
-    if request.method == "GET": 
-        try:
-            edit_form = EditProfileForm
-        except:
-            get_user = None
-    if request.method == "POST":
-        edit_form = EditProfileForm()
-        get_user.username = request.POST.get("username")
-        get_user.phone_number = request.POST.get("phone_number")
-        get_user.email = request.POST.get("email")
-        if request.FILES:
-            get_user.avatar = request.FILES['avatar']
-        get_user.save()
-        messages.success(request, "Прошло успешно!")
-    values = {
-        'form':edit_form,
-        'DataUser':get_user,
-    }
 
-    return render(request, page_name, values)
+    if request.method == 'POST': 
+        print(request.POST)
+
+    return render(request, page_name)
+
     
 
 @login_required  # обязательная авторизация

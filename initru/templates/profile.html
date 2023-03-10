@@ -12,9 +12,9 @@
 
 {% block content %}
 <p class="text-center fw-bold fs-4" style='color:#E7882B;'>Основная информация</p>
-<div class="container border rounded" style="min-height:50vh;">
-    <div class='d-flex align-items-center flex-wrap mt-5'>
-        <div id='box' class='col d-flex justify-content-center p-'>
+<div class="container">
+    <div class='mt-5 d-flex' style = 'min-height: 35vh;'>
+        <div id='box' class='col d-flex'>
                 <div>
                     {% if request.user.avatar %}
                     <div class="rounded" style="
@@ -69,32 +69,32 @@
         </div>
 
 
-    <div class='col-5 d-flex align-items-center' style="max-width:350px;">
-        <div class="list-group">
-            <a class="list-group-item list-group-item-action" id=''>
+    <div class='col-5 d-flex align-items-center' style="max-width:350px; width: 100%;">
+        <div class="list-group" style = 'position: fixed;'>
+            <a href="{% url 'profile' %}" class="list-group-item list-group-item-action">
                 <i class="fa-regular fa-user mx-2" style='color:#E7882B;'></i>
                 Мой профиль
             </a>
-            <a class="list-group-item list-group-item-action" id=''>
+            <button class="list-group-item list-group-item-action" data-name = 'edit' name='menu-profile'>
                 <i class="fa-solid fa-square-pen mx-2 text-primary"></i>
                 Сменить данные
-            </a>
-            <a class="list-group-item list-group-item-action" id =''>
+            </button>
+            <button class="list-group-item list-group-item-action" data-name = 'detail' name ='menu-profile'>
                 <i class="fa-regular fa-address-card mx-2 text-success"></i>
                 Мои данные
-            </a>
-            <a href="#" class="list-group-item d-flex justify-content-between align-items-center">
+            </button>
+            <button href="#" class="list-group-item d-flex justify-content-between align-items-center" data-name = 'notifications' name ='menu-profile'>
                 <div>
                     <i class="fa-regular fa-bell mx-2 text-warning"></i>
                     Уведомления
                 </div>
 
                 <span class="badge rounded-pill text-white" style="color:#E7882B; background-color:#E7882B;">2</span>
-            </a>
-            <a href="#" class="list-group-item list-group-item-action">
+            </button>
+            <button href="#" class="list-group-item list-group-item-action" data-name = 'passed_instr' name ='menu-profile'>
                 <i class="fa-solid fa-square-pen mx-2 text-secondary"></i>
                 Пройденные инструктажи
-            </a>
+            </button>
             <a href="{% url 'logout' %}" class="list-group-item list-group-item-danger list-group-item-action">
                 <i class="fa-solid fa-door-open mx-2"></i>
                 Выйти
