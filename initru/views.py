@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect
-from .forms import contactForm, CreateUserForm, ChangeNumberUser, ChangeEmailUser
+from .forms import contactForm, CreateUserForm, ChangeNumberUser, ChangeEmailUser, ChangeAvatarUser
 from django.contrib import messages
 from .models import inst, complex, CustomUser, test, question, answers, res
 from django.http import *
@@ -93,12 +93,26 @@ def profileView(request):
                     data['message'] = 'Одинаковая электронная почта, введите правильную!'
                     data['status'] = 'error'
                     return JsonResponse(data)
+                
 
-
+            # проверка на почты в запросе
+            if request.FILES: # если отправили почту
+                # form = ChangeAvatarUser(request.FILES or None)
+                # if form.is_valid():
+                user.avatar.delete()
+                user.avatar = request.FILES['avatar']
+                user.save()
+                data['message'] = f'Вы успешно сменили фотографию, {user.first_name}!'
+                data['status'] = 'ok'
+                return JsonResponse(data)
+                # else:
+                #     data['message'] = 'Выберите корректную фотографию!'
+                #     data['status'] = 'error'
+                #     return JsonResponse(data)
         else: 
             data['message'] = 'Введите корректный пароль!'
             data['status'] = 'error'
-            print('false')
+            return JsonResponse(data)
 
 
     return render(request, page_name)

@@ -39,6 +39,20 @@ class ChangeEmailUser(forms.ModelForm):
         fields = ['email']
 
 
+class ChangeAvatarUser(forms.ModelForm):
+    avatar = forms.ImageField(label='выберите аватарку')
+
+    class Meta: 
+        model = CustomUser
+        fields = ['avatar']
+
+
+class ChangePasswordUser(UserCreationForm):
+    class Meta: 
+        model = CustomUser
+        fields = ['password1', 'password2']
+
+
 class CreateUserForm(UserCreationForm):
     def __init__(self, *args, **kwargs):
         super(CreateUserForm, self).__init__(*args, **kwargs)
