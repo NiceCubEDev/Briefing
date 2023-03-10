@@ -35,7 +35,7 @@ changeFunction = (type, name) => {
         formBody.innerHTML = `
         <div class = 'd-flex align-items-center mb-2'>
             <i class="fa-solid fa-hashtag mx-3" style='color:#E7882B;'></i>
-            <input class = 'form-control' autocomplete="off" type = '${type}' name = '${name}' '${name}' id = 'id_${name}' placeholder = 'Введите новый номер телефона' /> <br/>
+            <input class = 'form-control' autocomplete="off" type = '${type}' name = '${name}' id = 'id_${name}' placeholder = 'Введите новый номер телефона' /> <br/>
         </div>
         <div class = 'd-flex align-items-center'>
             <i class="fa-solid fa-key mx-3 text-primary"></i>
@@ -48,12 +48,31 @@ changeFunction = (type, name) => {
         formBody.innerHTML = `
         <div class = 'd-flex align-items-center mb-2'>
             <i class="fa-regular fa-face-grin-hearts mx-3 text-success"></i>
-            <input class = 'form-control' autocomplete="off" type = '${type}' name = '${name}' '${name}' id = 'id_${name}'/> <br/>
+            <input class = 'form-control' autocomplete="off" type = '${type}' name = '${name}' id = 'id_${name}'/> <br/>
         </div>
         <div class = 'd-flex align-items-center'>
             <i class="fa-solid fa-key mx-3 text-primary"></i>
             ${passwordContent}
         </div> 
+        `
+    }
+
+    if (name == 'password') {
+        formBody.innerHTML = `
+        <div class = 'd-flex align-items-center mb-2'>
+        <i class="fa-solid fa-key mx-3 text-primary text-danger"></i>
+            <input class = 'form-control' autocomplete="off" type = '${type}' name = '${name}' id = 'id_${name}' placeholder = 'Введите старый пароль' /> <br/>
+        </div>
+        <div class = 'd-flex align-items-center mb-2'>
+            <i class="fa-solid fa-key mx-3 text-primary text-success"></i>
+            <input class = 'form-control' autocomplete="off" type = 'password' name = 'password1' id = 'id_password1' placeholder = 'Введите новый пароль' />
+        </div> 
+        <div class = 'd-flex align-items-center mb-2'>
+            <i class="fa-solid fa-key mx-3 text-primary text-success"></i>
+            <input class = 'form-control' autocomplete="off" type = 'password' name = 'password2'  id = 'id_password2' placeholder = 'Повторите новый пароль' />
+        </div> 
+        <p class = 'text-center'>Новый пароль должен быть не менее <span class = 'text-danger'>8 символов</span>!</p>
+
         `
     }
 
@@ -81,7 +100,19 @@ changeBtn.forEach(btn => btn.addEventListener('click', () => { // делаем �
             datas.append('csrfmiddlewaretoken', csrf[0].value)
             datas.append([`${input[0].name}`], input[0].files[0])
             datas.append('password', passwordInput.value)
-        } else { 
+        } 
+        if (input[0].name == 'password'){
+
+            const password1 = document.getElementsByName('password1')
+            const password2 = document.getElementsByName('password2')
+
+            datas.append('csrfmiddlewaretoken', csrf[0].value)
+            datas.append([`${input[0].name}`], input[0].value)
+            datas.append('password', passwordInput.value)
+            datas.append('password1', password1[0].value)
+            datas.append('password2', password2[0].value)
+        }
+        else { 
             datas.append('csrfmiddlewaretoken', csrf[0].value)
             datas.append([`${input[0].name}`], input[0].value)
             datas.append('password', passwordInput.value)
@@ -96,6 +127,11 @@ changeBtn.forEach(btn => btn.addEventListener('click', () => { // делаем �
                 stat = response.status
                 if (stat == 'ok') {
                     notifFunction('success', response.message)
+                    if (response.reload == 'go') {
+                        setInterval(()=>{
+                            $(location).prop('href','/'); // Перекидываем на главную, если сменили пароль
+                        }, 2500);
+                    }
                 } else { 
                     notifFunction('danger', response.message)
                 }

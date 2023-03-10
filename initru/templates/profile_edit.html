@@ -26,23 +26,30 @@
     <p class='text-uppercase text-primary' style="font-family: 'Inter-Bold';">Смена данных</p>
     <div class="">
         <div class='mb-2'>
-            <a class='btn btn-primary' name = 'change-data' data-content="{{ request.user.phone_number }}" data-type-name="phone_number" data-type = 'text' data-bs-target="#staticBackdrop" data-bs-toggle="modal" style="padding: 5px 10px;">
+            <a class='btn btn-primary' name = 'change-data' data-content="{{ request.user.phone_number }}" data-type-name="phone_number" data-type = 'text' data-bs-target="#staticBackdrop" data-bs-toggle="modal" style = 'max-width: 250px; width: 100%;'>
                 <i class="fa-solid fa-hashtag mx-2"></i>
                 Номер телефона
                 <i class="fa-solid fa-chevron-right mx-2"></i>
             </a>
         </div>
         <div class = 'mb-2'>
-            <a class='btn btn-outline-primary' name = 'change-data' data-content='{{ request.user.email }}'  data-type-name="email" data-type = 'email' data-bs-target="#staticBackdrop" data-bs-toggle="modal" style="padding: 5px 10px;">
+            <a class='btn btn-outline-primary' name = 'change-data' data-content='{{ request.user.email }}'  data-type-name="email" data-type = 'email' data-bs-target="#staticBackdrop" data-bs-toggle="modal" style = 'max-width: 250px; width: 100%;'>
                 <i class="fa-solid fa-square-envelope mx-2"></i>
                 Электронная почта
                 <i class="fa-solid fa-chevron-right mx-2"></i>
             </a>
         </div>
-        <div>
-            <a class='btn btn-outline-primary' name = 'change-data' data-content='{{ request.user.email }}'  data-type-name="avatar" data-type = 'file' data-bs-target="#staticBackdrop" data-bs-toggle="modal" style="padding: 5px 10px;">
+        <div class='mb-2'>
+            <a class='btn btn-outline-primary' name = 'change-data' data-content='{{ request.user.email }}'  data-type-name="avatar" data-type = 'file' data-bs-target="#staticBackdrop" data-bs-toggle="modal" style = 'max-width: 250px; width: 100%;'>
                 <i class="fa-solid fa-face-grin-hearts mx-2"></i>
                 Сменить аватарку
+                <i class="fa-solid fa-chevron-right mx-2"></i>
+            </a>
+        </div>
+        <div>
+            <a class='btn btn-outline-primary' name = 'change-data' data-content='{{ request.user.email }}'  data-type-name="password" data-type = 'password' data-bs-target="#staticBackdrop" data-bs-toggle="modal" style = 'max-width: 250px; width: 100%;'>
+                <i class="fa-solid fa-key mx-2"></i>
+                Изменить пароль
                 <i class="fa-solid fa-chevron-right mx-2"></i>
             </a>
         </div>

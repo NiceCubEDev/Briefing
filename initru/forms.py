@@ -40,7 +40,8 @@ class ChangeEmailUser(forms.ModelForm):
 
 
 class ChangeAvatarUser(forms.ModelForm):
-    avatar = forms.ImageField(label='выберите аватарку')
+    
+    avatar = forms.ImageField(label='Выберите аватарку', required=False)
 
     class Meta: 
         model = CustomUser

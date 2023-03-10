@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect
-from .forms import contactForm, CreateUserForm, ChangeNumberUser, ChangeEmailUser, ChangeAvatarUser
+from .forms import contactForm, CreateUserForm, ChangeNumberUser, ChangeEmailUser, ChangeAvatarUser, ChangePasswordUser
 from django.contrib import messages
 from .models import inst, complex, CustomUser, test, question, answers, res
 from django.http import *
@@ -62,7 +62,7 @@ def profileView(request):
                         print(request.POST['phone_number'])
                         user.phone_number = request.POST['phone_number']
                         user.save()
-                        data['message'] = f'Вы успешно сменили номер телефона, {user.first_name}!'
+                        data['message'] = f'{user.first_name}, Вы успешно сменили номер телефона!'
                         data['status'] = 'ok'
                         return JsonResponse(data)
                     else: 
@@ -74,6 +74,7 @@ def profileView(request):
                     data['status'] = 'error'
                     return JsonResponse(data)
 
+
             # проверка на почты в запросе
             if request.POST.get('email'): # если отправили почту
                 if user.email != request.POST['email']:
@@ -82,7 +83,7 @@ def profileView(request):
                         print(request.POST['email'])
                         user.email = request.POST['email']
                         user.save()
-                        data['message'] = f'Вы успешно сменили электронную почту, {user.first_name}!'
+                        data['message'] = f'{user.first_name}, Вы успешно электронную почту!'
                         data['status'] = 'ok'
                         return JsonResponse(data)
                     else:
@@ -95,20 +96,43 @@ def profileView(request):
                     return JsonResponse(data)
                 
 
+            # смена пароля
+            if request.POST.get('password2'):
+                if request.POST['password'] != request.POST['password2']:
+                    form = ChangePasswordUser(request.POST)
+                    if form.is_valid():
+                        user.set_password(request.POST['password2'])
+                        user.save()
+                        data['message'] = f'{user.first_name}, Вы успешно сменили пароль!'
+                        data['status'] = 'ok'
+                        data['reload'] = 'go'
+                        return JsonResponse(data)
+                    else:
+                        data['message'] = 'Новый пароль не соответствует по требованиям!'
+                        data['status'] = 'error'
+                        return JsonResponse(data)
+                else:
+                    data['message'] = 'Старый пароль соответствует новому'
+                    data['status'] = 'error'
+                    return JsonResponse(data)
+
+
             # проверка на почты в запросе
             if request.FILES: # если отправили почту
-                # form = ChangeAvatarUser(request.FILES or None)
-                # if form.is_valid():
-                user.avatar.delete()
-                user.avatar = request.FILES['avatar']
-                user.save()
-                data['message'] = f'Вы успешно сменили фотографию, {user.first_name}!'
-                data['status'] = 'ok'
-                return JsonResponse(data)
-                # else:
-                #     data['message'] = 'Выберите корректную фотографию!'
-                #     data['status'] = 'error'
-                #     return JsonResponse(data)
+                form = ChangeAvatarUser(request.FILES)
+                if form.is_valid():
+                    user.avatar.delete()
+                    user.avatar = request.FILES['avatar']
+                    user.save()
+                    data['message'] = f'{user.first_name}, Вы успешно сменили фотографию!'
+                    data['status'] = 'ok'
+                    return JsonResponse(data)
+                else:
+                    data['message'] = 'Выберите корректную фотографию!'
+                    data['status'] = 'error'
+                    return JsonResponse(data)
+                
+
         else: 
             data['message'] = 'Введите корректный пароль!'
             data['status'] = 'error'
