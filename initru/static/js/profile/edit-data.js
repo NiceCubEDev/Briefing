@@ -47,7 +47,7 @@ changeFunction = (type, name) => {
     if (name == 'avatar') {
         formBody.innerHTML = `
         <div class = 'd-flex align-items-center mb-2'>
-            <i class="fa-regular fa-face-grin-hearts mx-3" style='color:#E7882B;'></i>
+            <i class="fa-regular fa-face-grin-hearts mx-3 text-success"></i>
             <input class = 'form-control' autocomplete="off" type = '${type}' name = '${name}' '${name}' id = 'id_${name}'/> <br/>
         </div>
         <div class = 'd-flex align-items-center'>
@@ -70,20 +70,28 @@ changeBtn.forEach(btn => btn.addEventListener('click', () => { // делаем �
 
     $('#start-button').unbind('click').click((e)=>{ // unbind чтобы убрать отправку,
         e.preventDefault();
-        
         const input = document.getElementsByName(btnName); // получение данных 
         const passwordInput = document.getElementById('id_password'); // получение данных 
         const url = window.location.href; // получение ссылк на профиль
         const csrf = document.getElementsByName('csrfmiddlewaretoken');
+        
+        const datas = new FormData() // константа для отправки
+
+        if (input[0].name == 'avatar') { 
+            datas.append('csrfmiddlewaretoken', csrf[0].value)
+            datas.append([`${input[0].name}`], input[0].files[0])
+            datas.append('password', passwordInput.value)
+        } else { 
+            datas.append('csrfmiddlewaretoken', csrf[0].value)
+            datas.append([`${input[0].name}`], input[0].value)
+            datas.append('password', passwordInput.value)
+        }
+        
         $.ajax({
             type: "POST",
             url: url,
             enctype:'multipart/form-data',
-            data: {
-                'csrfmiddlewaretoken': csrf[0].value,
-                [`${input[0].name}`]: input[0].value,
-                'password':passwordInput.value,
-            },
+            data: datas,
             success: (response)=> {
                 stat = response.status
                 if (stat == 'ok') {
@@ -95,7 +103,9 @@ changeBtn.forEach(btn => btn.addEventListener('click', () => { // делаем �
             error: (response)=> {
                 console.log(response);
             },
-
+            cache: false,
+            contentType: false,
+            processData: false,
         });
     });
 }));

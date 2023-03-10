@@ -52,10 +52,9 @@ def profileView(request):
     if request.method == 'POST': 
         data = {} # for messages
         user = request.user
-        print(request.FILES)
         if user.check_password(request.POST['password']):
 
-
+            # проверка на наличие номера телефона в запросе
             if request.POST.get('phone_number'): # если отправили номер телефона
                 if user.phone_number != request.POST['phone_number']: 
                     form = ChangeNumberUser(request.POST)
@@ -75,7 +74,7 @@ def profileView(request):
                     data['status'] = 'error'
                     return JsonResponse(data)
 
-
+            # проверка на почты в запросе
             if request.POST.get('email'): # если отправили почту
                 if user.email != request.POST['email']:
                     form = ChangeEmailUser(request.POST)
