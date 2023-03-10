@@ -137,8 +137,13 @@ def profileView(request):
             data['status'] = 'error'
             return JsonResponse(data)
 
-
     return render(request, page_name)
+
+@login_required
+def passedView(request):
+    page_name = 'passed_inst.html'
+    return render(request, page_name)
+
 
 @login_required  # обязательная авторизация
 def getDetailProfile(request):

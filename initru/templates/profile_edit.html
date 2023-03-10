@@ -7,16 +7,24 @@
 <div class="modal fade " id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
     aria-labelledby="staticBackdropLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content">
-            <div class="modal-header">
-                <p class="modal-title fs-5" id="staticBackdropLabel">Смена данных</p>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        <div class="modal-content p-3">
+            <div class="row mb-3">
+                <div class = 'col'>
+                    <p class="modal-title fs-5" id="staticBackdropLabel">Изменить данные</p>
+                </div>
+                <div class = 'col-6' style ='max-width: 50px;'>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                
             </div>
             <div id='body-form' class="modal-body">
                 <form>{% csrf_token %} <div id = 'change-form'></div></form>
             </div>
-            <div class="modal-footer">
-                <button type="button" id='start-button' data-bs-dismiss="modal" class="btn btn-primary">Сменить</button>
+            <div class= 'mx-auto mt-2'>
+                <button type="button" id='start-button' data-bs-dismiss="modal" class="btn btn-primary">
+                    <i class="fa-solid fa-bolt mx-2 text-warning"></i>
+                    Сменить
+                </button>
             </div>
         </div>
     </div>
@@ -27,7 +35,7 @@
     <div class="">
         <div class='mb-2'>
             <a class='btn btn-primary' name = 'change-data' data-content="{{ request.user.phone_number }}" data-type-name="phone_number" data-type = 'text' data-bs-target="#staticBackdrop" data-bs-toggle="modal" style = 'max-width: 250px; width: 100%;'>
-                <i class="fa-solid fa-hashtag mx-2"></i>
+                <i class="fa-solid fa-hashtag mx-2 text-warning"></i>
                 Номер телефона
                 <i class="fa-solid fa-chevron-right mx-2"></i>
             </a>
