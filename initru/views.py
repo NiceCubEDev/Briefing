@@ -48,6 +48,16 @@ def contactPageView(request):
 @login_required  # обязательная авторизация
 def profileView(request):
     page_name = 'profile.html'
+
+    if request.method == 'POST': 
+        data = {} # for messages
+        user = request.user
+        if user.check_password(request.POST['password']):
+            print(request.POST)
+        else: 
+            print('false')
+
+
     return render(request, page_name)
 
 @login_required  # обязательная авторизация
@@ -59,10 +69,6 @@ def getDetailProfile(request):
 @login_required  # обязательная авторизация
 def getEditProfile(request): 
     page_name = 'profile_edit.html'
-
-    if request.method == 'POST': 
-        print(request.POST)
-
     return render(request, page_name)
 
     

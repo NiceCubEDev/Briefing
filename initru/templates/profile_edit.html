@@ -13,11 +13,11 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div id='body-form' class="modal-body">
-                <form>{% csrf_token %}</form>
+                <form>{% csrf_token %} <div id = 'change-form'></div></form>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Закрыть</button>
-                <button type="button" id='start-button' data-bs-dismiss="modal" class="btn btn-success">Начать</button>
+                <button type="button" id='start-button' data-bs-dismiss="modal" class="btn btn-primary">Начать</button>
             </div>
         </div>
     </div>
@@ -27,15 +27,17 @@
     <p class='text-uppercase text-primary' style="font-family: 'Inter-Bold';">Смена данных</p>
     <div class="">
         <div class='mb-2'>
-            <a class='btn btn-primary' name = 'change-data' data-content="{{ request.user.phone_number }}" data-type="text" data-bs-target="#staticBackdrop" data-bs-toggle="modal" style="padding: 5px 10px;" >
+            <a class='btn btn-primary' name = 'change-data' data-content="{{ request.user.phone_number }}" data-type-name="phone_number" data-type = 'text' data-bs-target="#staticBackdrop" data-bs-toggle="modal" style="padding: 5px 10px;">
                 <i class="fa-solid fa-hashtag mx-2"></i>
                 Номер телефона
+                <i class="fa-solid fa-chevron-right mx-2"></i>
             </a>
         </div>
         <div>
-            <a class='btn btn-outline-primary' name = 'change-data' data-content='{{ request.user.email }}'  data-type = 'email' data-bs-target="#staticBackdrop" data-bs-toggle="modal" style="padding: 5px 10px;" >
+            <a class='btn btn-outline-primary' name = 'change-data' data-content='{{ request.user.email }}'  data-type-name="email" data-type = 'email' data-bs-target="#staticBackdrop" data-bs-toggle="modal" style="padding: 5px 10px;">
                 <i class="fa-solid fa-square-envelope mx-2"></i>
                 Электронная почта
+                <i class="fa-solid fa-chevron-right mx-2"></i>
             </a>
         </div>
 
