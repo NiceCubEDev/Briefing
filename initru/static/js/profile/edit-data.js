@@ -51,7 +51,7 @@ changeBtn.forEach(btn => btn.addEventListener('click', () => { // делаем �
         const passwordInput = document.getElementById('id_password'); // получение данных 
         const url = window.location.href; // получение ссылк на профиль
         const csrf = document.getElementsByName('csrfmiddlewaretoken');
-        console.log('123')
+        
         $.ajax({
             type: "POST",
             url: url,
