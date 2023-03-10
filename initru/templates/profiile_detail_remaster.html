@@ -1,78 +1,77 @@
 {% load static %}
 <div>
-    <p class = "text-xl text-center"> <span>Полная информация</span> </p>
-    <div class = "mt-2">
-        <div class ="flex flex-col items-center p-3">   
-            <div style = "max-width: 100%; width: 100%;">
-                <div class = "m-2 flex-wrap">
-                    <div class = "mb-2">
-                        <span class ="mr-2 text-indigo-700">Имя:</span> 
-                        <input type="text" class="form-control"   placeholder="{{ request.user.first_name }}"   disabled/>
-                    </div>
-                    <div class = "mb-2">
-                        <span class ="mr-2 text-indigo-700">Фамилия:</span> 
-                        <input type="text" class="form-control"   placeholder="{{ request.user.last_name }}"   disabled/>
-                    </div>
-                    <div>
-                        <span class ="mr-2 text-indigo-700">Отчество:</span> 
-                        <input type="text" class="form-control "   placeholder="{{ request.user.patronymic }}"   disabled/>
-                    </div>
+    <p class='text-uppercase text-success' style="font-family: 'Inter-Bold';">Мои данные</p>
+    <div class="d-flex align-items-center">
+        <div class='row' style="max-width: 100%; width: 100%;">
+            <div class="flex-wrap">
+                <div class="mb-2">
+                    <span class="mr-2 text-indigo-700">Имя:</span>
+                    <input type="text" class="form-control form-control-sm" placeholder="{{ request.user.first_name }}" disabled />
                 </div>
-                <div class = "m-2">
-                    <div class = "mb-2">
-                        <span class ="mr-2 text-indigo-700">Логин:</span> 
-                        <input type="text" class="form-control "   placeholder="{{ request.user.username }}"   disabled/>
-                    </div>
-                    <div class = "mb-2">
-                        <span class ="mr-2 text-indigo-700">Пол:</span> 
-                        <input type="text" class="form-control "   placeholder="{% if request.user.gender == 'm' %}Мужской{% else %}Женский{% endif %}"   disabled/>
-                    </div>
-                    <div>
-                        <span class ="mr-2 text-indigo-700">Дата рождения:</span> 
-                        <input type="text" class="form-control "   placeholder="{{ request.user.birthday_date }}"   disabled/>
-                    </div>
+                <div class="mb-2">
+                    <span class="mr-2 text-indigo-700">Фамилия:</span>
+                    <input type="text" class="form-control form-control-sm" placeholder="{{ request.user.last_name }}" disabled />
                 </div>
-                <div class = "m-2">
-                    <div class = "mb-2">
-                        <span class ="mr-2 text-indigo-700">Регион:</span> 
-                        <input type="text" class="form-control "   placeholder="{{ request.user.region }}"   disabled/>
-                    </div>
-                    <div class = "mb-2">
-                        <span class ="mr-2 text-indigo-700">Город:</span> 
-                        <input type="text" class="form-control "   placeholder="{{ request.user.city }}"   disabled/>
-                    </div>
-                    <div>
-                        <span class ="mr-2 text-indigo-700">Улица:</span> 
-                        <input type="text" class="form-control "   placeholder="{{ request.user.street }}"   disabled/>
-                    </div>
-                </div> 
-                <div class = "m-2">
-                    <div class = "mb-2">
-                        <span class ="mr-2 text-indigo-700">Дом:</span> 
-                        <input type="text" class="form-control "   placeholder="{{ request.user.house }}"   disabled/>
-                    </div>
-                    <div class = "mb-2">
-                        <span class ="mr-2 text-indigo-700">Номер телефона:</span> 
-                        <input type="text" class="form-control "   placeholder="{{ request.user.phone_number }}"   disabled/>
-                    </div>
-                    <div>
-                        <span class ="mr-2 text-indigo-700">Почта:</span> 
-                        <input type="text" class="form-control "   placeholder="{{ request.user.email }}"   disabled/>
-                    </div>
-                </div> 
-                <div class = "m-2">
-                    <div class = "mb-2">
-                        <span class ="mr-2 text-indigo-700">Роль:</span> 
-                        <input type="text" class="form-control "   placeholder="{{ request.user.role }}"   disabled/>
-                    </div>
-                    <div class = "mb-2">
-                        <span class ="mr-2 text-indigo-700">Дата зачисления:</span> 
-                        <input type="text" class="form-control "   placeholder="{{ request.user.date_joined }}"   disabled/>
-                    </div>
-                    <div>
-                        <span class ="mr-2 text-indigo-700">Дата отчисления:</span> 
-                        <input type="text" class="form-control "   placeholder="{{ request.user.date_end }}"   disabled/>
-                    </div>
+                <div>
+                    <span class="mr-2 text-indigo-700">Отчество:</span>
+                    <input type="text" class="form-control form-control-sm" placeholder="{{ request.user.patronymic }}" disabled />
+                </div>
+            </div>
+            <div class="col mt-2">
+                <div class="mb-2">
+                    <span class="mr-2 text-indigo-700">Логин:</span>
+                    <input type="text" class="form-control form-control-sm" placeholder="{{ request.user.username }}" disabled />
+                </div>
+                <div class="mb-2">
+                    <span class="mr-2 text-indigo-700">Пол:</span>
+                    <input type="text" class="form-control form-control-sm"
+                        placeholder="{% if request.user.gender == 'm' %}Мужской{% else %}Женский{% endif %}" disabled />
+                </div>
+                <div>
+                    <span class="mr-2 text-indigo-700">Дата рождения:</span>
+                    <input type="text" class="form-control form-control-sm" placeholder="{{ request.user.birthday_date }}" disabled />
+                </div>
+            </div>
+            <div class="col mt-2">
+                <div class="mb-2">
+                    <span class="mr-2 text-indigo-700">Регион:</span>
+                    <input type="text" class="form-control form-control-sm" placeholder="{{ request.user.region }}" disabled />
+                </div>
+                <div class="mb-2">
+                    <span class="mr-2 text-indigo-700">Город:</span>
+                    <input type="text" class="form-control form-control-sm" placeholder="{{ request.user.city }}" disabled />
+                </div>
+                <div>
+                    <span class="mr-2 text-indigo-700">Улица:</span>
+                    <input type="text" class="form-control form-control-sm" placeholder="{{ request.user.street }}" disabled />
+                </div>
+            </div>
+            <div class="col mt-2">
+                <div class="mb-2">
+                    <span class="mr-2 text-indigo-700">Дом:</span>
+                    <input type="text" class="form-control form-control-sm" placeholder="{{ request.user.house }}" disabled />
+                </div>
+                <div class="mb-2">
+                    <span class="mr-2 text-indigo-700">Номер телефона:</span>
+                    <input type="text" class="form-control form-control-sm" placeholder="{{ request.user.phone_number }}" disabled />
+                </div>
+                <div>
+                    <span class="mr-2 text-indigo-700">Почта:</span>
+                    <input type="text" class="form-control form-control-sm" placeholder="{{ request.user.email }}" disabled />
+                </div>
+            </div>
+            <div class="col mt-2">
+                <div class="mb-2">
+                    <span class="mr-2 text-indigo-700">Роль:</span>
+                    <input type="text" class="form-control form-control-sm" placeholder="{{ request.user.role }}" disabled />
+                </div>
+                <div class="mb-2">
+                    <span class="mr-2 text-indigo-700">Дата зачисления:</span>
+                    <input type="text" class="form-control form-control-sm" placeholder="{{ request.user.date_joined }}" disabled />
+                </div>
+                <div>
+                    <span class="mr-2 text-indigo-700">Дата отчисления:</span>
+                    <input type="text" class="form-control form-control-sm" placeholder="{{ request.user.date_end }}" disabled />
                 </div>
             </div>
         </div>

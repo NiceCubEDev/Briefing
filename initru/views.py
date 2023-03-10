@@ -108,7 +108,7 @@ def profileView(request):
                         data['reload'] = 'go'
                         return JsonResponse(data)
                     else:
-                        data['message'] = 'Новый пароль не соответствует по требованиям!'
+                        data['message'] = 'Новый пароль не соответствует по требованиям! '
                         data['status'] = 'error'
                         return JsonResponse(data)
                 else:
@@ -132,7 +132,6 @@ def profileView(request):
                     data['status'] = 'error'
                     return JsonResponse(data)
                 
-
         else: 
             data['message'] = 'Введите корректный пароль!'
             data['status'] = 'error'
