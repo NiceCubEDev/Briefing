@@ -21,8 +21,10 @@
       </div>
       <div id = 'body-form' class="modal-body"></div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Закрыть</button>
-        <button type="button" id='start-button' class="btn btn-success">Начать</button>
+        <form>
+            {% csrf_token %}
+            <button type="button" id='start-button' data-bs-dismiss="modal" class="btn btn-success">Начать</button>
+        </form>
       </div>
     </div>
   </div>

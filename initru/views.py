@@ -222,7 +222,22 @@ def createUserAdmin(request):
         return render(request, "error.html")
 
 
+@login_required
+def checkPassedView(request, id):
+    data = {}
+    if request.method == 'POST':
+        passed_brief = res.objects.filter(instruction = id, quiz = request.POST['quiz'], mark = 'Зачёт').count()
+        if passed_brief == 0:
+            data['status'] = True
+        else: 
+            data['status'] = False
+    else:
+        return HttpResponseBadRequest()
+    return JsonResponse(data)
+
+@login_required
 def testDataView(request, num, id):
+
     quiz = test.objects.get(instruction = id, type_user=request.user.type_user, pk = num)
     questions = []
     for q in quiz.get_questions():
@@ -236,8 +251,14 @@ def testDataView(request, num, id):
     })
 
 
+@login_required
 def testDataSaveView(request, num, id): # id - инструктаж # num - номер теста
     if request.method == 'POST':
+
+        user = request.user # пользователь 
+        quiz = test.objects.get(pk=num, instruction = id) # получение нужного теста
+
+
         questions = [] # list с в вопросами
         data = request.POST
         data_ = dict(data.lists()) # в хороший список
@@ -249,8 +270,7 @@ def testDataSaveView(request, num, id): # id - инструктаж # num - но
             quest = question.objects.get(name=k)
             questions.append(quest) # Добавляем в список вопросов
         
-        user = request.user
-        quiz = test.objects.get(pk=num) # получение нужного теста
+       
 
         score = 0 # балл
         multiper = 100 / quiz.number_of_questions
@@ -260,13 +280,13 @@ def testDataSaveView(request, num, id): # id - инструктаж # num - но
         for q in questions:
             a_selected = request.POST.get(q.name) # выбранные ответы
 
-            if a_selected !="":
-                question_answers = answers.objects.filter(question=q)
-                for a in question_answers:
-                    if a_selected == a.text:
+            if a_selected !="": # если ответ не пустой, то 
+                question_answers = answers.objects.filter(question=q) # получаем ответы по вопросу
+                for a in question_answers: 
+                    if a_selected == a.text: # если выбранный ответ совпадает с ответов настоящим
                         if a.correct:
-                            score += 1
-                            correct_answer = a.text
+                            score += 1 # плюс отвеченный вопрос
+                            correct_answer = a.text # сохраняем правильный ответ
                     else:
                         if a.correct: 
                             correct_answer = a.text
@@ -276,18 +296,26 @@ def testDataSaveView(request, num, id): # id - инструктаж # num - но
         
         countAnswers = score
         score_ = score * multiper
-        res.objects.create(
-            user = user,
-            instruction_id = quiz.instruction.id,
-            quiz = quiz,
-            date_instruction = timezone.now(),
-            result = score_,
-            mark = '123',
-        )
 
-        if score_ >= quiz.required_score_to_pass:
+        if score_ >= quiz.required_score_to_pass: # если человек набрал больше баллов, чем в условии теста, то сохраняем его и отправляем успешно 
+            res.objects.create(
+                user = user,
+                instruction_id = quiz.instruction.id,
+                quiz = quiz,
+                date_instruction = timezone.now(),
+                result = score_,
+                mark = 'Зачёт',
+            )
             return JsonResponse({'passed':True, 'score':score_, 'results':results, 'countAnswers':countAnswers})
         else:
+            res.objects.create(
+                user = user,
+                instruction_id = quiz.instruction.id,
+                quiz = quiz,
+                date_instruction = timezone.now(),
+                result = score_,
+                mark = 'Провал',
+            )
             return JsonResponse({'passed':False, 'score':score_, 'results':results, 'countAnswers':countAnswers})
 
 

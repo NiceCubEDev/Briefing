@@ -2,14 +2,10 @@ console.log('hello')
 
 const modalBtns = [...document.getElementsByClassName('btn-quiz')]; // массив с кнопками
 const modalBody = document.getElementById('body-form'); // тело модального окна
-const startBtn = document.getElementById('start-button');
-
-
 const url = window.location.href 
-console.log(url)
+
 
 modalBtns.forEach(modalBtn=>modalBtn.addEventListener('click', ()=>{
-    const briefPk = modalBtn.getAttribute('data-brief-pk');
     const briefName = modalBtn.getAttribute('data-brief-name');
     const quizPk = modalBtn.getAttribute('data-quiz-pk');
     const quizName = modalBtn.getAttribute('data-quiz-name');
@@ -31,7 +27,26 @@ modalBtns.forEach(modalBtn=>modalBtn.addEventListener('click', ()=>{
     </div>
     `;
 
-    startBtn.addEventListener('click', ()=>{
-        window.location.href = url + quizPk;
+    const data = {}
+    data['csrfmiddlewaretoken'] = document.getElementsByName('csrfmiddlewaretoken')[0].value;
+    data['quiz'] = quizPk;
+    console.log(data)
+    $('#start-button').unbind('click').click(()=>{
+        
+        console.log('ай');
+        $.ajax({
+            type:"POST",
+            url: `${url}check/`,
+            data: data,
+            success: (response)=>{
+                if(response.status == 'True') { 
+                    
+                }
+            },
+            error: (response)=>{
+                console.log('error');
+            }
+        });
     });
+
 }));

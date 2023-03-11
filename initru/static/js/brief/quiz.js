@@ -61,10 +61,10 @@ $.ajax({
     type: 'GET',
     url: `${url}/data`,
     success: (res) => {
-        console.log(res)
+        // console.log(res)
         const data = res.data
         data.forEach(el => {
-            for (const [question, answers] of Object.entries(el)) {
+            for (const [question, answers] of Object.entries(el)) { // через цикл извлекаем данные из объекта
                 quizBox.innerHTML += `
                 <div class = 'mb-2 mt-3'>
                     <b>${question}</b>
@@ -80,7 +80,7 @@ $.ajax({
                 });
             };
         });
-        activateTimer(res.time)
+        activateTimer(res.time) // активация таймера
     },
     errors: (res) => {
         console.log(res)
@@ -100,10 +100,10 @@ const sendData = () => {
     data['csrfmiddlewaretoken'] = csrf[0].value;
     elements.forEach(el => {
         if (el.checked) {
-            data[el.name] = el.value
+            data[el.name] = el.value // записываем
         } else {
-            if (!data[el.name]) {
-                data[el.name] = null;
+            if (!data[el.name]) { // если ответ пустой
+                data[el.name] = null; // пустой
             }
         }
     });

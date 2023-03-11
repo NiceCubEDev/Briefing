@@ -302,8 +302,8 @@ class res(models.Model):
     instruction  = models.ForeignKey( inst, on_delete=models.CASCADE, verbose_name='Инструктаж')
     quiz = models.ForeignKey(test, on_delete=models.CASCADE, verbose_name= 'Тест')
     date_instruction = models.DateTimeField( 'Дата прохождения инструктажа')
-    result = models.IntegerField( 'Результат')
-    mark = models.CharField('Причина', max_length=255)
+    result = models.IntegerField( 'Результат в %')
+    mark = models.CharField('Прошел', max_length=255)
 
     def __str__(self):
         return f'{self.user} | Название теста: {self.quiz}'
