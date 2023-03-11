@@ -3,7 +3,17 @@ console.log('hello')
 const modalBtns = [...document.getElementsByClassName('btn-quiz')]; // массив с кнопками
 const modalBody = document.getElementById('body-form'); // тело модального окна
 const url = window.location.href 
+const alertContainer = document.getElementById('alertBox');
 
+
+function notifFunction(type, text) { 
+    alertContainer.innerHTML = `
+    <div class="alert alert-${type} alert-dismissible fade show" role="alert">
+        <strong>${text}</strong>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+    `
+}
 
 modalBtns.forEach(modalBtn=>modalBtn.addEventListener('click', ()=>{
     const briefName = modalBtn.getAttribute('data-brief-name');
@@ -32,15 +42,17 @@ modalBtns.forEach(modalBtn=>modalBtn.addEventListener('click', ()=>{
     data['quiz'] = quizPk;
     console.log(data)
     $('#start-button').unbind('click').click(()=>{
-        
-        console.log('ай');
         $.ajax({
             type:"POST",
             url: `${url}check/`,
             data: data,
             success: (response)=>{
-                if(response.status == 'True') { 
-                    
+                console.log(response)
+                if(response.status == false) { 
+                    console.log('нет')
+                    notifFunction('warning', response.message);
+                } else { 
+                    window.location.href = url + quizPk;
                 }
             },
             error: (response)=>{

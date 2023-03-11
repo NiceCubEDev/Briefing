@@ -68,11 +68,10 @@ def profileView(request):
                     else: 
                         data['message'] = 'Введите правильный номер телефона!'
                         data['status'] = 'error'
-                        return JsonResponse(data)
+
                 else: 
                     data['message'] = 'Вы ввели настоящий номер телефона!'
                     data['status'] = 'error'
-                    return JsonResponse(data)
 
 
             # проверка на почты в запросе
@@ -89,12 +88,12 @@ def profileView(request):
                     else:
                         data['message'] = 'Введите корректную электронную почту!'
                         data['status'] = 'error'
-                        return JsonResponse(data)
+
+
                 else: 
                     data['message'] = 'Одинаковая электронная почта, введите правильную!'
                     data['status'] = 'error'
-                    return JsonResponse(data)
-                
+
 
             # смена пароля
             if request.POST.get('password2'):
@@ -110,11 +109,11 @@ def profileView(request):
                     else:
                         data['message'] = 'Новый пароль не соответствует по требованиям! '
                         data['status'] = 'error'
-                        return JsonResponse(data)
+
+
                 else:
                     data['message'] = 'Старый пароль соответствует новому'
                     data['status'] = 'error'
-                    return JsonResponse(data)
 
 
             # проверка на почты в запросе
@@ -130,19 +129,37 @@ def profileView(request):
                 else:
                     data['message'] = 'Выберите корректную фотографию!'
                     data['status'] = 'error'
-                    return JsonResponse(data)
                 
         else: 
             data['message'] = 'Введите корректный пароль!'
             data['status'] = 'error'
-            return JsonResponse(data)
 
+        return JsonResponse(data)
+    
     return render(request, page_name)
 
 @login_required
 def passedView(request):
     page_name = 'passed_inst.html'
     return render(request, page_name)
+
+
+@login_required
+def checkPassedView(request, id):
+
+    data = {}
+
+    if request.method == 'POST':
+        passed_brief = res.objects.filter(instruction = id, quiz = request.POST['quiz'], mark = 'Зачёт', user=request.user).count()
+        if passed_brief == 0:
+            data['status'] = True
+        else: 
+            data['message'] = 'Вы уже прошли данный инструктаж'
+            data['status'] = False
+    else:
+        return HttpResponseBadRequest()
+    
+    return JsonResponse(data)
 
 
 @login_required  # обязательная авторизация
@@ -221,19 +238,6 @@ def createUserAdmin(request):
     else:
         return render(request, "error.html")
 
-
-@login_required
-def checkPassedView(request, id):
-    data = {}
-    if request.method == 'POST':
-        passed_brief = res.objects.filter(instruction = id, quiz = request.POST['quiz'], mark = 'Зачёт').count()
-        if passed_brief == 0:
-            data['status'] = True
-        else: 
-            data['status'] = False
-    else:
-        return HttpResponseBadRequest()
-    return JsonResponse(data)
 
 @login_required
 def testDataView(request, num, id):
