@@ -13,18 +13,23 @@ def mainView(request):
     getInstr = inst.get_all_names()
     getComplex = complex.get_all_names()
     users = CustomUser.get_count_users()
+    contact = contactForm()
 
     if request.method == 'POST':
-        contact = contactForm(request.POST or None)
-        if contact.is_valid():
-            contact.save()
-            messages.success(request,'Успешно отправлено!')
-            return HttpResponseRedirect('/#link')
+        data = {}
+        print(request.POST)
+        form = contactForm(request.POST)
+        if form.is_valid():
+            form.save()
+            data['message'] = 'Вы успешно отправили!'
+            data['status'] = 'ok'
+            return JsonResponse(data)
         else:
-            messages.error(request, 'Введите корректные данные')
-            return HttpResponseRedirect('/#link')
-    else:
-        contact = contactForm()
+            data['message'] = 'Введите правильные данные!'
+            data['status'] = 'error'
+            return JsonResponse(data)
+        
+        
     values = {
         'contact':contact,
         'instr':getInstr, 
@@ -190,6 +195,15 @@ def briefPageView(request):
     }
 
     return render(request, page_name, values)
+
+
+@login_required
+def chatbot_responseView(request):
+
+    page_name = 'bot.html' # страница
+
+
+    return render(request, page_name)
 
 
 @login_required  # обязательная авторизация

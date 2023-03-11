@@ -7,7 +7,7 @@
 	
 
 {% block scripts %}
-	
+	<script defer src="{% static 'js/index.js' %}"></script>
 {% endblock scripts %}
 	
 
@@ -108,7 +108,7 @@
 	<img src="{% static 'images/startPage/girlandheart.svg' %}" alt="photo">
 	<div>
 		<p class = 'fs-5 text-center text-uppercase' style="font-family: 'Inter-Bold'; color:#E7882B;">Обратная связь</p>
-		<form>
+		<form id="contact-form" data-pl="1">
 			{% csrf_token %}
 			<div class="mb-2">
 				{{ contact.name_contact }}
@@ -119,7 +119,7 @@
 			<div class="mb-2">
 				{{ contact.text_contact }}
 			</div>
-			<button class = 'btn btn-outline-pink text-uppercase mt-2' style="font-family: 'Inter-Bold';"> 
+			<button id = 'pass_query' class = 'btn btn-outline-pink text-uppercase mt-2' style="font-family: 'Inter-Bold';"> 
 				<i class="fa-regular fa-envelope mx-2"></i>
 				Отправить 
 			</button>

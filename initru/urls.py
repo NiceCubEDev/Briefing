@@ -9,6 +9,7 @@ urlpatterns = [
     # guest urls
     path('', mainView, name='main'),
     path('about_us/', aboutPageView, name='about'),
+    path('chat/', chatbot_responseView, name='chat_response'), 
     path('contact/', contactPageView, name="contact"),
     # admin urls
     path('createUser/', createUserAdmin, name ='user_create'),
