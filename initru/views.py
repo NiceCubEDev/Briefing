@@ -59,7 +59,6 @@ def profileView(request):
                 if user.phone_number != request.POST['phone_number']: 
                     form = ChangeNumberUser(request.POST)
                     if form.is_valid():
-                        print(request.POST['phone_number'])
                         user.phone_number = request.POST['phone_number']
                         user.save()
                         data['message'] = f'{user.first_name}, Вы успешно сменили номер телефона!'
@@ -79,7 +78,6 @@ def profileView(request):
                 if user.email != request.POST['email']:
                     form = ChangeEmailUser(request.POST)
                     if form.is_valid():
-                        print(request.POST['email'])
                         user.email = request.POST['email']
                         user.save()
                         data['message'] = f'{user.first_name}, Вы успешно электронную почту!'
@@ -141,7 +139,13 @@ def profileView(request):
 @login_required
 def passedView(request):
     page_name = 'passed_inst.html'
-    return render(request, page_name)
+
+    obj_res = res.objects.filter(user= request.user).order_by("-date_instruction")
+
+    values = {
+        'obj':obj_res
+    }
+    return render(request, page_name, values)
 
 
 @login_required
@@ -150,7 +154,7 @@ def checkPassedView(request, id):
     data = {}
 
     if request.method == 'POST':
-        passed_brief = res.objects.filter(instruction = id, quiz = request.POST['quiz'], mark = 'Зачёт', user=request.user).count()
+        passed_brief = res.objects.filter(instruction = id, quiz = request.POST['quiz'], mark = 'Сдан', user=request.user).count()
         if passed_brief == 0:
             data['status'] = True
         else: 
@@ -192,24 +196,21 @@ def briefPageView(request):
 def testsPageView(request, id):
 
     template_name = 'user_tests/user_tests_list.html'
+
     themesInstructions = inst.objects.get(id = id) # model inst
-
     tests = test.get_need_instr(request, id) # model test
-
     values = {
         'test' : tests,
         'themes': themesInstructions,
     }
-
     return render(request, template_name, values)
 
 
 @login_required  # обязательная авторизация
 def testView(request, num, id): 
-
     page_name = 'user_tests/user_tests_test.html'
     quiz = test.objects.get(instruction = id, type_user=request.user.type_user, pk = num)
-    passed_brief = res.objects.filter(instruction = id, quiz = quiz, mark = 'Зачёт', user=request.user).count()
+    passed_brief = res.objects.filter(instruction = id, quiz = quiz, mark = 'Сдан', user=request.user).count()
     if passed_brief == 0:
         values = {
         'test':quiz,
@@ -270,14 +271,11 @@ def testDataSaveView(request, num, id): # id - инструктаж # num - но
         data = request.POST
         data_ = dict(data.lists()) # в хороший список
         data_.pop('csrfmiddlewaretoken')
-        print(data_)
 
         for k in data_.keys(): # прогонка по вопросам 
-            # print('Вопрос ключ:', k)
             quest = question.objects.get(name=k)
             questions.append(quest) # Добавляем в список вопросов
         
-       
 
         score = 0 # балл
         multiper = 100 / quiz.number_of_questions
@@ -311,7 +309,7 @@ def testDataSaveView(request, num, id): # id - инструктаж # num - но
                 quiz = quiz,
                 date_instruction = timezone.now(),
                 result = score_,
-                mark = 'Зачёт',
+                mark = 'Сдан',
             )
             return JsonResponse({'passed':True, 'score':score_, 'results':results, 'countAnswers':countAnswers})
         else:
@@ -321,7 +319,7 @@ def testDataSaveView(request, num, id): # id - инструктаж # num - но
                 quiz = quiz,
                 date_instruction = timezone.now(),
                 result = score_,
-                mark = 'Провал',
+                mark = 'Не сдан',
             )
             return JsonResponse({'passed':False, 'score':score_, 'results':results, 'countAnswers':countAnswers})
 

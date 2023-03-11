@@ -63,14 +63,18 @@ $.ajax({
     success: (res) => {
         // console.log(res)
         const data = res.data
+        let i = 0
         data.forEach(el => {
+            i+=1
             for (const [question, answers] of Object.entries(el)) { // через цикл извлекаем данные из объекта
+                
                 quizBox.innerHTML += `
                 <div class = 'mb-2 mt-3'>
-                    <b>${question}</b>
+                    <p class = 'fw-bold'><span>${i}.</span> ${question}</p> 
                 </div>
                 `;
                 answers.forEach(answer => {
+
                     quizBox.innerHTML += `
                     <div>
                         <input class = "ans" id = '${question}-${answer}' name = '${question}' value = '${answer}' type = 'radio'/>

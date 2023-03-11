@@ -1,4 +1,38 @@
 {% load static %}
 <div>
     <p class='text-uppercase text-secondary' style="font-family: 'Inter-Bold';">Пройденные инструктажи</p>
+    <div>
+        <table class = 'table'>
+            <thead>
+                <tr>
+                    <th class = 'text-secondary' scope="col">№</th>
+                    <th class = 'text-secondary' scope="col">Категория инструктажа</th>
+                    <th class = 'text-secondary' scope="col">Название инструктажа</th>
+                    <th class = 'text-secondary' scope="col">Дата</th>
+                    <th class = 'text-secondary' scope="col">Количество %</th>
+                    <th class='text-center text-secondary' scope="col">Итог</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for o in obj %}
+                    <tr>
+                        <td>{{ forloop.counter }}</td>
+                        <td>{{ o.instruction }}</td>
+                        <td>{{ o.quiz }}</td>
+                        <td>{{ o.date_instruction|date:'d-m-Y H:i' }}</td>
+                        <td class = 'text-center'>{{ o.result }}%</td>
+                        {% if o.mark == 'Не сдан' %}
+                        <td class ='bg-danger text-white text-center'>
+                            {{ o.mark }}
+                        </td>
+                        {% else %}
+                        <td class = 'bg-success text-white text-center'>
+                            {{ o.mark }}
+                        </td>
+                        {% endif %}
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
 </div>

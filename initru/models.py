@@ -154,7 +154,7 @@ class test(models.Model):
         verbose_name_plural = 'Тесты'
 
     def __str__(self):
-        return f'{self.instruction} - {self.name_test}'
+        return f'{self.name_test}'
 
     @staticmethod
     def get_need_instr(request, id):
