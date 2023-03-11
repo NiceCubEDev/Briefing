@@ -209,12 +209,15 @@ def testView(request, num, id):
 
     page_name = 'user_tests/user_tests_test.html'
     quiz = test.objects.get(instruction = id, type_user=request.user.type_user, pk = num)
-    values = {
+    passed_brief = res.objects.filter(instruction = id, quiz = quiz, mark = 'Зачёт', user=request.user).count()
+    if passed_brief == 0:
+        values = {
         'test':quiz,
-    }
-
-    return render(request, page_name, values)
-        
+        }
+        return render(request, page_name, values)
+    else:
+        return HttpResponseBadRequest()
+   
 
 @login_required
 def createUserAdmin(request):
@@ -258,9 +261,9 @@ def testDataView(request, num, id):
 @login_required
 def testDataSaveView(request, num, id): # id - инструктаж # num - номер теста
     if request.method == 'POST':
-
+        
         user = request.user # пользователь 
-        quiz = test.objects.get(pk=num, instruction = id) # получение нужного теста
+        quiz = test.objects.get(pk=num, instruction = id, type_user=request.user.type_user) # получение нужного теста
 
 
         questions = [] # list с в вопросами
