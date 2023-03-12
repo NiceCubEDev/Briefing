@@ -29,6 +29,10 @@ def mainView(request):
 
     page_name = 'main.html'
     
+    users = CustomUser.get_count_users()
+    passed_brief = res.objects.filter(mark='Сдан').count() or 0
+    count_brief = test.objects.all().count() or 0
+
     getInstr = inst.get_all_names()
     getComplex = complex.get_all_names()
     users = CustomUser.get_count_users()
@@ -54,6 +58,8 @@ def mainView(request):
         'instr':getInstr, 
         'complex':getComplex,
         'countUser':users,
+        'pb':passed_brief,
+        'cb':count_brief,
     }
     return render(request, page_name, values)
 
@@ -207,7 +213,7 @@ def getEditProfile(request):
 def briefPageView(request):
 
     page_name = "user_tests/user_themes_tests_list.html"
-    themesInstructions = inst.objects.all()
+    themesInstructions = inst.objects.all().order_by("-name_instruction")
 
     values = {
         'themes':themesInstructions,
