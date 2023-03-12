@@ -337,7 +337,7 @@ class answers(models.Model):
         question, on_delete=models.CASCADE,
         verbose_name='Вопрос'
     )
-    text = models.CharField('Ответ', max_length=200)
+    text = models.CharField('Ответ', max_length=400)
     correct = models.BooleanField('Правильный или нет', default=False)
     created = models.DateTimeField(auto_now_add=True)
     # result  = models.ForeignKey(
