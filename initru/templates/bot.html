@@ -7,7 +7,7 @@
 
 
 {% block scripts %}
-    
+    <script defer src = "{% static 'js/bot/bot.js' %}"></script>
 {% endblock scripts %}
     
 
@@ -15,12 +15,16 @@
     <div class="bot_content">
         <div class="container d-flex flex-column">
             <div class = 'border p-3' style='height:40vh'>
-                123
+                <div id = 'response-box'></div>
             </div>
-            <div class = 'd-flex'>
-                <input  class = 'form-control' type="text">
-                <button class = ''>Отправить</button>
-            </div>
+            <form id='bot-form' class = 'row mt-2'>
+                {% csrf_token %}
+                <input  class = 'col mx-2 form-control form-control-sm' name = 'message' type="text">
+                <button class = 'col-2 btn btn-orange' style = 'max-width: 150px;'>
+                    <i class="fa-solid fa-robot"></i>
+                    Отправить
+                </button>
+            </form>
         </div>
     </div>
 {% endblock content %}

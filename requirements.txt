@@ -3,3 +3,4 @@ Pillow
 django-smart-selects
 django-tailwind
 fontawesomefree
+deeppavlov

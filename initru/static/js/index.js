@@ -28,7 +28,7 @@ $('#contact-form').submit((e)=>{
         url: url,
         data: myData,
         success: (resp)=>{
-            if(resp.status == 'success') { 
+            if(resp.status == 'ok') { 
                 notifFunction('success', resp.message)
             } else { 
                 notifFunction('danger', resp.message)

@@ -5,6 +5,25 @@ from .models import inst, complex, CustomUser, test, question, answers, res
 from django.http import *
 from django.contrib.auth.decorators import login_required
 from django.utils import timezone
+from deeppavlov import build_model, configs
+
+@login_required
+def chatbot_responseView(request):
+
+    page_name = 'bot.html' # страница
+
+    if request.method == 'POST':
+        data={}
+        query = request.POST
+        user_text = query['message']
+        model = build_model('kbqa_cq_ru', download=True)
+        bot_response = model([user_text])
+        data['status'] = 'ok'
+        return JsonResponse({'data':data,'response':bot_response[0]})
+  
+
+    return render(request, page_name)
+
 
 def mainView(request):
 
@@ -196,14 +215,6 @@ def briefPageView(request):
 
     return render(request, page_name, values)
 
-
-@login_required
-def chatbot_responseView(request):
-
-    page_name = 'bot.html' # страница
-
-
-    return render(request, page_name)
 
 
 @login_required  # обязательная авторизация
