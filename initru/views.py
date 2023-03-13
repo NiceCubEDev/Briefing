@@ -175,14 +175,13 @@ def passedView(request):
     values = {
         'obj':obj_res
     }
+
     return render(request, page_name, values)
 
 
 @login_required
 def checkPassedView(request, id):
-
     data = {}
-
     if request.method == 'POST':
         passed_brief = res.objects.filter(instruction = id, quiz = request.POST['quiz'], mark = 'Сдан', user=request.user).count()
         if passed_brief == 0:
@@ -192,7 +191,6 @@ def checkPassedView(request, id):
             data['status'] = False
     else:
         return HttpResponseBadRequest()
-    
     return JsonResponse(data)
 
 
@@ -211,30 +209,26 @@ def getEditProfile(request):
 
 @login_required  # обязательная авторизация
 def briefPageView(request):
-
     page_name = "user_tests/user_themes_tests_list.html"
     themesInstructions = inst.objects.all().order_by("-name_instruction")
 
     values = {
         'themes':themesInstructions,
     }
-
     return render(request, page_name, values)
 
 
 
 @login_required  # обязательная авторизация
 def testsPageView(request, id):
-
-    template_name = 'user_tests/user_tests_list.html'
-
+    page_name = 'user_tests/user_tests_list.html'
     themesInstructions = inst.objects.get(id = id) # model inst
     tests = test.get_need_instr(request, id) # model test
     values = {
         'test' : tests,
         'themes': themesInstructions,
     }
-    return render(request, template_name, values)
+    return render(request, page_name, values)
 
 
 @login_required  # обязательная авторизация

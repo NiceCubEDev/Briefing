@@ -355,3 +355,16 @@ class answers(models.Model):
     class Meta:
         verbose_name = 'Ответ'
         verbose_name_plural = 'Ответы'
+
+
+class downloadInstructionsForTests(models.Model):
+    user = models.ForeignKey(CustomUser, on_delete=models.CASCADE, verbose_name='Пользователь')
+    test = models.ForeignKey(test, on_delete=models.CASCADE, verbose_name='Тест')
+
+    def __str__(self):
+        return f'{self.user} {self.test}'
+
+    class Meta: 
+        verbose_name = 'Сводная по скачанным файлам'
+        verbose_name_plural = 'Сводная по скачанным файлам'
+    
