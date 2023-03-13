@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 from .forms import contactForm, CreateUserForm, ChangeNumberUser, ChangeEmailUser, ChangeAvatarUser, ChangePasswordUser
 from django.contrib import messages
-from .models import inst, complex, CustomUser, test, question, answers, res
+from .models import inst, complex, CustomUser, test, question, answers, res,downloadInstructionsForTests
 from django.http import JsonResponse, HttpResponseBadRequest
 from django.contrib.auth.decorators import login_required
 from django.utils import timezone
@@ -189,8 +189,15 @@ def passedView(request):
 def checkFileDownloadedView(request, id):
     data = {}
     if request.method == 'POST':
-        print(request.POST)
-        data['status'] = 'ok'
+        obj_query = downloadInstructionsForTests.objects.filter(user=request.user, test = request.POST['quiz-pk']).count()
+        if obj_query == 0:
+            downloadInstructionsForTests.objects.create(
+                user = request.user,
+                test_id = request.POST['quiz-pk']
+            )
+            data['status'] = 'ok'
+        else:
+            data['status'] = 'warning'
         return JsonResponse(data)
     else: 
         return HttpResponseBadRequest()
@@ -201,11 +208,16 @@ def checkFileDownloadedView(request, id):
 def checkPassedView(request, id):
     data = {}
     if request.method == 'POST':
-        passed_brief = res.objects.filter(instruction = id, quiz = request.POST['quiz'], mark = 'Сдан', user=request.user).count()
-        if passed_brief == 0:
-            data['status'] = True
+        obj_query_file = downloadInstructionsForTests.objects.filter(user = request.user, test=request.POST['quiz']).count()
+        if obj_query_file != 0:
+            passed_brief = res.objects.filter(instruction = id, quiz = request.POST['quiz'], mark = 'Сдан', user=request.user).count()
+            if passed_brief == 0:
+                data['status'] = True
+            else: 
+                data['message'] = 'Вы уже прошли данный инструктаж'
+                data['status'] = False
         else: 
-            data['message'] = 'Вы уже прошли данный инструктаж'
+            data['message'] = 'Вы не изучили теорию!'
             data['status'] = False
     else:
         return HttpResponseBadRequest()
