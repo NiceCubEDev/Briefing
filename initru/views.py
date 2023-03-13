@@ -7,6 +7,8 @@ from django.contrib.auth.decorators import login_required
 from django.utils import timezone
 from deeppavlov import build_model, configs
 
+
+#чат-бот
 @login_required
 def chatbot_responseView(request):
 
@@ -25,13 +27,14 @@ def chatbot_responseView(request):
     return render(request, page_name)
 
 
+# главная
 def mainView(request):
 
     page_name = 'main.html'
     
-    users = CustomUser.get_count_users()
-    passed_brief = res.objects.filter(mark='Сдан').count() or 0
-    count_brief = test.objects.all().count() or 0
+    users = CustomUser.get_count_users() # количество пользователей
+    passed_brief = res.objects.filter(mark='Сдан').count() or 0 # количество пройденных инструктажей
+    count_brief = test.objects.all().count() or 0 # количество инструктажей
 
     getInstr = inst.get_all_names()
     getComplex = complex.get_all_names()
@@ -166,6 +169,8 @@ def profileView(request):
     
     return render(request, page_name)
 
+
+# элемент  с пройденными инструктажами
 @login_required
 def passedView(request):
     page_name = 'passed_inst.html'
@@ -179,6 +184,7 @@ def passedView(request):
     return render(request, page_name, values)
 
 
+#Проверка о прохождении теста
 @login_required
 def checkPassedView(request, id):
     data = {}
@@ -193,20 +199,21 @@ def checkPassedView(request, id):
         return HttpResponseBadRequest()
     return JsonResponse(data)
 
-
+# элемент мои данные
 @login_required  # обязательная авторизация
 def getDetailProfile(request):
     page_name = 'profiile_detail_remaster.html'
     return render(request, page_name)
 
 
+#редактирование профиля
 @login_required  # обязательная авторизация
 def getEditProfile(request): 
     page_name = 'profile_edit.html'
     return render(request, page_name)
 
     
-
+# страница с инструктажами
 @login_required  # обязательная авторизация
 def briefPageView(request):
     page_name = "user_tests/user_themes_tests_list.html"
@@ -218,7 +225,7 @@ def briefPageView(request):
     return render(request, page_name, values)
 
 
-
+# страница с тестами инструктажами
 @login_required  # обязательная авторизация
 def testsPageView(request, id):
     page_name = 'user_tests/user_tests_list.html'
@@ -231,6 +238,7 @@ def testsPageView(request, id):
     return render(request, page_name, values)
 
 
+# получение страницы теста
 @login_required  # обязательная авторизация
 def testView(request, num, id): 
     page_name = 'user_tests/user_tests_test.html'
@@ -244,7 +252,7 @@ def testView(request, num, id):
     else:
         return HttpResponseBadRequest()
    
-
+# создание пользователя
 @login_required
 def createUserAdmin(request):
     page_name = 'admin/createUser.html'
@@ -267,7 +275,7 @@ def createUserAdmin(request):
     else:
         return render(request, "error.html")
 
-
+# получение вопросов
 @login_required
 def testDataView(request, num, id):
 
@@ -284,6 +292,7 @@ def testDataView(request, num, id):
     })
 
 
+# проверка теста
 @login_required
 def testDataSaveView(request, num, id): # id - инструктаж # num - номер теста
     if request.method == 'POST':
@@ -347,6 +356,9 @@ def testDataSaveView(request, num, id): # id - инструктаж # num - но
                 mark = 'Не сдан',
             )
             return JsonResponse({'passed':False, 'score':score_, 'results':results, 'countAnswers':countAnswers})
+
+
+
 
 
                 

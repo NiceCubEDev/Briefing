@@ -15,32 +15,11 @@ function notifFunction(type, text) {
     `
 }
 
-modalBtns.forEach(modalBtn=>modalBtn.addEventListener('click', ()=>{
-    const briefName = modalBtn.getAttribute('data-brief-name');
-    const quizPk = modalBtn.getAttribute('data-quiz-pk');
-    const quizName = modalBtn.getAttribute('data-quiz-name');
-    const scoreToPass = modalBtn.getAttribute('data-pass');
-    const quizTime = modalBtn.getAttribute('data-quiz-time');
-    const countQuestions = modalBtn.getAttribute('data-questions');
 
-    modalBody.innerHTML =`
-    <div class = 'mb-3'>
-        Вы хотите начать тест "<b>${quizName}</b>"?
-    </div>
-    <div class = 'text-muted'>
-        <ul>
-            <li>Категория теста: <b>${briefName}</b></li>
-            <li>Количество вопросов: <b>${countQuestions}</b></li>
-            <li>Для зачёта необходимо: <b>${scoreToPass}%</b></li>
-            <li>Время: <b>${quizTime} мин. </b></li>
-        </ul>
-    </div>
-    `;
-
+function sendData(pk) { // функция проверки 
     const data = {}
     data['csrfmiddlewaretoken'] = document.getElementsByName('csrfmiddlewaretoken')[0].value;
-    data['quiz'] = quizPk;
-    console.log(data)
+    data['quiz'] = pk;
     $('#start-button').unbind('click').click(()=>{
         $.ajax({
             type:"POST",
@@ -52,7 +31,7 @@ modalBtns.forEach(modalBtn=>modalBtn.addEventListener('click', ()=>{
                     console.log('нет')
                     notifFunction('warning', response.message);
                 } else { 
-                    window.location.href = url + quizPk;
+                    window.location.href = url + pk;
                 }
             },
             error: (response)=>{
@@ -60,5 +39,49 @@ modalBtns.forEach(modalBtn=>modalBtn.addEventListener('click', ()=>{
             }
         });
     });
+}
 
+modalBtns.forEach(modalBtn=>modalBtn.addEventListener('click', ()=>{
+    const briefName = modalBtn.getAttribute('data-brief-name');
+    const quizPk = modalBtn.getAttribute('data-quiz-pk');
+    const quizName = modalBtn.getAttribute('data-quiz-name');
+    const scoreToPass = modalBtn.getAttribute('data-pass');
+    const quizTime = modalBtn.getAttribute('data-quiz-time');
+    const countQuestions = modalBtn.getAttribute('data-questions');
+    const linkFile = modalBtn.getAttribute('data-file-link');
+
+
+    modalBody.innerHTML =`
+    <div class = 'mb-3' style = 'font-family: "Roboto-medium";'>
+        Вы хотите начать тест "<b>${quizName}</b>"?
+    </div>
+    <div class = 'text-muted' style = 'font-family: "Roboto-medium";'>
+    Характеристика теста: 
+        <ul>
+            <li>Категория теста: <b>${briefName}</b></li>
+            <li>Количество вопросов: <b>${countQuestions}</b></li>
+            <li>Для зачёта необходимо: <b>${scoreToPass}%</b></li>
+            <li>Время: <b>${quizTime} мин. </b></li>
+        </ul>
+    </div>
+    `;
+
+    if (linkFile != "") {
+        modalBody.innerHTML += `
+        <div style = 'font-family: "Roboto-medium";'>
+            <p>Изучите теорию:</p>
+            <a class = 'btn btn-outline-orange' id = 'download-file-link' data-quiz-pk = '${quizPk}' href = '' download>
+                <i class="fa-solid fa-file mx-2"></i>
+                Скачать теорию
+            </a>
+        </div>
+        `
+    } 
+
+    $('#download-file-link').click((e)=>{
+        e.preventDefault();
+        console.log('ай');
+    })
+
+    sendData(quizPk);
 }));
