@@ -89,6 +89,7 @@ changeBtn.forEach(btn => btn.addEventListener('click', () => { // делаем �
 
     $('#start-button').unbind('click').click((e)=>{ // unbind чтобы убрать отправку,
         e.preventDefault();
+
         const input = document.getElementsByName(btnName); // получение данных 
         const passwordInput = document.getElementById('id_password'); // получение данных 
         const url = window.location.href; // получение ссылк на профиль
@@ -119,6 +120,7 @@ changeBtn.forEach(btn => btn.addEventListener('click', () => { // делаем �
         }
         
         $.ajax({
+            async:true,
             type: "POST",
             url: url,
             enctype:'multipart/form-data',

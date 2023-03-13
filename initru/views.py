@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect
 from .forms import contactForm, CreateUserForm, ChangeNumberUser, ChangeEmailUser, ChangeAvatarUser, ChangePasswordUser
 from django.contrib import messages
 from .models import inst, complex, CustomUser, test, question, answers, res
-from django.http import *
+from django.http import JsonResponse, HttpResponseBadRequest
 from django.contrib.auth.decorators import login_required
 from django.utils import timezone
 from deeppavlov import build_model, configs
