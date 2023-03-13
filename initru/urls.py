@@ -19,6 +19,7 @@ urlpatterns = [
     path('account/themes_inst/test/<int:id>/<int:num>/data', testDataView, name = 'get_data_test'),
     path('account/themes_inst/test/<int:id>/<int:num>', testView, name = 'start_test'),
     path('account/themes_inst/test/<int:id>/check/', checkPassedView, name = "check_passed_view"),
+    path('account/themes_inst/test/<int:id>/checkFile/', checkFileDownloadedView, name = "check_down_load"),
     path('account/themes_inst/test/<int:id>/', testsPageView, name = "test_list"),
     path('account/themes_inst/', briefPageView, name = "brief"),
     path('account/profile/', profileView, name="profile"),

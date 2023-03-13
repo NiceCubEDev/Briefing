@@ -184,6 +184,18 @@ def passedView(request):
     return render(request, page_name, values)
 
 
+# проверка о наличии файла
+@login_required
+def checkFileDownloadedView(request, id):
+    data = {}
+    if request.method == 'POST':
+        print(request.POST)
+        data['status'] = 'ok'
+        return JsonResponse(data)
+    else: 
+        return HttpResponseBadRequest()
+
+
 #Проверка о прохождении теста
 @login_required
 def checkPassedView(request, id):

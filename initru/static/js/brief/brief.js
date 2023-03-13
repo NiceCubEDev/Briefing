@@ -70,7 +70,7 @@ modalBtns.forEach(modalBtn=>modalBtn.addEventListener('click', ()=>{
         modalBody.innerHTML += `
         <div style = 'font-family: "Roboto-medium";'>
             <p>Изучите теорию:</p>
-            <a class = 'btn btn-outline-orange' id = 'download-file-link' data-quiz-pk = '${quizPk}' href = '' download>
+            <a class = 'btn btn-outline-orange' id = 'download-file-link' href = '' download>
                 <i class="fa-solid fa-file mx-2"></i>
                 Скачать теорию
             </a>
@@ -80,7 +80,23 @@ modalBtns.forEach(modalBtn=>modalBtn.addEventListener('click', ()=>{
 
     $('#download-file-link').click((e)=>{
         e.preventDefault();
-        console.log('ай');
+
+        const data = {};
+        data['csrfmiddlewaretoken'] = $('input[name="csrfmiddlewaretoken"]').val();
+        data['quiz-pk'] = quizPk;
+
+        $.ajax({
+            async:true,
+            type:'POST',
+            url:`${url}checkFile/`,
+            data:data,
+            success: (response) => {
+                console.log(response);
+            },
+            error: (response) => {
+                console.log(response);
+            }
+        });
     })
 
     sendData(quizPk);
