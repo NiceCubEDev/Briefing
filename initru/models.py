@@ -313,6 +313,7 @@ class res(models.Model):
         verbose_name_plural = 'Результаты'
 
 
+#вопросы
 class question(models.Model):
     test = models.ForeignKey(test, on_delete=models.CASCADE, verbose_name='Номер теста')
     name = models.CharField('Вопрос', max_length=255 )
@@ -357,6 +358,7 @@ class answers(models.Model):
         verbose_name_plural = 'Ответы'
 
 
+# сводка по скачанным файлам
 class downloadInstructionsForTests(models.Model):
     user = models.ForeignKey(CustomUser, on_delete=models.CASCADE, verbose_name='Пользователь')
     test = models.ForeignKey(test, on_delete=models.CASCADE, verbose_name='Тест')
