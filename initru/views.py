@@ -6,7 +6,7 @@ from django.http import JsonResponse, HttpResponseBadRequest
 from django.contrib.auth.decorators import login_required
 from django.utils import timezone
 from deeppavlov import build_model, configs
-
+import phonenumbers
 
 #чат-бот
 @login_required
@@ -89,6 +89,8 @@ def profileView(request):
 
             # проверка на наличие номера телефона в запросе
             if request.POST.get('phone_number'): # если отправили номер телефона
+                # z = phonenumbers.parse(request.POST['phone_number'], region="RU")
+                # print(z)
                 if user.phone_number != request.POST['phone_number']: 
                     form = ChangeNumberUser(request.POST)
                     if form.is_valid():
