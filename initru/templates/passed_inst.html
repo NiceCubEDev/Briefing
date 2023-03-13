@@ -18,7 +18,7 @@
                     <tr>
                         <td>{{ forloop.revcounter }}</td>
                         <td>{{ o.instruction }}</td>
-                        <td>{{ o.quiz }}</td>
+                        <td>{{ o.quiz.name_test }}</td>
                         <td>{{ o.date_instruction|date:'d-m-Y H:i' }}</td>
                         <td class = 'text-center'>{{ o.result }}%</td>
                         {% if o.mark == 'Не сдан' %}
