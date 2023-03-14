@@ -3,7 +3,7 @@ from .models import contact_us, CustomUser
 from phonenumber_field.formfields import PhoneNumberField
 from django.contrib.auth.forms import UserCreationForm
 from django.core.validators import RegexValidator
-
+import phonenumbers
 
 
 class contactForm(forms.ModelForm):
@@ -30,9 +30,17 @@ class contactForm(forms.ModelForm):
 
 
 class ChangeNumberUser(forms.ModelForm):
+    phone_number = forms.CharField(required=True)
     class Meta: 
         model = CustomUser
         fields = ['phone_number']
+
+    def clean_phone_number(self):
+        phone_number = self.cleaned_data.get("phone_number")
+        z = phonenumbers.parse(phone_number, region="RU")
+        if not phonenumbers.is_valid_number(z):
+            raise forms.ValidationError("У номера телефона неправильный формат!")
+        return phone_number
 
 
 class ChangeEmailUser(forms.ModelForm): 

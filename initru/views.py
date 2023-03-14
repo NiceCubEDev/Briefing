@@ -89,8 +89,6 @@ def profileView(request):
 
             # проверка на наличие номера телефона в запросе
             if request.POST.get('phone_number'): # если отправили номер телефона
-                # z = phonenumbers.parse(request.POST['phone_number'], region="RU")
-                # print(z)
                 if user.phone_number != request.POST['phone_number']: 
                     form = ChangeNumberUser(request.POST)
                     if form.is_valid():
@@ -102,7 +100,6 @@ def profileView(request):
                     else: 
                         data['message'] = 'Введите правильный номер телефона!'
                         data['status'] = 'error'
-
                 else: 
                     data['message'] = 'Вы ввели настоящий номер телефона!'
                     data['status'] = 'error'

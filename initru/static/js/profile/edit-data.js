@@ -126,6 +126,7 @@ changeBtn.forEach(btn => btn.addEventListener('click', () => { // делаем �
             enctype:'multipart/form-data',
             data: datas,
             success: (response)=> {
+                console.log(response.phone_number)
                 stat = response.status
                 if (stat == 'ok') {
                     notifFunction('success', response.message)
