@@ -77,7 +77,7 @@ def contactPageView(request):
     page_name = 'contact.html'
     return render(request, page_name)
 
-# get profile 
+# это профиль
 @login_required  # обязательная авторизация
 def profileView(request):
     page_name = 'profile.html'
