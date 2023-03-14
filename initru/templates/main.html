@@ -19,7 +19,7 @@
 			<h1 class = 'text-uppercase text-center' style = 'font-family: "Roboto-medium"; font-size: 79px; color:#E7882B;'>Инструктаж</h1>
 			<p class = 'text-center' style ='font-size: 23px; max-width: 540px;'>Ознакомление с основными правилами на производстве для обеспечения Вашей безопасности</p>
 			{% if user.is_authenticated %}
-			<a class = 'btn btn-outline-primary mx-auto fs-5 text-uppercase ' href="#" style = 'font-family: "Roboto-medium";'>
+			<a class = 'btn btn-outline-primary mx-auto fs-5 text-uppercase ' href="{% url 'brief' %}" style = 'font-family: "Roboto-medium";'>
 				<i class="fa-regular fa-pen mx-2"></i>
 				Пройти инструктаж
 			</a>
@@ -132,7 +132,7 @@
             <p class = 'text-uppercase text-center  fw-bold' style ='font-size: 50px; font-family: "Roboto-bold"; color:#3B5B6F;'>Инструктаж</p>
             <p class = ' mx-auto text-center' style ='font-family: "Roboto-medium"; color:#E7882B; max-width: 350px;'>Ознакомление с основными правилами на производстве для обеспечения Вашей безопасности</p>
             {% if user.is_authenticated %}
-			<a class = 'btn btn-outline-primary mx-auto fs-5 text-uppercase ' href="#" style = 'font-family: "Roboto-medium";'>
+			<a class = 'btn btn-outline-primary mx-auto fs-5 text-uppercase ' href="{% url 'brief' %}" style = 'font-family: "Roboto-medium";'>
 				<i class="fa-regular fa-pen mx-2"></i>
 				Пройти инструктаж
 			</a>

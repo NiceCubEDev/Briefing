@@ -1,7 +1,7 @@
 from django.contrib.auth.admin import UserAdmin
 from django.contrib import admin
 from .models import *
-
+from django import forms 
 
 #Регионы
 @admin.register(Region)
@@ -19,7 +19,38 @@ class Street(admin.ModelAdmin):
     list_display = ['name_street']
 
 
-admin.site.register(CustomUser)
+class UserCreationForm(forms.ModelForm):
+    class Meta:
+        model = CustomUser
+        fields = ('email',)
+
+    def save(self, commit=True):
+        user = super(UserCreationForm, self).save(commit=False)
+        user.set_password(self.cleaned_data["password"])
+        if commit:
+            user.save()
+        return user
+
+
+class CustomUserAdmin(UserAdmin):
+  
+    add_form = UserCreationForm
+    list_display = ("first_name",'last_name', 'patronymic')
+    ordering = ("email",)
+
+    fieldsets = (
+        (None, {'fields': ('first_name', 'last_name', 'patronymic', 'email', 'password', 'gender','birthday_date','phone_number','region','city','street','house','flat','avatar','type_user','groupStud','role','date_end','groups','is_active','is_staff','is_superuser',)}),
+        )
+    
+    add_fieldsets = (
+        (None, {
+            'classes': ('wide',),
+            'fields': ('first_name', 'last_name', 'patronymic', 'email', 'password', 'gender','birthday_date','phone_number','region','city','street','house','flat','avatar','type_user','groupStud','role','date_end','groups','is_active','is_staff','is_superuser',)}
+            ),
+        )
+
+
+admin.site.register(CustomUser, CustomUserAdmin)
 
 #Специальности
 @admin.register(Spec)

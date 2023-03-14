@@ -239,7 +239,7 @@ class CustomUser(AbstractUser):  # custom user for Users with django
         show_all=False,
         auto_choose=True,
         null=True,
-        sort=True)
+        sort=True, verbose_name = 'Город')
     
     street  = models.ForeignKey(
         Street, on_delete=models.CASCADE,
@@ -252,6 +252,7 @@ class CustomUser(AbstractUser):  # custom user for Users with django
         'Этаж', null=True,
     )
     avatar = models.ImageField(
+        'Изображение пользователя',
         upload_to='images/users/',
         null=True,
         blank=True,
