@@ -24,6 +24,7 @@ urlpatterns = [
     path('account/themes_inst/', briefPageView, name = "brief"),
     path('account/profile/', profileView, name="profile"),
     path('account/profile/detail/', getDetailProfile, name="profile_detail"),
+    path('account/profile/action/', actionUserView, name="action"),
     path('account/profile/edit/', getEditProfile, name="profile_edit"),
     path('account/profile/passed_inst/', passedView, name="profile_edit"),
     path('account/login/', auth_views.LoginView.as_view(redirect_authenticated_user=True), name='login'),

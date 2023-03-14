@@ -5,3 +5,4 @@ django-tailwind
 fontawesomefree
 deeppavlov
 phonenumbers
+python-docx

@@ -1,12 +1,12 @@
 from django.shortcuts import render, redirect
 from .forms import contactForm, CreateUserForm, ChangeNumberUser, ChangeEmailUser, ChangeAvatarUser, ChangePasswordUser
 from django.contrib import messages
-from .models import inst, complex, CustomUser, test, question, answers, res,downloadInstructionsForTests
-from django.http import JsonResponse, HttpResponseBadRequest
+from .models import inst, complex, CustomUser, test, question, answers, res, downloadInstructionsForTests
+from django.http import JsonResponse, HttpResponseBadRequest, HttpResponse
 from django.contrib.auth.decorators import login_required
 from django.utils import timezone
-from deeppavlov import build_model, configs
-import phonenumbers
+from deeppavlov import build_model
+from docx import Document
 
 #чат-бот
 @login_required
@@ -85,6 +85,36 @@ def profileView(request):
     if request.method == 'POST': 
         data = {} # for messages
         user = request.user
+
+
+        if request.POST.get('download'):
+            document = Document()
+            
+            items = (
+                ('салават', '19012004', 'плюшевые котята')
+            ) 
+
+            table = document.add_table(1, len(items[0]))
+            table.style = 'Light Shading  Accent 1'
+            head_cells = table.rows[0].cells
+
+            for i, item in enumerate(['имя ', 'дата рождения', 'описание']):
+                p = head_cells[i].paragraphs[0]
+                p.add_run(item).bold = True
+            
+            for row in items:
+                cells = table.add_row().cells
+                for i,item in enumerate(row):
+                    cells[i].text = str(item)
+                    if i == 2:
+                        cells[i].paragraphs[0].runs[0].font.name = 'Arial'
+                        
+            response = HttpResponse(content_type='application/vnd.openxmlformats-officedocument.wordprocessingml.document')
+            response['Content-Disposition'] = 'attachment; filename=download.docx'
+            document.save(response)
+
+            return response
+
         if user.check_password(request.POST['password']):
 
             # проверка на наличие номера телефона в запросе
@@ -164,6 +194,10 @@ def profileView(request):
             data['message'] = 'Введите корректный пароль!'
             data['status'] = 'error'
 
+
+    
+
+
         return JsonResponse(data)
     
     return render(request, page_name)
@@ -226,6 +260,29 @@ def checkPassedView(request, id):
 @login_required  # обязательная авторизация
 def getDetailProfile(request):
     page_name = 'profiile_detail_remaster.html'
+    return render(request, page_name)
+
+
+#мои возможности
+@login_required  # обязательная авторизация
+def actionUserView(request):
+
+    page_name = 'action.html'
+
+    data = {}
+
+    if request.method == 'POST':
+
+        if request.POST.get('download'):
+            document = Document()
+            document.add_heading('hello world', 0)
+
+            response = HttpResponse(content_type='application/vnd.openxmlformats-officedocument.wordprocessingml.document')
+            response['Content-Disposition'] = 'attachment; filename=download.docx'
+            document.save(response)
+
+            return response
+        
     return render(request, page_name)
 
 

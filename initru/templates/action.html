@@ -1,0 +1,29 @@
+
+{% load static %}
+
+{% block scripts %}
+    <script defer src = "{% static 'js/action/action.js' %}"></script>
+{% endblock scripts %}
+    
+
+<div style = 'max-width: 920px;'>
+    <p class='text-uppercase text-dark' style="font-family: 'Inter-Bold';">Мои возможности</p>
+    <div class = 'd-flex flex-wrap'>
+        {% if user.is_superuser %}
+        <form action="." method="POST">
+            {% csrf_token %}
+            <input type="hidden" name = 'download' id="id_download" value="True">
+            <button class = 'btn btn-dark' id="import-button" download>
+                <i class="fa-regular fa-circle-down mx-2"></i>
+                Импорт пользователей
+            </button>
+        </form>
+        <div>
+            <a class='btn btn-outline-dark mx-2' href="{% url 'admin:index' %}">
+                <i class="fa-solid fa-toolbox"></i>
+                Панель администратора
+            </a>
+        </div>
+        {% endif %}
+    </div>
+</div>
