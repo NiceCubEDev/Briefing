@@ -10,14 +10,22 @@
     <p class='text-uppercase text-dark' style="font-family: 'Inter-Bold';">Мои возможности</p>
     <div class = 'd-flex flex-wrap'>
         {% if user.is_superuser %}
+        <div>
             <a href='#' class = 'btn btn-dark' id="import-button">
                 <i class="fa-regular fa-circle-down mx-2"></i>
                 Импорт пользователей
             </a>
+        </div>
         <div>
             <a class='btn btn-outline-dark mx-2' href="{% url 'admin:index' %}">
-                <i class="fa-solid fa-toolbox"></i>
+                <i class="fa-solid fa-toolbox mx-2"></i>
                 Панель администратора
+            </a>
+        </div>
+        <div>
+            <a class='btn btn-outline-dark mx-2' href="{% url 'journal_view' %}">
+                <i class="fa-solid fa-chart-gantt mx-2"></i>
+                Журнал
             </a>
         </div>
         {% endif %}

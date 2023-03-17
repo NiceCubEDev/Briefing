@@ -77,6 +77,14 @@ def contactPageView(request):
     page_name = 'contact.html'
     return render(request, page_name)
 
+
+@login_required(login_url='account/login/')
+def journalView(request):
+    
+    page_name = 'forOss/journal.html'
+
+    return render(request, page_name)
+
 # это профиль
 @login_required  # обязательная авторизация
 def profileView(request):
@@ -87,33 +95,33 @@ def profileView(request):
         user = request.user
 
 
-        if request.POST.get('download'):
-            document = Document()
+        # if request.POST.get('download'):
+        #     document = Document()
             
-            items = (
-                ('салават', '19012004', 'плюшевые котята')
-            ) 
+        #     items = (
+        #         ('салават', '19012004', 'плюшевые котята')
+        #     ) 
 
-            table = document.add_table(1, len(items[0]))
-            table.style = 'Light Shading  Accent 1'
-            head_cells = table.rows[0].cells
+        #     table = document.add_table(1, len(items[0]))
+        #     table.style = 'Light Shading  Accent 1'
+        #     head_cells = table.rows[0].cells
 
-            for i, item in enumerate(['имя ', 'дата рождения', 'описание']):
-                p = head_cells[i].paragraphs[0]
-                p.add_run(item).bold = True
+        #     for i, item in enumerate(['имя ', 'дата рождения', 'описание']):
+        #         p = head_cells[i].paragraphs[0]
+        #         p.add_run(item).bold = True
             
-            for row in items:
-                cells = table.add_row().cells
-                for i,item in enumerate(row):
-                    cells[i].text = str(item)
-                    if i == 2:
-                        cells[i].paragraphs[0].runs[0].font.name = 'Arial'
+        #     for row in items:
+        #         cells = table.add_row().cells
+        #         for i,item in enumerate(row):
+        #             cells[i].text = str(item)
+        #             if i == 2:
+        #                 cells[i].paragraphs[0].runs[0].font.name = 'Arial'
                         
-            response = HttpResponse(content_type='application/vnd.openxmlformats-officedocument.wordprocessingml.document')
-            response['Content-Disposition'] = 'attachment; filename=download.docx'
-            document.save(response)
+        #     response = HttpResponse(content_type='application/vnd.openxmlformats-officedocument.wordprocessingml.document')
+        #     response['Content-Disposition'] = 'attachment; filename=download.docx'
+        #     document.save(response)
 
-            return response
+        #     return response
 
         if user.check_password(request.POST['password']):
 

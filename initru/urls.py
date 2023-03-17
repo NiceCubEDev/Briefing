@@ -22,11 +22,12 @@ urlpatterns = [
     path('account/themes_inst/test/<int:id>/checkFile/', checkFileDownloadedView, name = "check_down_load"),
     path('account/themes_inst/test/<int:id>/', testsPageView, name = "test_list"),
     path('account/themes_inst/', briefPageView, name = "brief"),
+    path('account/journal/', journalView, name = "journal_view"),
     path('account/profile/', profileView, name="profile"),
     path('account/profile/detail/', getDetailProfile, name="profile_detail"),
     path('account/profile/action/', actionUserView, name="action"),
     path('account/profile/edit/', getEditProfile, name="profile_edit"),
-    path('account/profile/passed_inst/', passedView, name="profile_edit"),
+    path('account/profile/passed_inst/', passedView, name="passed_brief_view"),
     path('account/login/', auth_views.LoginView.as_view(redirect_authenticated_user=True), name='login'),
     path('account/', include('django.contrib.auth.urls')),
 ]
