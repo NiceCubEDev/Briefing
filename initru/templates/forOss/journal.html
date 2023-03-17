@@ -1,5 +1,5 @@
 {% extends '../base.html' %}
-
+{% load static %}
 
 {% block title %}
     Журнал
@@ -7,7 +7,7 @@
     
 
 {% block scripts %}
-    
+    <script defer src="{% static 'js/forOss/journal/jou.js' %}"></script>
 {% endblock scripts %}
 
 
