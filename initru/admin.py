@@ -39,13 +39,13 @@ class CustomUserAdmin(UserAdmin):
     ordering = ("email",)
 
     fieldsets = (
-        (None, {'fields': ('first_name', 'last_name', 'patronymic', 'email', 'password', 'gender','birthday_date','phone_number','region','city','street','house','flat','avatar','type_user','groupStud','role','date_end','groups','is_active','is_staff','is_superuser',)}),
+        (None, {'fields': ('first_name', 'last_name', 'patronymic', 'email','username', 'password', 'gender','birthday_date','phone_number','region','city','street','house','flat','avatar','type_user','groupStud','role','date_end','groups','is_active','is_staff','is_superuser',)}),
         )
     
     add_fieldsets = (
         (None, {
             'classes': ('wide',),
-            'fields': ('first_name', 'last_name', 'patronymic', 'email', 'password', 'gender','birthday_date','phone_number','region','city','street','house','flat','avatar','type_user','groupStud','role','date_end','groups','is_active','is_staff','is_superuser',)}
+            'fields': ('first_name', 'last_name', 'patronymic', 'email','username', 'password', 'gender','birthday_date','phone_number','region','city','street','house','flat','avatar','type_user','groupStud','role','date_end','groups','is_active','is_staff','is_superuser',)}
             ),
         )
 

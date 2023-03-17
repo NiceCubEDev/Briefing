@@ -269,19 +269,7 @@ def actionUserView(request):
 
     page_name = 'action.html'
 
-    data = {}
 
-    if request.method == 'POST':
-
-        if request.POST.get('download'):
-            document = Document()
-            document.add_heading('hello world', 0)
-
-            response = HttpResponse(content_type='application/vnd.openxmlformats-officedocument.wordprocessingml.document')
-            response['Content-Disposition'] = 'attachment; filename=download.docx'
-            document.save(response)
-
-            return response
         
     return render(request, page_name)
 
