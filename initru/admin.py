@@ -81,7 +81,7 @@ class inst(admin.ModelAdmin):
 # Результаты
 @admin.register(res)
 class res(admin.ModelAdmin):
-    list_display = ['user', 'instruction', 'quiz','date_instruction', 'result', 'mark']
+    list_display = ['user', 'instruction', 'quiz','date_instruction','date_instruction_end', 'result', 'mark']
 
 # тесты
 @admin.register(test)

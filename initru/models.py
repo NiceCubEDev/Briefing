@@ -51,7 +51,7 @@ class City(models.Model):
         verbose_name_plural = 'Города'
 
     def __str__(self):
-        return self.name_city
+        return f'{self.name_city}'
 
 
 # инструктажи
@@ -65,7 +65,7 @@ class inst(models.Model):
     )
 
     def __str__(self):
-        return self.name_instruction
+        return f'{self.name_instruction}'
 
     class Meta:
         verbose_name = 'Инструктаж'
@@ -105,7 +105,7 @@ class role(models.Model):
         verbose_name_plural = 'Роли'
 
     def __str__(self):
-        return self.name_role
+        return f'{self.name_role}'
 
 # группы
 class Groups(models.Model):
@@ -123,7 +123,7 @@ class Groups(models.Model):
         verbose_name_plural = 'Группы'
 
     def __str__(self):
-        return self.name_group
+        return f'{self.name_group}'
 
 # типы пользователей
 class typeuser(models.Model):
@@ -137,7 +137,7 @@ class typeuser(models.Model):
         verbose_name_plural = 'Тип пользователей'
 
     def __str__(self):
-        return self.name_type_user
+        return f'{self.name_type_user}'
 
 # тест
 class test(models.Model):
@@ -303,6 +303,7 @@ class res(models.Model):
     instruction  = models.ForeignKey( inst, on_delete=models.CASCADE, verbose_name='Инструктаж')
     quiz = models.ForeignKey(test, on_delete=models.CASCADE, verbose_name= 'Тест')
     date_instruction = models.DateTimeField( 'Дата прохождения инструктажа')
+    date_instruction_end = models.DateTimeField('Повторное прохождение')
     result = models.IntegerField( 'Результат в %')
     mark = models.CharField('Прошел', max_length=255)
 
