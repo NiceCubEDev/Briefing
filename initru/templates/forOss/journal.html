@@ -20,14 +20,14 @@
         <div class = 'float-end mb-2'>
             <form>
                 {% csrf_token %}
-                <button class = 'btn btn-primary'>
+                <button class = 'btn btn-dark'>
                     <i class="fa-regular fa-circle-down mx-2"></i>
                     Импортировать в документ
                 </button>
             </form>
         </div>
         <p class='fs-5' style='font-family: "Inter-Bold";'>Фильтрация:</p>
-        <form>
+        <form id="filter-form">
             {% csrf_token %}
             <div class = 'row'>
                 <div class = 'col'>
@@ -38,7 +38,7 @@
                         <label for="id_type_user">
                             Тип пользователя
                         </label>
-                        <select class='form-control' name="type_user" id="id_type_user">
+                        <select class='form-control form-control-sm' name="type_user" id="id_type_user">
                             <option selected class='text-warning fw-bold text-uppercase' value="">Не выбран</option>
                             {% for t in type_users %}
                             <option value="{{ t.id }}">{{ forloop.counter }}. {{ t.name_type_user }}</option>
@@ -54,7 +54,7 @@
                         <label for="id_type_brief">
                             Выберите тип пользователя
                         </label>
-                        <select class='form-control' name="type_brief" id="id_type_brief">
+                        <select class='form-control form-control-sm' name="type_brief" id="id_type_brief">
                             <option selected class='text-warning fw-bold text-uppercase' value="">Не выбран</option>
                             {% for t in type_brief %}
                             <option value="{{ t.id }}">{{ forloop.counter }}. {{ t.name_instruction }}</option>
@@ -70,7 +70,7 @@
                         <label for="id_group">
                             Выберите необходимую группу
                         </label>
-                        <select class='form-control' name="group" id="id_group">
+                        <select class='form-control form-control-sm' name="group" id="id_group">
                             <option selected class='text-warning fw-bold text-uppercase' value="">Не выбран</option>
                             {% for t in groups %}
                             <option value="{{ t.id }}">{{ forloop.counter }}. {{ t.name_group }}</option>
@@ -92,7 +92,7 @@
                         <label for="id_type_user">
                             Выберите необходимый тест
                         </label>
-                        <select class='form-control' name="type_user" id="id_type_user">
+                        <select class='form-control form-control-sm' name="type_user" id="id_type_user">
                             <option selected class='text-warning fw-bold text-uppercase' value="">Не выбран</option>
                             {% for q in quiz %}
                             <option value="{{ q.id }}">{{ forloop.counter }}. {{ q.name_test }} - {{ q.type_user }}</option>
@@ -108,7 +108,7 @@
                         <label for="id_date_start">
                             Выберите дату прохождения инструктажа
                         </label>
-                        <input class = 'form-control' name = 'date_start' id ='id_date_start' type="date" placeholder="Выберите дату">
+                        <input class = 'form-control form-control-sm' name = 'date_start' id ='id_date_start' type="date" placeholder="Выберите дату">
                     </div>
 
                     <!--  -->
@@ -117,7 +117,7 @@
                         <label for="id_date_start">
                             Выберите дату повторного прохождения инструктажа
                         </label>
-                        <input class = 'form-control' name = 'date_start' id ='id_date_start' type="date" placeholder="Выберите дату">
+                        <input class = 'form-control form-control-sm' name = 'date_start' id ='id_date_start' type="date" placeholder="Выберите дату">
                     </div>
 
                     <!--  -->
