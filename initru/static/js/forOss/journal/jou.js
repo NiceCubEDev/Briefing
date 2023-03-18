@@ -1,7 +1,14 @@
-console.log('comming soon!')
 
 $('#filter-form').submit((e)=>{
     e.preventDefault();
 
-    console.log('comming soon!')
+    const dataFilter = {}
+    dataFilter['csrfmiddlewaretoken'] = $('input[name=""]')
+
+    // $.ajax({
+    //     async:True,
+    //     type:"POST",
+    //     data:
+
+    // });
 })

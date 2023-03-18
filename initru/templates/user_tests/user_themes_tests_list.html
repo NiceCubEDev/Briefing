@@ -12,7 +12,7 @@
         Назад
     </a>
     <p class = 'fs-5 text-uppercase mt-3' style="font-family: 'Inter-Bold'; color:#E7882B;">Выберите инструктаж</p>
-    <div class="list-group mt-3">
+    <div class="list-group mt-3" style='font-family: "Inter-Regular";'>
         {% for item in themes %}
             <a class="list-group-item list-group-item-action" href="{% url 'test_list' item.id %}">{{ item.name_instruction }}</a>
         {% endfor %}

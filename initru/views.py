@@ -88,13 +88,14 @@ def journalView(request):
     obj_type_users = typeuser.objects.all()
     obj_groups = Groups.objects.all()
     obj_quizes = test.objects.all()
-
+    obj_results_user = res.objects.filter(mark='Не сдан')
 
     values = {
         'type_brief': obj_briefs,
         'type_users': obj_type_users,
         'groups': obj_groups,
         'quiz':obj_quizes,
+        'users':obj_results_user,
     }
 
     return render(request, page_name, values)

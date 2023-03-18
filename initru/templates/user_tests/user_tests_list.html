@@ -43,7 +43,7 @@
         Список тестов:
     </p>    
 
-    <div class="list-group mt-3">
+    <div class="list-group mt-3" style='font-family: "Inter-Regular";'>
         {% for item in test %}
             <button class="btn-quiz list-group-item list-group-item-action" data-brief-name = "{{item.instruction.name_instruction }}" data-brief-pk='{{item.instruction.pk }}' data-quiz-pk="{{ item.id }}" data-quiz-name="{{item.name_test}}" data-quiz-time = "{{ item.time }}" data-pass ="{{ item.required_score_to_pass }}" data-questions='{{ item.number_of_questions }}' data-bs-target="#staticBackdrop" data-file-link = '{{ item.file.url }}' data-bs-toggle="modal">{{ forloop.revcounter }}. {{ item.name_test }}</button>
         {% empty %}
