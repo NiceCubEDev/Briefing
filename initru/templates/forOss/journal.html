@@ -41,9 +41,9 @@
                         <select class='form-control  ' name="type_user" id="id_type_user">
                             <option selected class='text-warning fw-bold text-uppercase' value="">Не выбран</option>
                             {% for t in type_users %}
-                            <option value="{{ t.id }}">{{ forloop.counter }}. {{ t.name_type_user }}</option>
+                                <option value="{{ t.id }}">{{ forloop.counter }}. {{ t.name_type_user }}</option>
                             {% empty %}
-                            <option class='text-danger fw-bold text-uppercase' value="error">В БД пусто</option>
+                                <option class='text-danger fw-bold text-uppercase' value="error">В БД пусто</option>
                             {% endfor %}
                         </select>
                     </div>
@@ -52,14 +52,14 @@
 
                     <div class='box mb-2'>
                         <label for="id_type_brief">
-                            Выберите тип пользователя
+                            Выберите тип инструктажа
                         </label>
                         <select class='form-control  ' name="type_brief" id="id_type_brief">
                             <option selected class='text-warning fw-bold text-uppercase' value="">Не выбран</option>
                             {% for t in type_brief %}
-                            <option value="{{ t.id }}">{{ forloop.counter }}. {{ t.name_instruction }}</option>
+                                <option value="{{ t.id }}">{{ forloop.counter }}. {{ t.name_instruction }}</option>
                             {% empty %}
-                            <option class='text-danger fw-bold text-uppercase' value="error">В БД пусто</option>
+                                <option class='text-danger fw-bold text-uppercase' value="error">В БД пусто</option>
                             {% endfor %}
                         </select>
                     </div>
@@ -89,15 +89,15 @@
                     <!--  -->
 
                     <div class='box mb-2'>
-                        <label for="id_type_user">
+                        <label for="id_quiz">
                             Выберите необходимый тест
                         </label>
-                        <select class='form-control  ' name="type_user" id="id_type_user">
+                        <select class='form-control' name="quiz" id="id_quiz">
                             <option selected class='text-warning fw-bold text-uppercase' value="">Не выбран</option>
                             {% for q in quiz %}
-                            <option value="{{ q.id }}">{{ forloop.counter }}. {{ q.name_test }} - {{ q.type_user }}</option>
+                                <option value="{{ q.id }}">{{ forloop.counter }}. {{ q.name_test }} - {{ q.type_user }}</option>
                             {% empty %}
-                            <option class='text-danger fw-bold text-uppercase' value="error">В БД пусто</option>
+                                <option class='text-danger fw-bold text-uppercase' value="error">В БД пусто</option>
                             {% endfor %}
                         </select>
                     </div>
@@ -117,7 +117,7 @@
                         <label for="id_date_start">
                             Выберите дату повторного прохождения инструктажа
                         </label>
-                        <input class = 'form-control  ' name = 'date_start' id ='id_date_start' type="date" placeholder="Выберите дату">
+                        <input class = 'form-control' name = 'date_end' id ='id_date_end' type="date" placeholder="Выберите дату">
                     </div>
 
                     <!--  -->

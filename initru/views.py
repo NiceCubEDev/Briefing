@@ -90,6 +90,11 @@ def journalView(request):
     obj_quizes = test.objects.all()
     obj_results_user = res.objects.filter(mark='Не сдан')
 
+
+    if request.method == "POST":
+        print(request.POST)
+        
+
     values = {
         'type_brief': obj_briefs,
         'type_users': obj_type_users,
