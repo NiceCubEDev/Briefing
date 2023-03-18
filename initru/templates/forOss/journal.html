@@ -2,12 +2,12 @@
 {% load static %}
 
 {% block title %}
-Специалист: Журнал
+    Специалист: Журнал
 {% endblock title %}
 
 
 {% block scripts %}
-<script defer src="{% static 'js/forOss/journal/jou.js' %}"></script>
+    <script defer src="{% static 'js/forOss/journal/jou.js' %}"></script>
 {% endblock scripts %}
 
 
@@ -17,10 +17,20 @@
         <p class="text-center fw-bold fs-4" style='color:#E7882B; font-family: "Inter-Bold";'>Журнал</p>
     </div>
     <div class='container'>
+        <div class = 'float-end mb-2'>
+            <form>
+                {% csrf_token %}
+                <button class = 'btn btn-primary'>
+                    <i class="fa-regular fa-circle-down mx-2"></i>
+                    Импортировать в документ
+                </button>
+            </form>
+        </div>
         <p class='fs-5' style='font-family: "Inter-Bold";'>Фильтрация:</p>
         <form>
+            {% csrf_token %}
             <div class = 'row'>
-                <div class = 'col' style='max-width: 300px;'>
+                <div class = 'col'>
 
                     <!--  -->
 
@@ -29,9 +39,9 @@
                             Тип пользователя
                         </label>
                         <select class='form-control' name="type_user" id="id_type_user">
-                            <option class='text-warning fw-bold text-uppercase' value="">Не выбран</option>
+                            <option selected class='text-warning fw-bold text-uppercase' value="">Не выбран</option>
                             {% for t in type_users %}
-                            <option value="{{ t.id }}">{{ t.name_type_user }}</option>
+                            <option value="{{ t.id }}">{{ forloop.counter }}. {{ t.name_type_user }}</option>
                             {% empty %}
                             <option class='text-danger fw-bold text-uppercase' value="error">В БД пусто</option>
                             {% endfor %}
@@ -45,9 +55,9 @@
                             Выберите тип пользователя
                         </label>
                         <select class='form-control' name="type_brief" id="id_type_brief">
-                            <option class='text-warning fw-bold text-uppercase' value="">Не выбран</option>
+                            <option selected class='text-warning fw-bold text-uppercase' value="">Не выбран</option>
                             {% for t in type_brief %}
-                            <option value="{{ t.id }}">{{ t.name_instruction }}</option>
+                            <option value="{{ t.id }}">{{ forloop.counter }}. {{ t.name_instruction }}</option>
                             {% empty %}
                             <option class='text-danger fw-bold text-uppercase' value="error">В БД пусто</option>
                             {% endfor %}
@@ -61,9 +71,9 @@
                             Выберите необходимую группу
                         </label>
                         <select class='form-control' name="group" id="id_group">
-                            <option class='text-warning fw-bold text-uppercase' value="">Не выбран</option>
+                            <option selected class='text-warning fw-bold text-uppercase' value="">Не выбран</option>
                             {% for t in groups %}
-                            <option value="{{ t.id }}">{{ t.name_group }}</option>
+                            <option value="{{ t.id }}">{{ forloop.counter }}. {{ t.name_group }}</option>
                             {% empty %}
                             <option class='text-danger fw-bold text-uppercase' value="error">В БД пусто</option>
                             {% endfor %}
@@ -74,18 +84,18 @@
 
                 </div>
 
-                <div class = 'col' style='max-width: 300px;'>
+                <div class = 'col-6'>
 
                     <!--  -->
 
                     <div class='box mb-2'>
                         <label for="id_type_user">
-                            Тип пользователя
+                            Выберите необходимый тест
                         </label>
                         <select class='form-control' name="type_user" id="id_type_user">
-                            <option class='text-warning fw-bold text-uppercase' value="">Не выбран</option>
-                            {% for t in type_users %}
-                            <option value="{{ t.id }}">{{ t.name_type_user }}</option>
+                            <option selected class='text-warning fw-bold text-uppercase' value="">Не выбран</option>
+                            {% for q in quiz %}
+                            <option value="{{ q.id }}">{{ forloop.counter }}. {{ q.name_test }} - {{ q.type_user }}</option>
                             {% empty %}
                             <option class='text-danger fw-bold text-uppercase' value="error">В БД пусто</option>
                             {% endfor %}
@@ -95,33 +105,19 @@
                     <!--  -->
 
                     <div class='box mb-2'>
-                        <label for="id_type_brief">
-                            Выберите тип пользователя
+                        <label for="id_date_start">
+                            Выберите дату прохождения инструктажа
                         </label>
-                        <select class='form-control' name="type_brief" id="id_type_brief">
-                            <option class='text-warning fw-bold text-uppercase' value="">Не выбран</option>
-                            {% for t in type_brief %}
-                            <option value="{{ t.id }}">{{ t.name_instruction }}</option>
-                            {% empty %}
-                            <option class='text-danger fw-bold text-uppercase' value="error">В БД пусто</option>
-                            {% endfor %}
-                        </select>
+                        <input class = 'form-control' name = 'date_start' id ='id_date_start' type="date" placeholder="Выберите дату">
                     </div>
 
                     <!--  -->
 
                     <div class='box mb-2'>
-                        <label for="id_group">
-                            Выберите необходимую группу
+                        <label for="id_date_start">
+                            Выберите дату повторного прохождения инструктажа
                         </label>
-                        <select class='form-control' name="group" id="id_group">
-                            <option class='text-warning fw-bold text-uppercase' value="">Не выбран</option>
-                            {% for t in groups %}
-                            <option value="{{ t.id }}">{{ t.name_group }}</option>
-                            {% empty %}
-                            <option class='text-danger fw-bold text-uppercase' value="error">В БД пусто</option>
-                            {% endfor %}
-                        </select>
+                        <input class = 'form-control' name = 'date_start' id ='id_date_start' type="date" placeholder="Выберите дату">
                     </div>
 
                     <!--  -->
@@ -129,8 +125,47 @@
                 </div>
             </div>
 
-
+            <div class = 'float-end'>
+                <button class = 'btn btn-outline-orange'>
+                    <i class="fa-solid fa-bolt mx-2"></i>
+                    Выполнить
+                </button>
+            </div>
         </form>
+    </div>
+    <div class = 'tables'>
+        <table class = 'table table-hover table-sm'>
+            <thead>
+                <tr>
+                    <th class = 'text-secondary' scope="col">id result</th>
+                    <th class = 'text-secondary' scope="col">Фамилия</th>
+                    <th class = 'text-secondary' scope="col">Имя</th>
+                    <th class = 'text-secondary' scope="col">Отчество</th>
+                    <th class = 'text-secondary' scope="col">Группа</th>
+                    <th class = 'text-secondary' scope="col">Тип инструктажа</th>
+                    <th class = 'text-secondary' scope="col">Тест</th>
+                    <th class = 'text-secondary' scope="col">Дата прохождения</th>
+                    <th class = 'text-secondary' scope="col">Дата повторного прохождения</th>
+                    <th class = 'text-secondary' scope="col">Процент прохождения</th>
+                    <th class = 'text-secondary' scope="col">Итог</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <th>1</th>
+                    <th>1</th>
+                    <th>1</th>
+                    <th>1</th>
+                    <th>1</th>
+                    <th>1</th>
+                    <th>1</th>
+                    <th>1</th>
+                    <th>1</th>
+                    <th>1</th>
+                    <th>1</th>
+                </tr>
+            </tbody>
+        </table>
     </div>
 </div>
 {% endblock content %}

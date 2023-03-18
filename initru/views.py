@@ -87,11 +87,14 @@ def journalView(request):
     obj_briefs = inst.objects.all()
     obj_type_users = typeuser.objects.all()
     obj_groups = Groups.objects.all()
+    obj_quizes = test.objects.all()
+
 
     values = {
         'type_brief': obj_briefs,
         'type_users': obj_type_users,
         'groups': obj_groups,
+        'quiz':obj_quizes,
     }
 
     return render(request, page_name, values)
@@ -287,9 +290,7 @@ def getDetailProfile(request):
 def actionUserView(request):
 
     page_name = 'action.html'
-
-
-        
+ 
     return render(request, page_name)
 
 
