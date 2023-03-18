@@ -52,7 +52,7 @@ body::-webkit-scrollbar-thumb {
 .not_visible { 
     display: none;
 }
-
+.inst_list-box:hover { box-shadow: 2px 3px 10px #E7882B; }
 .inst_list-box:nth-child(1) {
     position: absolute;
     left:0px;
