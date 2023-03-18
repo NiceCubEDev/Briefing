@@ -2,21 +2,135 @@
 {% load static %}
 
 {% block title %}
-    Специалист: Журнал
+Специалист: Журнал
 {% endblock title %}
-    
+
 
 {% block scripts %}
-    <script defer src="{% static 'js/forOss/journal/jou.js' %}"></script>
+<script defer src="{% static 'js/forOss/journal/jou.js' %}"></script>
 {% endblock scripts %}
 
 
 {% block content %}
-    <div class = 'container'>
-        <p class="text-center">
-            
-        </p>
+<div>
+    <div>
+        <p class="text-center fw-bold fs-4" style='color:#E7882B; font-family: "Inter-Bold";'>Журнал</p>
     </div>
+    <div class='container'>
+        <p class='fs-5' style='font-family: "Inter-Bold";'>Фильтрация:</p>
+        <form>
+            <div class = 'row'>
+                <div class = 'col' style='max-width: 300px;'>
+
+                    <!--  -->
+
+                    <div class='box mb-2'>
+                        <label for="id_type_user">
+                            Тип пользователя
+                        </label>
+                        <select class='form-control' name="type_user" id="id_type_user">
+                            <option class='text-warning fw-bold text-uppercase' value="">Не выбран</option>
+                            {% for t in type_users %}
+                            <option value="{{ t.id }}">{{ t.name_type_user }}</option>
+                            {% empty %}
+                            <option class='text-danger fw-bold text-uppercase' value="error">В БД пусто</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+
+                    <!--  -->
+
+                    <div class='box mb-2'>
+                        <label for="id_type_brief">
+                            Выберите тип пользователя
+                        </label>
+                        <select class='form-control' name="type_brief" id="id_type_brief">
+                            <option class='text-warning fw-bold text-uppercase' value="">Не выбран</option>
+                            {% for t in type_brief %}
+                            <option value="{{ t.id }}">{{ t.name_instruction }}</option>
+                            {% empty %}
+                            <option class='text-danger fw-bold text-uppercase' value="error">В БД пусто</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+
+                    <!--  -->
+
+                    <div class='box mb-2'>
+                        <label for="id_group">
+                            Выберите необходимую группу
+                        </label>
+                        <select class='form-control' name="group" id="id_group">
+                            <option class='text-warning fw-bold text-uppercase' value="">Не выбран</option>
+                            {% for t in groups %}
+                            <option value="{{ t.id }}">{{ t.name_group }}</option>
+                            {% empty %}
+                            <option class='text-danger fw-bold text-uppercase' value="error">В БД пусто</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+
+                    <!--  -->
+
+                </div>
+
+                <div class = 'col' style='max-width: 300px;'>
+
+                    <!--  -->
+
+                    <div class='box mb-2'>
+                        <label for="id_type_user">
+                            Тип пользователя
+                        </label>
+                        <select class='form-control' name="type_user" id="id_type_user">
+                            <option class='text-warning fw-bold text-uppercase' value="">Не выбран</option>
+                            {% for t in type_users %}
+                            <option value="{{ t.id }}">{{ t.name_type_user }}</option>
+                            {% empty %}
+                            <option class='text-danger fw-bold text-uppercase' value="error">В БД пусто</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+
+                    <!--  -->
+
+                    <div class='box mb-2'>
+                        <label for="id_type_brief">
+                            Выберите тип пользователя
+                        </label>
+                        <select class='form-control' name="type_brief" id="id_type_brief">
+                            <option class='text-warning fw-bold text-uppercase' value="">Не выбран</option>
+                            {% for t in type_brief %}
+                            <option value="{{ t.id }}">{{ t.name_instruction }}</option>
+                            {% empty %}
+                            <option class='text-danger fw-bold text-uppercase' value="error">В БД пусто</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+
+                    <!--  -->
+
+                    <div class='box mb-2'>
+                        <label for="id_group">
+                            Выберите необходимую группу
+                        </label>
+                        <select class='form-control' name="group" id="id_group">
+                            <option class='text-warning fw-bold text-uppercase' value="">Не выбран</option>
+                            {% for t in groups %}
+                            <option value="{{ t.id }}">{{ t.name_group }}</option>
+                            {% empty %}
+                            <option class='text-danger fw-bold text-uppercase' value="error">В БД пусто</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+
+                    <!--  -->
+
+                </div>
+            </div>
+
+
+        </form>
+    </div>
+</div>
 {% endblock content %}
-    
-    

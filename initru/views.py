@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 from .forms import contactForm, CreateUserForm, ChangeNumberUser, ChangeEmailUser, ChangeAvatarUser, ChangePasswordUser
 from django.contrib import messages
-from .models import inst, complex, CustomUser, test, question, answers, res, downloadInstructionsForTests
+from .models import inst, complex, CustomUser, test, question, answers, res, downloadInstructionsForTests, typeuser, Groups
 from django.http import JsonResponse, HttpResponseBadRequest, HttpResponse
 from django.contrib.auth.decorators import login_required
 from django.utils import timezone
@@ -83,7 +83,18 @@ def journalView(request):
     
     page_name = 'forOss/journal.html'
 
-    return render(request, page_name)
+
+    obj_briefs = inst.objects.all()
+    obj_type_users = typeuser.objects.all()
+    obj_groups = Groups.objects.all()
+
+    values = {
+        'type_brief': obj_briefs,
+        'type_users': obj_type_users,
+        'groups': obj_groups,
+    }
+
+    return render(request, page_name, values)
 
 # это профиль
 @login_required  # обязательная авторизация
