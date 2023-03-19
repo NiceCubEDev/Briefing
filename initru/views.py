@@ -10,7 +10,6 @@ from deeppavlov import build_model
 
 
 #чат-бот
-@login_required
 def chatbot_responseView(request):
 
     page_name = 'bot.html' # страница
@@ -83,7 +82,7 @@ def contactPageView(request):
 def journalView(request):
     
     page_name = 'forOss/journal.html'
-
+    obj_res = None # Для результатов
     obj_briefs = inst.objects.all()
     obj_type_users = typeuser.objects.all()
     obj_groups = Groups.objects.all()
@@ -92,27 +91,49 @@ def journalView(request):
 
 
     if request.method == "POST":
-        print(request.POST)
-        try:
-            obj_result = list(
-                res.objects.filter(
-                    user__type_user = request.POST['id_type_user'], 
-                    instruction = request.POST['id_brief'], 
-                    user__groupStud_id=request.POST['id_group'],
-                    quiz__id = request.POST['id_quiz'],
-                    date_instruction__range=(request.POST['id_date_start'] or None, 
-                                             timezone.localtime(timezone.now()).replace(hour=0, minute=0, second=0, microsecond=0)),
-                    
-                ).values()
+
+
+        obj_result = res.objects.filter(
+                user__type_user = request.POST['id_type_user'], 
+                instruction = request.POST['id_brief'], 
+                user__groupStud_id=request.POST['id_group'],
+                quiz__id = request.POST['id_quiz'],
+                date_instruction__range=(request.POST['id_date_start'] or None, 
+                                        timezone.localtime(timezone.now()).replace(hour=0, minute=0, second=0, microsecond=0)),  
             )
+        
+        if len(obj_result) > 0:
+            data_list=[] # лист для данных после фильтра
+            for row in obj_result:
+        
+                item = {
+                    'surname':row.user.last_name, 
+                    'name':row.user.first_name,
+                    'patro':row.user.patronymic, 
+                    'group':row.user.groupStud, # группа
+                    'type_user':row.user.type_user, # тип пользователя
+                    'type_user_test':row.quiz.type_user, # тип пользователя (параметр в тестах)
+                    'brief':row.instruction.name_instruction, # название инструктажа
+                    'quiz_name':row.quiz.name_test, 
+                    'date_start':row.date_instruction,
+                    'date_end':row.date_instruction_end,
+                    'score':row.result,
+                    'mark':row.mark,
+                }
+            
+                data_list.append(item)
+
+
+            obj_res = list(dict(data_list))
+            obj_res = obj_res[0]
             message = 'Успешно!'
             status = 'ok'
-        except res.DoesNotExist:
-            message = 'Провал!'
+        else:    
+            obj_result = 'Нет данных'
+            message = 'Выберите правильные параметры.'
             status = 'error'
 
-        print(obj_result)
-        return JsonResponse({'result':obj_result, 'status':status,'message':message})
+        return JsonResponse({'result':obj_res, 'status':status,'message':message})
 
     values = {
         'type_brief': obj_briefs,

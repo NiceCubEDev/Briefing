@@ -122,22 +122,21 @@
 
                     <!--  -->
 
-                    <div class='box mb-2'>
-                        <label for="id_date_start">
-                            Выберите статус
-                        </label>
-                        <select class='form-control' name="mark" id="id_mark">
-                            <option selected class='text-warning fw-bold text-uppercase' value="">Не выбран</option>
-                            <option value="Сдан">Сдан</option>
-                            <option value="Не сдан">Не сдан</option>
-                        </select>
-                    </div>
 
                     <!--  -->
 
                 </div>
             </div>
-
+            <div class='box mb-2'>
+                <label for="id_date_start">
+                    Выберите статус
+                </label>
+                <select class='form-control' name="mark" id="id_mark">
+                    <option selected class='text-warning fw-bold text-uppercase' value="">Не выбран</option>
+                    <option value="Сдан">Сдан</option>
+                    <option value="Не сдан">Не сдан</option>
+                </select>
+            </div>
             <div class = 'float-end'>
                 <button class = 'btn btn-outline-orange'>
                     <i class="fa-solid fa-bolt mx-2"></i>
@@ -199,11 +198,11 @@
                         <td>
                             {{ u.date_instruction }}
                         </td>
-                        <td>
+                        <td class="text-center">
                             {{ u.date_instruction_end }}
                         </td>
-                        <td>
-                            {{ u.date_instruction }}
+                        <td class="text-center">
+                            {{ u.result }} %
                         </td>
                         <td>
                            
