@@ -1,12 +1,13 @@
 from django.shortcuts import render, redirect
 from .forms import contactForm, CreateUserForm, ChangeNumberUser, ChangeEmailUser, ChangeAvatarUser, ChangePasswordUser
 from django.contrib import messages
+from django.db.models import Q
 from .models import inst, complex, CustomUser, test, question, answers, res, downloadInstructionsForTests, typeuser, Groups
 from django.http import JsonResponse, HttpResponseBadRequest, HttpResponse
 from django.contrib.auth.decorators import login_required
 from django.utils import timezone
 from deeppavlov import build_model
-from docx import Document
+
 
 #чат-бот
 @login_required
@@ -87,14 +88,25 @@ def journalView(request):
     obj_type_users = typeuser.objects.all()
     obj_groups = Groups.objects.all()
     obj_quizes = test.objects.all()
-    obj_results_user = res.objects.filter(mark='Не сдан')
+    obj_results_user = res.objects.all()
 
 
     if request.method == "POST":
         print(request.POST)
-        obj_result = list(res.objects.filter(quiz = request.POST['id_quiz'] or None, mark = 'Сдан', user__type_user=request.POST['id_type_user'] or None, date_instruction=request.POST['']).values())
+        if request.POST['id_type_user'] != '':
+            obj_result = list(
+                res.objects.filter(
+                    quiz__type_user_id = request.POST['id_type_user'], instruction = request.POST['id_brief']
+                ).values()
+            )
+        else: 
+            obj_result = list(
+                res.objects.filter(
+                    instruction = request.POST['id_brief']
+                ).values()
+            )
         status = 'ok'
-
+        print(obj_result)
         return JsonResponse({'result':obj_result, 'status':status})
 
     values = {
