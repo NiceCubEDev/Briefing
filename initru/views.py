@@ -107,7 +107,6 @@ def journalView(request):
             for row in obj_result:
             
                 data_list.append( 
-                    dict(
                         {
                         'surname':row.user.last_name, 
                         'name':row.user.first_name,
@@ -122,9 +121,7 @@ def journalView(request):
                         'score':row.result,
                         'mark':row.mark,
                         }
-                    )
                 )
-
 
             obj_res = data_list
             message = 'Успешно!'
