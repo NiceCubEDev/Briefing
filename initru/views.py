@@ -83,7 +83,6 @@ def journalView(request):
     
     page_name = 'forOss/journal.html'
 
-
     obj_briefs = inst.objects.all()
     obj_type_users = typeuser.objects.all()
     obj_groups = Groups.objects.all()
@@ -93,7 +92,10 @@ def journalView(request):
 
     if request.method == "POST":
         print(request.POST)
-        
+        obj_result = res.objects.filter(quiz = request.POST['id_quiz'] or None, mark = 'Сдан').values()
+        status = 'ok'
+
+        return JsonResponse({'result':obj_result, 'status':status})
 
     values = {
         'type_brief': obj_briefs,

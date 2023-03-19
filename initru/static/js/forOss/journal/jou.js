@@ -17,10 +17,10 @@ $('#filter-form').submit((e)=>{
         url: window.location.href,
         data: dataFilter,
         success:(resp)=>{
-            console.log('success');
+            console.log(resp);
         },
         errors:(resp)=>{
-            console.log('error');
+            console.log(resp);
         },
     });
 
