@@ -105,27 +105,28 @@ def journalView(request):
         if len(obj_result) > 0:
             data_list=[] # лист для данных после фильтра
             for row in obj_result:
-        
-                item = {
-                    'surname':row.user.last_name, 
-                    'name':row.user.first_name,
-                    'patro':row.user.patronymic, 
-                    'group':row.user.groupStud, # группа
-                    'type_user':row.user.type_user, # тип пользователя
-                    'type_user_test':row.quiz.type_user, # тип пользователя (параметр в тестах)
-                    'brief':row.instruction.name_instruction, # название инструктажа
-                    'quiz_name':row.quiz.name_test, 
-                    'date_start':row.date_instruction,
-                    'date_end':row.date_instruction_end,
-                    'score':row.result,
-                    'mark':row.mark,
-                }
             
-                data_list.append(item)
+                data_list.append( 
+                    dict(
+                        {
+                        'surname':row.user.last_name, 
+                        'name':row.user.first_name,
+                        'patro':row.user.patronymic, 
+                        'group':row.user.groupStud, # группа
+                        'type_user':row.user.type_user, # тип пользователя
+                        'type_user_test':row.quiz.type_user, # тип пользователя (параметр в тестах)
+                        'brief':row.instruction.name_instruction, # название инструктажа
+                        'quiz_name':row.quiz.name_test, 
+                        'date_start':row.date_instruction,
+                        'date_end':row.date_instruction_end,
+                        'score':row.result,
+                        'mark':row.mark,
+                        }
+                    )
+                )
 
 
-            obj_res = list(dict(data_list))
-            obj_res = obj_res[0]
+            obj_res = data_list
             message = 'Успешно!'
             status = 'ok'
         else:    
