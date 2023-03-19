@@ -93,21 +93,26 @@ def journalView(request):
 
     if request.method == "POST":
         print(request.POST)
-        if request.POST['id_type_user'] != '':
+        try:
             obj_result = list(
                 res.objects.filter(
-                    quiz__type_user_id = request.POST['id_type_user'], instruction = request.POST['id_brief']
+                    user__type_user = request.POST['id_type_user'], 
+                    instruction = request.POST['id_brief'], 
+                    user__groupStud_id=request.POST['id_group'],
+                    quiz__id = request.POST['id_quiz'],
+                    date_instruction__range=(request.POST['id_date_start'] or None, 
+                                             timezone.localtime(timezone.now()).replace(hour=0, minute=0, second=0, microsecond=0)),
+                    
                 ).values()
             )
-        else: 
-            obj_result = list(
-                res.objects.filter(
-                    instruction = request.POST['id_brief']
-                ).values()
-            )
-        status = 'ok'
+            message = 'Успешно!'
+            status = 'ok'
+        except res.DoesNotExist:
+            message = 'Провал!'
+            status = 'error'
+
         print(obj_result)
-        return JsonResponse({'result':obj_result, 'status':status})
+        return JsonResponse({'result':obj_result, 'status':status,'message':message})
 
     values = {
         'type_brief': obj_briefs,

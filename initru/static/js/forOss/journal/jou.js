@@ -10,7 +10,7 @@ $('#filter-form').submit((e)=>{
     dataFilter['id_quiz'] = $('#id_quiz').val();
     dataFilter['id_date_start'] = $('#id_date_start').val();
     dataFilter['id_date_end'] = $('#id_date_end').val();
- 
+    dataFilter['mark'] = $('#id_mark').val();
 
     $.ajax({
         type:"POST",
