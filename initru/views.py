@@ -126,7 +126,9 @@ def journalView(request):
             obj_res = data_list
             message = 'Успешно!'
             status = 'ok'
-        else:    
+
+        else: 
+               
             obj_result = 'Нет данных'
             message = 'Выберите правильные параметры.'
             status = 'error'
