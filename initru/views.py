@@ -92,7 +92,7 @@ def journalView(request):
 
     if request.method == "POST":
         print(request.POST)
-        obj_result = res.objects.filter(quiz = request.POST['id_quiz'] or None, mark = 'Сдан').values()
+        obj_result = list(res.objects.filter(quiz = request.POST['id_quiz'] or None, mark = 'Сдан', user__type_user=request.POST['id_type_user'] or None, date_instruction=request.POST['']).values())
         status = 'ok'
 
         return JsonResponse({'result':obj_result, 'status':status})
