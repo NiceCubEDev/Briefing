@@ -103,7 +103,9 @@ def journalView(request):
             )
         
         if len(obj_result) > 0:
+
             data_list=[] # лист для данных после фильтра
+
             for row in obj_result:
             
                 data_list.append( 
@@ -128,7 +130,7 @@ def journalView(request):
             status = 'ok'
 
         else: 
-               
+
             obj_result = 'Нет данных'
             message = 'Выберите правильные параметры.'
             status = 'error'
@@ -144,6 +146,7 @@ def journalView(request):
     }
 
     return render(request, page_name, values)
+
 
 # это профиль
 @login_required  # обязательная авторизация
