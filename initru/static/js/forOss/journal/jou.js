@@ -20,12 +20,7 @@ $('#filter-form').submit((e)=>{
         data: dataFilter,
         success:(resp)=>{
             i=0
-            // $('#id_tbody').addClass('none');
-
-            let tr = document.createAttribute
-
             resp.result.forEach(elem => {
-
                 let date = new Date(elem.date_start)
                 let date2 = new Date(elem.date_end)
                 i++
