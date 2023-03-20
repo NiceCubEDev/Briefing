@@ -17,18 +17,16 @@
         <p class="text-center fw-bold fs-4" style='color:#E7882B; font-family: "Inter-Bold";'>Журнал</p>
     </div>
     <div class='container' style ='font-family: "Inter-Regular";'>
-        <div class = 'float-end mb-2'>
-            <form>
-                {% csrf_token %}
-                <button class = 'btn btn-dark'>
-                    <i class="fa-regular fa-circle-down mx-2"></i>
-                    Импортировать в документ
-                </button>
-            </form>
-        </div>
+
         <p class='fs-5' style='font-family: "Inter-Bold";'>Фильтрация:</p>
         <form id="filter-form">
             {% csrf_token %}
+            <div class = 'd-flex flex-row-reverse mb-2'>
+                <button type = 'submit' class = 'btn btn-dark'>
+                    <i class="fa-regular fa-circle-down mx-2"></i>
+                    Импортировать в документ
+                </button>
+            </div>
             <div class = 'row'>
                 <div class = 'col'>
 
@@ -146,7 +144,7 @@
         </form>
     </div>
     <div class = 'tables mt-5'>
-        <table class = 'table table-hover table-sm' style="font-size: 14px;">
+        <table id = 'table' class = 'table table-hover table-sm' style="font-size: 14px;">
             <thead>
                 <tr>
                     <th class = 'text-secondary' scope="col">№</th>
