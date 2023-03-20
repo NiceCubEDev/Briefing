@@ -1,3 +1,4 @@
+// const tbody = document.
 
 $('#filter-form').submit((e)=>{
     e.preventDefault();
@@ -17,7 +18,7 @@ $('#filter-form').submit((e)=>{
         url: window.location.href,
         data: dataFilter,
         success:(resp)=>{
-            console.log(resp);
+            
         },
         errors:(resp)=>{
             console.log(resp);

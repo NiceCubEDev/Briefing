@@ -99,7 +99,8 @@ def journalView(request):
                 user__groupStud_id=request.POST['id_group'],
                 quiz__id = request.POST['id_quiz'],
                 date_instruction__range=(request.POST['id_date_start'] or None, 
-                                        timezone.localtime(timezone.now()).replace(hour=0, minute=0, second=0, microsecond=0)),  
+                                        timezone.localtime(timezone.now()).replace(hour=0, minute=0, second=0, microsecond=0) or None),  
+                mark = request.POST['mark'],
             )
         
         if len(obj_result) > 0:
@@ -107,24 +108,21 @@ def journalView(request):
             data_list=[] # лист для данных после фильтра
 
             for row in obj_result:
-                item = {
-                            'surname':str(row.user.last_name), 
-                            'name':str(row.user.first_name),
-                            'patro':str(row.user.patronymic), 
-                            'group':str(row.user.groupStud), # группа
-                            'type_user':str(row.user.type_user), # тип пользователя
-                            'type_user_test':str(row.quiz.type_user), # тип пользователя (параметр в тестах)
-                            'brief':str(row.instruction.name_instruction), # название инструктажа
-                            'quiz_name':str(row.quiz.name_test), 
-                            'date_start':row.date_instruction,
-                            'date_end':row.date_instruction_end,
-                            'score':str(row.result),
-                            'mark':str(row.mark),
-                    } 
-                # print(item)
-
-                data_list.append(item)
-            print(data_list)
+                data_list.append({
+                        'surname':str(row.user.last_name), 
+                        'name':str(row.user.first_name),
+                        'patro':str(row.user.patronymic), 
+                        'group':str(row.user.groupStud), # группа
+                        'type_user':str(row.user.type_user), # тип пользователя
+                        'type_user_test':str(row.quiz.type_user), # тип пользователя (параметр в тестах)
+                        'brief':str(row.instruction.name_instruction), # название инструктажа
+                        'quiz_name':str(row.quiz.name_test), 
+                        'date_start':row.date_instruction,
+                        'date_end':row.date_instruction_end,
+                        'score':str(row.result),
+                        'mark':str(row.mark),
+                    })
+                
             obj_res = data_list
             message = 'Успешно!'
             status = 'ok'
