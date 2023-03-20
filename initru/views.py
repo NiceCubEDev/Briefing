@@ -72,6 +72,7 @@ def aboutPageView(request):
     page_name = 'about.html'
     return render(request, page_name)
 
+
 #get_contact
 def contactPageView(request):
     page_name = 'contact.html'
@@ -92,7 +93,6 @@ def journalView(request):
 
     if request.method == "POST":
 
-
         obj_result = res.objects.filter(
                 user__type_user = request.POST['id_type_user'], 
                 instruction = request.POST['id_brief'], 
@@ -107,24 +107,24 @@ def journalView(request):
             data_list=[] # лист для данных после фильтра
 
             for row in obj_result:
-            
-                data_list.append( 
-                        {
-                        'surname':row.user.last_name, 
-                        'name':row.user.first_name,
-                        'patro':row.user.patronymic, 
-                        'group':row.user.groupStud, # группа
-                        'type_user':row.user.type_user, # тип пользователя
-                        'type_user_test':row.quiz.type_user, # тип пользователя (параметр в тестах)
-                        'brief':row.instruction.name_instruction, # название инструктажа
-                        'quiz_name':row.quiz.name_test, 
-                        'date_start':row.date_instruction,
-                        'date_end':row.date_instruction_end,
-                        'score':row.result,
-                        'mark':row.mark,
-                        }
-                )
+                item = {
+                            'surname':str(row.user.last_name), 
+                            'name':str(row.user.first_name),
+                            'patro':str(row.user.patronymic), 
+                            'group':str(row.user.groupStud), # группа
+                            'type_user':str(row.user.type_user), # тип пользователя
+                            'type_user_test':str(row.quiz.type_user), # тип пользователя (параметр в тестах)
+                            'brief':str(row.instruction.name_instruction), # название инструктажа
+                            'quiz_name':str(row.quiz.name_test), 
+                            'date_start':row.date_instruction,
+                            'date_end':row.date_instruction_end,
+                            'score':str(row.result),
+                            'mark':str(row.mark),
+                    } 
+                # print(item)
 
+                data_list.append(item)
+            print(data_list)
             obj_res = data_list
             message = 'Успешно!'
             status = 'ok'
@@ -135,7 +135,7 @@ def journalView(request):
             message = 'Выберите правильные параметры.'
             status = 'error'
 
-        return JsonResponse({'result':obj_res, 'status':status,'message':message})
+        return JsonResponse({'result':obj_res, 'status':status,'message':message}, safe=False)
 
     values = {
         'type_brief': obj_briefs,
@@ -151,6 +151,7 @@ def journalView(request):
 # это профиль
 @login_required  # обязательная авторизация
 def profileView(request):
+    
     page_name = 'profile.html'
 
     if request.method == 'POST': 
