@@ -1,4 +1,5 @@
-// const tbody = document.
+
+
 
 $('#filter-form').submit((e)=>{
     e.preventDefault();
@@ -18,7 +19,34 @@ $('#filter-form').submit((e)=>{
         url: window.location.href,
         data: dataFilter,
         success:(resp)=>{
-            
+            i=0
+            // $('#id_tbody').addClass('none');
+
+            let tr = document.createAttribute
+
+            resp.result.forEach(elem => {
+
+                let date = new Date(elem.date_start)
+                let date2 = new Date(elem.date_end)
+                i++
+                $('#id_tbody').html($(`
+                    <tr>
+                        <td>${i}</td>
+                        <td>${elem.surname}</td>
+                        <td>${elem.name}</td>
+                        <td>${elem.patro}</td>
+                        <td>${elem.group}</td>
+                        <td>${elem.type_user}</td>
+                        <td>${elem.type_user_test}</td>
+                        <td>${elem.brief}</td>
+                        <td>${elem.quiz_name}</td>
+                        <td>${date.toLocaleString()}</td>
+                        <td class = 'text-center'>${date2.toLocaleDateString()}</td>
+                        <td class = 'text-center'>${elem.score} %</td>
+                        <td class = 'text-center'>${elem.mark}</td>
+                    </tr>
+                `))
+            });
         },
         errors:(resp)=>{
             console.log(resp);

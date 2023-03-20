@@ -102,4 +102,8 @@ body::-webkit-scrollbar-thumb {
 
 .notifContainer { position: fixed; left:5px; top:5px; z-index: 1;}
 
+.none {
+    display: none;
+}
+
 
