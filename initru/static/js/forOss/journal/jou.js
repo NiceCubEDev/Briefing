@@ -1,5 +1,5 @@
 const table = document.getElementById('table');
-
+let mark;
 alertContainer = document.getElementById('alertBox');
 
 
@@ -41,13 +41,14 @@ $('#filter-form').submit((e)=>{
                 const tbody = document.createElement("tbody") // создаем боди таблицы
                 tbody.style='font-family:"Inter-Regular"'; // стиль
                 tbody.setAttribute("id", "id_tbody"); // id 
-
+                
                 resp.result.forEach(elem => { // проходимся по результатам
                     
                     let date = new Date(elem.date_start)
                     let date2 = new Date(elem.date_end)
                     i++
-                    let mark 
+
+                    
     
                     if(elem.mark == 'Сдан') {
                         mark = `

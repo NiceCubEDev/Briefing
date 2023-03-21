@@ -158,6 +158,7 @@
                     <th class = 'text-secondary' scope="col">Тест</th>
                     <th class = 'text-secondary' scope="col">Дата прохождения</th>
                     <th class = 'text-secondary text-center' scope="col">Дата повторного прохождения</th>
+                    <th class = 'text-secondary text-center' scope="col">Уведомление</th>
                     <th class = 'text-secondary' scope="col">Процент прохождения</th>
                     <th class = 'text-secondary' scope="col">Итог</th>
                 </tr>
@@ -209,6 +210,12 @@
                         </td>
                         <td class="text-center">
                             {{ u.date_instruction_end|date:"d.m.Y" }}
+                        </td>
+                        <td class="text-center">
+                            <button class = 'btn btn-outline-orange'>
+                                <i class="fa-solid fa-envelope mx-2"></i>
+                                Отправить
+                            </button>
                         </td>
                         <td class="text-center">
                             {{ u.result }} %

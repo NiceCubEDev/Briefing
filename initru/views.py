@@ -86,7 +86,7 @@ def journalView(request):
 
     role = list(request.user.groups.values_list('name',flat = True)) # получение поли
 
-    if role == 'Специалист по охране труда':
+    if request.user.is_superuser or role[0] == 'Специалист по охране труда':
 
         obj_res = None # Для результатов
         obj_briefs = inst.objects.all() # получение инструктажей
