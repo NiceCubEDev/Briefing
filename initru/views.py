@@ -83,56 +83,63 @@ def contactPageView(request):
 def journalView(request):
     
     page_name = 'forOss/journal.html'
-    obj_res = None # Для результатов
-    obj_briefs = inst.objects.all() # получение инструктажей
-    obj_type_users = typeuser.objects.all() # получение тип пользователей
-    obj_groups = Groups.objects.all() # получение групп
-    obj_quizes = test.objects.all()  # получение тестов
-    obj_results_user = res.objects.filter(mark='Сдан') # получение зачетов
+
+    role = list(request.user.groups.values_list('name',flat = True)) # получение поли
+
+    if role == 'Специалист по охране труда':
+
+        obj_res = None # Для результатов
+        obj_briefs = inst.objects.all() # получение инструктажей
+        obj_type_users = typeuser.objects.all() # получение тип пользователей
+        obj_groups = Groups.objects.all() # получение групп
+        obj_quizes = test.objects.all()  # получение тестов
+        obj_results_user = res.objects.filter(mark='Сдан') # получение зачетов
 
 
-    if request.method == "POST":
+        if request.method == "POST":
 
-        obj_result = res.objects.filter(
-                user__type_user = request.POST['id_type_user'], 
-                instruction = request.POST['id_brief'], 
-                user__groupStud_id=request.POST['id_group'],
-                quiz__id = request.POST['id_quiz'],
-                date_instruction__range=(request.POST['id_date_start'] or None, 
-                                        timezone.localtime(timezone.now()).replace(hour=0, minute=0, second=0, microsecond=0) or None),  
-                mark = request.POST['mark'],
-            )
-        
-        if len(obj_result) > 0:
+            obj_result = res.objects.filter(
+                    user__type_user = request.POST['id_type_user'], 
+                    instruction = request.POST['id_brief'], 
+                    user__groupStud_id=request.POST['id_group'],
+                    quiz__id = request.POST['id_quiz'],
+                    date_instruction__range=(request.POST['id_date_start'] or None, 
+                                            timezone.localtime(timezone.now()).replace(hour=0, minute=0, second=0, microsecond=0) or None),  
+                    mark = request.POST['mark'],
+                )
+            
+            if len(obj_result) > 0:
 
-            data_list=[] # лист для данных после фильтра
+                data_list=[] # лист для данных после фильтра
 
-            for row in obj_result:
-                data_list.append({
-                        'surname':str(row.user.last_name), 
-                        'name':str(row.user.first_name),
-                        'patro':str(row.user.patronymic), 
-                        'group':str(row.user.groupStud), # группа
-                        'type_user':str(row.user.type_user), # тип пользователя
-                        'type_user_test':str(row.quiz.type_user), # тип пользователя (параметр в тестах)
-                        'brief':str(row.instruction.name_instruction), # название инструктажа
-                        'quiz_name':str(row.quiz.name_test), 
-                        'date_start':row.date_instruction,
-                        'date_end':row.date_instruction_end,
-                        'score':str(row.result),
-                        'mark':str(row.mark),
-                    })
-                
-            obj_res = data_list
-            message = 'Успешно!'
-            status = 'ok'
+                for row in obj_result:
+                    data_list.append({
+                            'surname':str(row.user.last_name), 
+                            'name':str(row.user.first_name),
+                            'patro':str(row.user.patronymic), 
+                            'group':str(row.user.groupStud), # группа
+                            'type_user':str(row.user.type_user), # тип пользователя
+                            'type_user_test':str(row.quiz.type_user), # тип пользователя (параметр в тестах)
+                            'brief':str(row.instruction.name_instruction), # название инструктажа
+                            'quiz_name':str(row.quiz.name_test), 
+                            'date_start':row.date_instruction,
+                            'date_end':row.date_instruction_end,
+                            'score':str(row.result),
+                            'mark':str(row.mark),
+                        })
+                    
+                obj_res = data_list
+                message = 'Успешно!'
+                status = 'ok'
 
-        else: 
-            message = 'Данные не найдены.'
-            status = 'error'
+            else: 
+                message = 'Данные не найдены.'
+                status = 'error'
 
-        return JsonResponse({'result':obj_res, 'status':status,'message':message}, safe=False)
-
+            return JsonResponse({'result':obj_res, 'status':status,'message':message}, safe=False)
+    else: 
+        return render(request, "error.html")
+    
     values = {
         'type_brief': obj_briefs,
         'type_users': obj_type_users,
@@ -210,7 +217,7 @@ def profileView(request):
                     if form.is_valid():
                         user.email = request.POST['email']
                         user.save()
-                        data['message'] = f'{user.first_name}, Вы успешно электронную почту!'
+                        data['message'] = f'{user.first_name}, Вы успешно сменили электронную почту!'
                         data['status'] = 'ok'
                         return JsonResponse(data)
                     else:
@@ -219,7 +226,7 @@ def profileView(request):
 
 
                 else: 
-                    data['message'] = 'Одинаковая электронная почта, введите правильную!'
+                    data['message'] = 'Новая почта совпадает с старым'
                     data['status'] = 'error'
 
 
@@ -336,7 +343,7 @@ def getDetailProfile(request):
 def actionUserView(request):
 
     page_name = 'action.html'
- 
+    
     return render(request, page_name)
 
 

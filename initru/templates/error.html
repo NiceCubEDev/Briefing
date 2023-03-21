@@ -1,18 +1,20 @@
+{% extends './base.html' %}
 {% load static %}
-{% block head %}
-    {% include "blocks/head.html" %}
-    <title>{% block title %} Ой {% endblock %}</title>
-{% endblock%}
+ 
+{% block title %}
+    ОЙЙЙЙЙ
+{% endblock title %}
+    
 
 {% block content %}
 
-    <div class="container mx-auto flex" style ="height:100vh;">
-        <img style ="height:100vh;" src="{% static 'images/error/man.png' %}" alt="man.png">
-        <div style = "height:50vh;" class ="error-block flex items-center flex-start">
+    <div class="container d-flex" style ="height:50vh;">
+        <img style ="height:89.7vh;" src="{% static 'images/error/man.png' %}" alt="man.png">
+        <div style = "height:50vh;" class ="error-block d-flex align-items-center flex-start">
             <div class = "">
-                <p class = "error-message-title">Что-то пошло не так</p>
-                <p class = "error-message font-bold">Попробуй зайти позже.... </p>
-                <p class ="error-message font-bold uppercase mt-5"><a href="{% url 'main' %}">На главную</a></p>
+                <p class = "fs-1 text-danger fw-bold">Что-то пошло не так</p>
+                <p class = "fs-3 fw-bold">Попробуй зайти позже.... </p>
+                <p class ="fw-bold text-uppercase mt-5"><a class = 'btn btn-orange' href="{% url 'main' %}">На главную</a></p>
             </div>
            
         </div>
