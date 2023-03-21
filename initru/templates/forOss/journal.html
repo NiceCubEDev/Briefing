@@ -181,12 +181,23 @@
                         <td>
                             {{ u.user.groupStud }}
                         </td>
-                        <td>
-                            {{ u.user.type_user }}
-                        </td>
-                        <td>
-                            {{ u.quiz.type_user }}
-                        </td>
+                        <!-- проверка пользователя с тестом по типу -->
+                            {% if u.user.type_user == u.quiz.type_user %}
+                                <td>
+                                    {{ u.user.type_user }}
+                                </td>
+                                <td>
+                                    {{ u.quiz.type_user }}
+                                </td>
+                            {% else %}
+                                <td class = 'bg-danger text-light'>
+                                    {{ u.user.type_user }}
+                                </td>
+                                <td class = 'bg-danger text-light'>
+                                    {{ u.quiz.type_user }}
+                                </td>
+                            {% endif %}
+                        <!--  -->
                         <td>
                             {{ u.instruction.name_instruction }}
                         </td>
