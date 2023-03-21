@@ -128,9 +128,7 @@ def journalView(request):
             status = 'ok'
 
         else: 
-
-            obj_result = 'Нет данных'
-            message = 'Выберите правильные параметры.'
+            message = 'Данные не найдены.'
             status = 'error'
 
         return JsonResponse({'result':obj_res, 'status':status,'message':message}, safe=False)

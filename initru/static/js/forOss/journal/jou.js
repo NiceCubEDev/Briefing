@@ -1,5 +1,17 @@
-// const table = document.getElementById;
-// console.log(table);
+const table = document.getElementById('table');
+
+alertContainer = document.getElementById('alertBox');
+
+
+function notifFunction(type, text) { 
+    alertContainer.innerHTML = `
+    <div class="alert alert-${type} alert-dismissible fade show" role="alert">
+        <strong>${text}</strong>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+    `
+}
+
 
 
 $('#filter-form').submit((e)=>{
@@ -20,34 +32,38 @@ $('#filter-form').submit((e)=>{
         url: window.location.href,
         data: dataFilter,
         success:(resp)=>{
-            i=0
+            
+            if (Boolean(resp.result)) { 
+                i=0 // счетчик
 
-            // const tbody = document.createElement("tbody")
-
-            resp.result.forEach(elem => {
-                let date = new Date(elem.date_start)
-                let date2 = new Date(elem.date_end)
-                i++
-
-                // let p = `
-                // <tr>
-                //     <td>${i}</td>
-                //     <td>${elem.surname}</td>
-                //     <td>${elem.name}</td>
-                //     <td>${elem.patro}</td>
-                //     <td>${elem.group}</td>
-                //     <td>${elem.type_user}</td>
-                //     <td>${elem.type_user_test}</td>
-                //     <td>${elem.brief}</td>
-                //     <td>${elem.quiz_name}</td>
-                //     <td>${date.toLocaleString()}</td>
-                //     <td class = 'text-center'>${date2.toLocaleDateString()}</td>
-                //     <td class = 'text-center'>${elem.score} %</td>
-                //     <td class = 'text-center'>${elem.mark}</td>
-                // </tr>
-                // `
-                // tbody.appendChild(p)
-                $('#id_tbody').html($(`
+                $('#id_tbody').remove(); // удаляем боди таблицы
+    
+                const tbody = document.createElement("tbody") // создаем боди таблицы
+                tbody.style='font-family:"Inter-Regular"'; // стиль
+    
+                resp.result.forEach(elem => { // проходимся по результатам
+    
+                    let date = new Date(elem.date_start)
+                    let date2 = new Date(elem.date_end)
+                    i++
+                    let mark 
+    
+                    if(elem.mark == 'Сдан') {
+                        mark = `
+                            <span class = 'text-center text-success'>
+                                ${elem.mark}
+                            </span>
+                        `;
+                    } else { 
+                        mark = `
+                            <span class = 'text-center text-danger'>
+                                ${elem.mark}
+                            </span>
+                        `;
+                    }
+    
+            
+                    let p = `
                     <tr>
                         <td>${i}</td>
                         <td>${elem.surname}</td>
@@ -61,11 +77,17 @@ $('#filter-form').submit((e)=>{
                         <td>${date.toLocaleString()}</td>
                         <td class = 'text-center'>${date2.toLocaleDateString()}</td>
                         <td class = 'text-center'>${elem.score} %</td>
-                        <td class = 'text-center'>${elem.mark}</td>
+                        <td>${mark}</td>
                     </tr>
-                `))
-            });
-            
+                    `
+                    tbody.innerHTML += p
+                });
+                table.appendChild(tbody);
+                notifFunction('success', resp.message);
+            } else {
+                notifFunction('danger', resp.message);
+            }
+
         },
         errors:(resp)=>{
             console.log(resp);
