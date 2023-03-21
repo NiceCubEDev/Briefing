@@ -1,4 +1,12 @@
 {% load static %}
+
+{% block scripts %}
+    <script defer src="{% static 'js/resultsBrief/briefFilter.js' %}"></script>
+{% endblock scripts %}
+    
+
+
+{% load static %}
 <div style = 'max-width: 920px;'>
     <p class='text-uppercase text-secondary' style="font-family: 'Inter-Bold';">Пройденные инструктажи</p>
     <div>
@@ -7,7 +15,7 @@
                 <tr>
                     <th class = 'text-secondary' scope="col">№</th>
                     <th class = 'text-secondary' scope="col">Категория инструктажа</th>
-                    <th class = 'text-secondary' scope="col">Название инструктажа</th>
+                    <th class = 'text-secondary' scope="col" id="name-brief">Название инструктажа</th>
                     <th class = 'text-secondary' scope="col">Дата</th>
                     <th class = 'text-secondary' scope="col">Количество %</th>
                     <th class='text-center text-secondary' scope="col">Итог</th>
