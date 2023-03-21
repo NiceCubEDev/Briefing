@@ -36,13 +36,14 @@ $('#filter-form').submit((e)=>{
             if (Boolean(resp.result)) { 
                 i=0 // счетчик
 
-                $('#id_tbody').remove(); // удаляем боди таблицы
+                
     
                 const tbody = document.createElement("tbody") // создаем боди таблицы
                 tbody.style='font-family:"Inter-Regular"'; // стиль
-    
+                tbody.setAttribute("id", "id_tbody"); // id 
+
                 resp.result.forEach(elem => { // проходимся по результатам
-    
+                    
                     let date = new Date(elem.date_start)
                     let date2 = new Date(elem.date_end)
                     i++
@@ -82,6 +83,7 @@ $('#filter-form').submit((e)=>{
                     `
                     tbody.innerHTML += p
                 });
+                $('#id_tbody').remove(); // удаляем боди таблицы
                 table.appendChild(tbody);
                 notifFunction('success', resp.message);
             } else {

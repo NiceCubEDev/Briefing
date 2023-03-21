@@ -84,11 +84,11 @@ def journalView(request):
     
     page_name = 'forOss/journal.html'
     obj_res = None # Для результатов
-    obj_briefs = inst.objects.all()
-    obj_type_users = typeuser.objects.all()
-    obj_groups = Groups.objects.all()
-    obj_quizes = test.objects.all()
-    obj_results_user = res.objects.all()
+    obj_briefs = inst.objects.all() # получение инструктажей
+    obj_type_users = typeuser.objects.all() # получение тип пользователей
+    obj_groups = Groups.objects.all() # получение групп
+    obj_quizes = test.objects.all()  # получение тестов
+    obj_results_user = res.objects.filter(mark='Сдан') # получение зачетов
 
 
     if request.method == "POST":
