@@ -103,8 +103,8 @@ def journalView(request):
                     instruction = request.POST['id_brief'], 
                     user__groupStud_id=request.POST['id_group'],
                     quiz__id = request.POST['id_quiz'],
-                    date_instruction__range=(request.POST['id_date_start'] or None, 
-                                            timezone.localtime(timezone.now()).replace(hour=0, minute=0, second=0, microsecond=0) or None),  
+                        date_instruction__range=(request.POST['id_date_start'] or None, 
+                                                timezone.localtime(timezone.now()).replace(hour=0, minute=0, second=0, microsecond=0) or None),  
                     mark = request.POST['mark'],
                 )
             
@@ -330,6 +330,7 @@ def checkPassedView(request, id):
     else:
         return HttpResponseBadRequest()
     return JsonResponse(data)
+
 
 # элемент мои данные
 @login_required  # обязательная авторизация

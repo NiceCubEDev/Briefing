@@ -184,17 +184,17 @@
                         </td>
                         <!-- проверка пользователя с тестом по типу -->
                             {% if u.user.type_user == u.quiz.type_user %}
-                                <td>
+                                <td class = 'text-center'>
                                     {{ u.user.type_user }}
                                 </td>
-                                <td>
+                                <td class = 'text-center'>
                                     {{ u.quiz.type_user }}
                                 </td>
                             {% else %}
-                                <td class = 'bg-danger text-light'>
+                                <td class = 'bg-danger text-light text-center'>
                                     {{ u.user.type_user }}
                                 </td>
-                                <td class = 'bg-danger text-light'>
+                                <td class = 'bg-danger text-light text-center'>
                                     {{ u.quiz.type_user }}
                                 </td>
                             {% endif %}
