@@ -78,6 +78,12 @@ $('#filter-form').submit((e)=>{
                         <td>${elem.quiz_name}</td>
                         <td>${date.toLocaleString()}</td>
                         <td class = 'text-center'>${date2.toLocaleDateString()}</td>
+                        <td class="text-center">
+                            <button class = 'btn btn-outline-orange'>
+                                <i class="fa-solid fa-envelope mx-2"></i>
+                                Отправить
+                            </button>
+                        </td>
                         <td class = 'text-center'>${elem.score} %</td>
                         <td>${mark}</td>
                     </tr>
