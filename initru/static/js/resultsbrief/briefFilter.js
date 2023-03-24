@@ -1,6 +1,6 @@
-const cell = [...document.getElementsByName('name-quiz')];
+const date = [...document.getElementsByName('date-start')];
 
 
-$('#name-brief').click(()=>{
-    console.log(cell); 
+$('#date-start').click(()=>{
+    console.log(date); 
 }); 

@@ -16,7 +16,7 @@
                     <th class = 'text-secondary' scope="col">№</th>
                     <th class = 'text-secondary' scope="col">Категория инструктажа</th>
                     <th class = 'text-secondary' scope="col" id="name-brief">Название инструктажа</th>
-                    <th class = 'text-secondary' scope="col">Дата</th>
+                    <th id = 'date-start' class = 'text-secondary' scope="col">Дата</th>
                     <th class = 'text-secondary' scope="col">Количество %</th>
                     <th class='text-center text-secondary' scope="col">Итог</th>
                 </tr>
@@ -24,19 +24,19 @@
             <tbody>
                 {% for o in obj %}
                     <tr>
-                        <td>{{ forloop.revcounter }}</td>
+                        <td name = 'number-quiz'>{{ forloop.revcounter }}</td>
                         <td>{{ o.instruction }}</td>
-                        <td  name = 'name-quiz' style = 'max-width: 375px;'>{{ o.quiz.name_test }}</td>
-                        <td>{{ o.date_instruction|date:'d.m.Y H:i' }}</td>
+                        <td name ='name-quiz' style = 'max-width: 375px;'>{{ o.quiz.name_test }}</td>
+                        <td name = 'date-start'>{{ o.date_instruction|date:'d.m.Y H:i' }}</td>
                         <td class = 'text-center'>{{ o.result }}%</td>
                         {% if o.mark == 'Не сдан' %}
-                        <td class ='bg-danger text-white text-center'>
-                            {{ o.mark }}
-                        </td>
+                            <td class ='bg-danger text-white text-center'>
+                                {{ o.mark }}
+                            </td>
                         {% else %}
-                        <td class = 'bg-success text-white text-center'>
-                            {{ o.mark }}
-                        </td>
+                            <td class = 'bg-success text-white text-center'>
+                                {{ o.mark }}
+                            </td>
                         {% endif %}
                     </tr>
                 {% empty %}
