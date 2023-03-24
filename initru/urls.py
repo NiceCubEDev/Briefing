@@ -28,6 +28,7 @@ urlpatterns = [
     path('account/profile/action/', actionUserView, name="action"),
     path('account/profile/edit/', getEditProfile, name="profile_edit"),
     path('account/profile/passed_inst/', passedView, name="passed_brief_view"),
+    path('account/profile/passed_brief_filter/', passFilterView, name="passed_brief_filter_view"),
     path('account/login/', auth_views.LoginView.as_view(redirect_authenticated_user=True), name='login'),
     path('account/', include('django.contrib.auth.urls')),
 ]
