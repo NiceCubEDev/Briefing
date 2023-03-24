@@ -15,11 +15,11 @@
                 <form>{% csrf_token %}</form>
                 <tr>
                     <th name = 'filterFunc' class = 'text-secondary' scope="col">№</th>
-                    <th name = 'filterFunc' class = 'text-secondary' scope="col">Категория инструктажа</th>
-                    <th name = 'filterFunc' class = 'text-secondary' scope="col" id="name-brief">Название инструктажа</th>
-                    <th name = 'filterFunc' id = 'filterFunc' class = 'text-secondary' scope="col">Дата</th>
-                    <th name = 'filterFunc' class = 'text-secondary' scope="col">Количество %</th>
-                    <th name = 'filterFunc' class='text-center text-secondary' scope="col">Итог</th>
+                    <th name = 'filterFunc' data-name = 'instruction' class = 'text-secondary' scope="col">Категория инструктажа</th>
+                    <th name = 'filterFunc' data-name = 'quiz' class = 'text-secondary' scope="col" id="name-brief">Название инструктажа</th>
+                    <th name = 'filterFunc' data-name = 'date_instruction' id = 'filterFunc' class = 'text-secondary' scope="col">Дата</th>
+                    <th name = 'filterFunc' data-name = 'result' class = 'text-secondary' scope="col">Количество %</th>
+                    <th name = 'filterFunc' data-name = 'mark' class='text-center text-secondary' scope="col">Итог</th>
                 </tr>
             </thead>
             <tbody>

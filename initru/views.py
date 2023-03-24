@@ -297,12 +297,25 @@ def passedView(request):
 
 @login_required
 def passFilterView(request):
+    obj_res = None # для результатов. 
+    if request.method == 'POST': # Если метод пост
+        if request.POST.get('filter'): # Если существует элемент фильтра
 
-    if request.method == 'POST':
-        
-        return JsonResponse({'status':'ok'})
-
-    return JsonResponse({})
+            try:
+                obj_res = list(res.objects.all().order_by(request.POST['filter']).values()) # получение данных
+            except res.DoesNotExist:
+                obj_res = [] # если не получилось, то 
+            
+            if len(obj_res) > 0: # длинна массива больше 0
+                message = 'Успешно!'
+                status = 'ok'
+            else:
+                message = 'Данные не найдены'
+                status = 'error'
+            
+            return JsonResponse({'result':obj_res, 'status': status, 'message': message})
+            
+    return JsonResponse({'status':'good night'})
 
 # проверка о наличии файла
 @login_required
