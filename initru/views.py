@@ -302,11 +302,28 @@ def passFilterView(request):
         if request.POST.get('filter'): # Если существует элемент фильтра
 
             try:
-                obj_res = list(res.objects.all().order_by(request.POST['filter']).values()) # получение данных
+                obj_res = res.objects.filter(user = request.user).order_by(request.POST['filter']) # получение данных
+                # obj_res = list(res.objects.filter(user = request.user).order_by(request.POST['filter']).values()) # получение данных
             except res.DoesNotExist:
                 obj_res = [] # если не получилось, то 
             
             if len(obj_res) > 0: # длинна массива больше 0
+
+                data_list = [] # переменная лист для фильтра
+
+                for row in obj_res:
+                    data_list.append(
+                        {
+                            'name_brief':str(row.instruction.name_instruction),
+                            'quiz_name':str(row.quiz.name_test),
+                            'date_start':row.date_instruction,
+                            'result':row.result,
+                            'mark':row.mark
+                        }
+                    )
+                
+                obj_res = data_list
+
                 message = 'Успешно!'
                 status = 'ok'
             else:
