@@ -3,11 +3,11 @@ thead = [...document.getElementsByName('filterFunc')];
 table = document.getElementById('table');
 mark = null;
 
+
 thead.forEach(elem => elem.addEventListener('click',(e)=>{
     e.preventDefault();
 
     
-
     data = {}
 
     data['csrfmiddlewaretoken'] = $('input[name="csrfmiddlewaretoken"]').val();

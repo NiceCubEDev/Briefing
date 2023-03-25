@@ -467,8 +467,6 @@ def createUserAdmin(request):
         return render(request, "error.html")
 
 # получение вопросов
-
-
 @login_required
 def testDataView(request, num, id):
 
