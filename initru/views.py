@@ -300,7 +300,7 @@ def passFilterView(request):
     obj_res = None # для результатов. 
     if request.method == 'POST': # Если метод пост
         if request.POST.get('filter'): # Если существует элемент фильтра
-
+            print(request.POST['filter'])
             try:
                 obj_res = res.objects.filter(user = request.user).order_by(request.POST['filter']) # получение данных
                 # obj_res = list(res.objects.filter(user = request.user).order_by(request.POST['filter']).values()) # получение данных

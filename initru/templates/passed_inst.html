@@ -22,13 +22,13 @@
                     <th name = 'filterFunc' data-name = 'mark' class='text-center text-secondary' scope="col">Итог</th>
                 </tr>
             </thead>
-            <tbody>
+            <tbody id="id_tbody">
                 {% for o in obj %}
                     <tr>
                         <td name = 'number-quiz'>{{ forloop.revcounter }}</td>
                         <td>{{ o.instruction }}</td>
                         <td name ='name-quiz' style = 'max-width: 375px;'>{{ o.quiz.name_test }}</td>
-                        <td name = 'date-start'>{{ o.date_instruction|date:'d.m.Y H:i' }}</td>
+                        <td name = 'date-start'>{{ o.date_instruction|date:'d.m.Y, H:i:s' }}</td>
                         <td class = 'text-center'>{{ o.result }}%</td>
                         {% if o.mark == 'Не сдан' %}
                             <td class ='bg-danger text-white text-center'>
