@@ -295,6 +295,7 @@ class CustomUser(AbstractUser):  # custom user for Users with django
                 pk=request.user.id
                 )
     
+    
 
 
 # результаты

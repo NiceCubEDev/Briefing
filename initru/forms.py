@@ -50,12 +50,23 @@ class ChangeEmailUser(forms.ModelForm):
 
 
 class ChangeAvatarUser(forms.ModelForm):
-    
-    avatar = forms.ImageField(label='Выберите аватарку', required=False)
+        
+    avatar = forms.ImageField(label='Выберите аватарку', required=False,)
 
     class Meta: 
         model = CustomUser
         fields = ['avatar']
+
+    # def max_size_picture(self, width=580, height=460):
+    #     from PIL import Image
+    #     avatar = self.cleaned_data.get("avatar")
+    #     img = Image.open(avatar)
+    #     fw, fh = img.size
+    #     print(fw)
+    #     if fw > width or fh > height:
+    #         raise forms.ValidationError('Размеры изображения превышают ограничения!')
+    #     return avatar
+
 
 
 class ChangePasswordUser(UserCreationForm):
