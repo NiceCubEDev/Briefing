@@ -35,10 +35,10 @@ class ChangeNumberUser(forms.ModelForm):
         model = CustomUser
         fields = ['phone_number']
 
-    def clean_phone_number(self):
-        phone_number = self.cleaned_data.get("phone_number")
-        z = phonenumbers.parse(phone_number, region="RU")
-        if not phonenumbers.is_valid_number(z):
+    def clean_phone_number(self): # валидация номера телефона
+        phone_number = self.cleaned_data.get("phone_number") # записываем в переменную 
+        z = phonenumbers.parse(phone_number, region="RU") # проверка
+        if not phonenumbers.is_valid_number(z): # Если не валидный
             raise forms.ValidationError("У номера телефона неправильный формат!")
         return phone_number
 
