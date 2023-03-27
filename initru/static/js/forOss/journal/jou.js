@@ -12,9 +12,7 @@ function notifFunction(type, text) {
     `
 }
 
-
-
-$('#filter-form').submit((e)=>{
+$('#setBut').click((e)=>{
     e.preventDefault();
 
     const dataFilter = {}
@@ -103,4 +101,4 @@ $('#filter-form').submit((e)=>{
         },
     });
 
-})
+});

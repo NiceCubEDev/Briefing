@@ -95,10 +95,35 @@ def journalView(request):
         obj_quizes = test.objects.all()  # получение тестов
         obj_results_user = res.objects.filter(mark='Сдан')  # получение зачетов
 
+        if 'import-doc' in request.POST:  # условие для скачивания
+            print(request.POST)
+            if request.POST['date_start'] != '' and request.POST['date_end'] != '': # Если есть даты
+                try:
+                    obj_result = res.objects.filter(
+                        user__type_user=request.POST['type_user'],
+                        instruction=request.POST['type_brief'],
+                        user__groupStud_id=request.POST['group'],
+                        quiz__id=request.POST['quiz'],
+                        date_instruction__range=(request.POST['date_start'],
+                                                    timezone.localtime(timezone.now()).replace(hour=0, minute=0, second=0, microsecond=0)),
+                        
+                        date_instruction_end__range=(request.POST['date_end'],
+                                                    timezone.localtime(timezone.now()).replace(hour=23, minute=59, second=0, microsecond=0)),
+                        
+                        mark=request.POST['mark'],
+                    )
+                    
+                except res.DoesNotExist:
+                    obj_result = []
+            
+            if len(obj_result) > 0: # если есть данные то
+                pass
+            else: 
+                return HttpResponseBadRequest()
 
         if request.POST:
             print('я здесь')
-            if request.POST['id_date_start'] != '' and request.POST['id_date_end'] != '': # Если нет дат 
+            if request.POST['id_date_start'] != '' and request.POST['id_date_end'] != '': # Если есть даты
             # if request.POST['id_date_start'] != '' and request.POST['id_date_end'] != '':
                 try:
                     obj_result = res.objects.filter(
