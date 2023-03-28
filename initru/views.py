@@ -16,8 +16,10 @@ from django.utils import timezone
 from deeppavlov import build_model
 # импорт ворд
 from docx import Document
-from docx.enum.text import WD_PARAGRAPH_ALIGNMENT
-from docx.enum.section import WD_ORIENTATION
+from docx.enum.text import WD_PARAGRAPH_ALIGNMENT # выравнивание
+from docx.enum.section import WD_ORIENTATION # jhb
+from docx.shared import Pt # размер шрифта
+from docx.enum.style import WD_STYLE_TYPE
 
 
 # чат-бот
@@ -143,15 +145,23 @@ def journalView(request):
             
             if len(obj_result) > 0: # если есть данные то
                 # code for docx
-                
+
                 document = Document()
+                
+                section = document.sections[-1]
+                section.orientation = orient_dict['landscape']
 
-                document.add_heading('Привет')
+                font_styles = document.styles
+                font_charstyle = font_styles.add_style('Head', WD_STYLE_TYPE.CHARACTER)
+                font_object = font_charstyle.font
+                font_object.size = Pt(14)
+                font_object.name = 'Times New Roman'
 
-                p = document.add_paragraph()
-                p.add_run('Это болд предложение, а дальше простое - ').bold = True
-                p.add_run('ДА')
 
+
+                p = document.add_paragraph('')
+                p.add_run('Отчёт по сотрудникам', style='Head').bold = True
+                p.alignment = 1 # выравнивание: 0 - влево, 1 - центр
                 # document.add_paragraph(
                 # 'first item in unordered list', style='ListBullet'
                 # )
