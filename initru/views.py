@@ -1,12 +1,23 @@
 from django.shortcuts import render, redirect
+# формы
 from .forms import contactForm, CreateUserForm, ChangeNumberUser, ChangeEmailUser, ChangeAvatarUser, ChangePasswordUser
-from django.contrib import messages
+# from django.contrib import messages
+# для условий
 from django.db.models import Q
+# модели 
 from .models import inst, complex, CustomUser, test, question, answers, res, downloadInstructionsForTests, typeuser, Groups
+# варианты ответов
 from django.http import JsonResponse, HttpResponseBadRequest, HttpResponse
+# обязательная авторизация
 from django.contrib.auth.decorators import login_required
+# получение времени
 from django.utils import timezone
+# чат бот
 from deeppavlov import build_model
+# импорт ворд
+from docx import Document
+from docx.enum.text import WD_PARAGRAPH_ALIGNMENT
+from docx.enum.section import WD_ORIENTATION
 
 
 # чат-бот
@@ -115,13 +126,57 @@ def journalView(request):
                     
                 except res.DoesNotExist:
                     obj_result = []
+
+            # styles for docs
+            alignment_dict = {
+                'justify':WD_PARAGRAPH_ALIGNMENT.JUSTIFY,
+                'center':WD_PARAGRAPH_ALIGNMENT.CENTER,
+                'right':WD_PARAGRAPH_ALIGNMENT.RIGHT,
+                'left':WD_PARAGRAPH_ALIGNMENT.LEFT,
+            }
+
+            orient_dict = {
+                'portrait':WD_ORIENTATION.PORTRAIT,
+                'landscape':WD_ORIENTATION.LANDSCAPE,
+            }
+            #####
             
             if len(obj_result) > 0: # если есть данные то
-                pass
+                # code for docx
+                
+                document = Document()
+
+                document.add_heading('Привет')
+
+                p = document.add_paragraph()
+                p.add_run('Это болд предложение, а дальше простое - ').bold = True
+                p.add_run('ДА')
+
+                # document.add_paragraph(
+                # 'first item in unordered list', style='ListBullet'
+                # )
+                # document.add_paragraph(
+                # 'first item in ordered list', style='ListNumber'
+                # )
+
+                #document.add_picture('monty-truth.png', width=Inches(1.25))
+
+                # table = document.add_table(rows=1, cols=3)
+                # hdr_cells = table.rows[0].cells
+                # hdr_cells[0].text = 'Qty'
+                # hdr_cells[1].text = 'Id'
+                # hdr_cells[2].text = 'Desc'
+
+                response = HttpResponse(content_type='application/vnd.openxmlformats-officedocument.wordprocessingml.document')
+                response['Content-Disposition'] = 'attachment; filename=download.docx'
+
+                document.save(response)
+                return response
             else: 
                 return HttpResponseBadRequest()
 
-        if request.POST:
+
+        if request.POST: # для аякс условие
             print('я здесь')
             if request.POST['id_date_start'] != '' and request.POST['id_date_end'] != '': # Если есть даты
             # if request.POST['id_date_start'] != '' and request.POST['id_date_end'] != '':
@@ -466,30 +521,6 @@ def testView(request, num, id):
     else:
         return HttpResponseBadRequest()
 
-# создание пользователя
-
-
-@login_required
-def createUserAdmin(request):
-    page_name = 'admin/createUser.html'
-    if request.user.is_superuser:
-        if request.method == 'POST':
-            newUser = CreateUserForm(request.POST, request.FILES)
-            if newUser.is_valid():
-                newUser.save()
-                messages.success(request, 'Успешно создан!')
-                return redirect('user_create')
-            else:
-                messages.error(request, 'Введите корректные данные!')
-                userForm = CreateUserForm()
-        else:
-            userForm = CreateUserForm()
-        values = {
-            'form': userForm,
-        }
-        return render(request, page_name, values)
-    else:
-        return render(request, "error.html")
 
 # получение вопросов
 @login_required

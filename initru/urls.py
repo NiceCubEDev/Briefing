@@ -11,8 +11,6 @@ urlpatterns = [
     path('about_us/', aboutPageView, name='about'),
     path('chat/', chatbot_responseView, name='chat_response'), 
     path('contact/', contactPageView, name="contact"),
-    # admin urls
-    path('createUser/', createUserAdmin, name ='user_create'),
 
     # user urls
     path('account/themes_inst/test/<int:id>/<int:num>/save', testDataSaveView, name = 'save_data_test'),
