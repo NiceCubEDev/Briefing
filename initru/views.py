@@ -189,6 +189,8 @@ def journalView(request):
                     hdr_cells[i].width = Cm(2.5)
                 # ------ 
 
+                # заполнение таблицы
+
                 #89274420900 Дядя Володя Нурлат Черемуха
  
                 response = HttpResponse(content_type='application/vnd.openxmlformats-officedocument.wordprocessingml.document')
