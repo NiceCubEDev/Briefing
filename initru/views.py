@@ -20,7 +20,8 @@ from docx.enum.text import WD_PARAGRAPH_ALIGNMENT # выравнивание
 from docx.enum.section import WD_ORIENTATION # jhb
 from docx.shared import Pt # размер шрифта
 from docx.enum.style import WD_STYLE_TYPE
-
+from docx.enum.section import WD_ORIENT
+from docx.shared import Cm
 
 # чат-бот
 def chatbot_responseView(request):
@@ -138,8 +139,8 @@ def journalView(request):
             }
 
             orient_dict = {
-                'portrait':WD_ORIENTATION.PORTRAIT,
-                'landscape':WD_ORIENTATION.LANDSCAPE,
+                'portrait':WD_ORIENT.PORTRAIT,
+                'landscape':WD_ORIENT.LANDSCAPE,
             }
             #####
             
@@ -148,8 +149,12 @@ def journalView(request):
 
                 document = Document()
                 
-                section = document.sections[-1]
-                section.orientation = orient_dict['landscape']
+                section = document.sections
+                #2481×3507
+                for sec in section: 
+                    sec.orientation = orient_dict['portrait']
+                    sec.page_width = Cm(29.8)
+                    sec.page_height = Cm(21)
 
                 font_styles = document.styles
                 font_charstyle = font_styles.add_style('Head', WD_STYLE_TYPE.CHARACTER)
@@ -170,13 +175,22 @@ def journalView(request):
                 # )
 
                 #document.add_picture('monty-truth.png', width=Inches(1.25))
+                thead_list = ['Дата', 'Фамилия, имя, отчество (при наличии) работника, прошедшего инструктаж по охране труда', 'профессия (должность) работника', 'число, месяц, год рождения работника', 'вид инструктажа по охране труда', 'Причина прохождения инструктажа по охране труда', 'ФИО, профессия работника, проводившего инструктаж', 'Наименование ЛПА, в объеме требований которого проведен инструктаж по охране труда']
 
-                # table = document.add_table(rows=1, cols=3)
-                # hdr_cells = table.rows[0].cells
-                # hdr_cells[0].text = 'Qty'
-                # hdr_cells[1].text = 'Id'
-                # hdr_cells[2].text = 'Desc'
 
+                # заполнение шапки таблицы
+                table = document.add_table(rows=len(obj_result), cols=9, style='Table Grid')
+                hdr_cells = table.rows[0].cells
+                a = 0
+                for i in range(len(thead_list)):
+                    a+=1 
+                    print(a)
+                    hdr_cells[i].text = thead_list[i]
+                    hdr_cells[i].width = Cm(2.5)
+                # ------ 
+
+                #89274420900 Дядя Володя Нурлат Черемуха
+ 
                 response = HttpResponse(content_type='application/vnd.openxmlformats-officedocument.wordprocessingml.document')
                 response['Content-Disposition'] = 'attachment; filename=download.docx'
 
