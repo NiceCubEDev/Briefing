@@ -181,20 +181,23 @@ def journalView(request):
                 # заполнение шапки таблицы
                 table = document.add_table(rows=len(obj_result), cols=9, style='Table Grid')
                 hdr_cells = table.rows[0].cells
-                a = 0
                 for i in range(len(thead_list)):
-                    a+=1 
-                    print(a)
                     hdr_cells[i].text = thead_list[i]
                     hdr_cells[i].width = Cm(2.5)
                 # ------ 
 
-                # заполнение таблицы
+                # заполнение таблицы:
+                # for i in range(len(obj_result)):
+                #     for item in obj_result:
+                #         row = table.add_row().cells
+                #         row[i]
+
 
                 #89274420900 Дядя Володя Нурлат Черемуха
- 
+
+                dateNameFile = f'{timezone.localtime(timezone.now()).replace(hour=23, minute=59, second=0, microsecond=0)}.docx'
                 response = HttpResponse(content_type='application/vnd.openxmlformats-officedocument.wordprocessingml.document')
-                response['Content-Disposition'] = 'attachment; filename=download.docx'
+                response['Content-Disposition'] = f'attachment; filename='+ dateNameFile
 
                 document.save(response)
                 return response
