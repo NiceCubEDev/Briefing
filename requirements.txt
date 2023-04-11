@@ -1,8 +1,8 @@
 Django
 Pillow
 django-smart-selects
-django-tailwind
 fontawesomefree
 deeppavlov
 phonenumbers
 python-docx
+django-phonenumber-field[phonenumberslite]

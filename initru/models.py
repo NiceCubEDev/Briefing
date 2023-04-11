@@ -97,7 +97,7 @@ class Spec(models.Model):
 class role(models.Model):
     name_role = models.CharField(
         'Название роли',
-        max_length=25
+        max_length=30
     )
 
     class Meta:

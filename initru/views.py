@@ -111,6 +111,7 @@ def journalView(request):
 
         if 'import-doc' in request.POST:  # условие для скачивания
             print(request.POST)
+            obj_result = None
             if request.POST['date_start'] != '' and request.POST['date_end'] != '': # Если есть даты
                 try:
                     obj_result = res.objects.filter(
@@ -143,7 +144,7 @@ def journalView(request):
                 'landscape':WD_ORIENT.LANDSCAPE,
             }
             #####
-            
+            print(obj_result)
             if len(obj_result) > 0: # если есть данные то
                 # code for docx
 
@@ -151,6 +152,7 @@ def journalView(request):
                 
                 section = document.sections
                 #2481×3507
+
                 for sec in section: 
                     sec.orientation = orient_dict['portrait']
                     sec.page_width = Cm(29.8)
@@ -163,16 +165,16 @@ def journalView(request):
                 font_object.name = 'Times New Roman'
 
 
-
-                p = document.add_paragraph('')
-                p.add_run('Отчёт по сотрудникам', style='Head').bold = True
-                p.alignment = 1 # выравнивание: 0 - влево, 1 - центр
                 # document.add_paragraph(
                 # 'first item in unordered list', style='ListBullet'
                 # )
                 # document.add_paragraph(
                 # 'first item in ordered list', style='ListNumber'
                 # )
+
+                p = document.add_paragraph('')
+                p.add_run('Отчёт по сотрудникам', style='Head').bold = True
+                p.alignment = 1 # выравнивание: 0 - влево, 1 - центр
 
                 #document.add_picture('monty-truth.png', width=Inches(1.25))
                 thead_list = ['Дата', 'Фамилия, имя, отчество (при наличии) работника, прошедшего инструктаж по охране труда', 'профессия (должность) работника', 'число, месяц, год рождения работника', 'вид инструктажа по охране труда', 'Причина прохождения инструктажа по охране труда', 'ФИО, профессия работника, проводившего инструктаж', 'Наименование ЛПА, в объеме требований которого проведен инструктаж по охране труда']
