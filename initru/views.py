@@ -498,9 +498,7 @@ def getDetailProfile(request):
 # мои возможности
 @login_required  # обязательная авторизация
 def actionUserView(request):
-
     page_name = 'action.html'
-
     return render(request, page_name)
 
 
