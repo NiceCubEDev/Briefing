@@ -5,7 +5,7 @@ from .forms import contactForm, CreateUserForm, ChangeNumberUser, ChangeEmailUse
 # from django.contrib import messages
 # для условий
 from django.db.models import Q
-# модели 
+# модели
 from .models import inst, complex, CustomUser, test, question, answers, res, downloadInstructionsForTests, typeuser, Groups
 # варианты ответов
 from django.http import JsonResponse, HttpResponseBadRequest, HttpResponse
@@ -17,14 +17,16 @@ from django.utils import timezone
 from deeppavlov import build_model
 # импорт ворд
 from docx import Document
-from docx.enum.text import WD_PARAGRAPH_ALIGNMENT # выравнивание
-from docx.enum.section import WD_ORIENTATION # jhb
-from docx.shared import Pt # размер шрифта
+from docx.enum.text import WD_PARAGRAPH_ALIGNMENT  # выравнивание
+from docx.enum.section import WD_ORIENTATION  # jhb
+from docx.shared import Pt  # размер шрифта
 from docx.enum.style import WD_STYLE_TYPE
 from docx.enum.section import WD_ORIENT
 from docx.shared import Cm
 
 # чат-бот
+
+
 def chatbot_responseView(request):
 
     page_name = 'bot.html'  # страница
@@ -41,14 +43,13 @@ def chatbot_responseView(request):
     return render(request, page_name)
 
 
-#Главные страницы
+# Главные страницы
 class mainView(View):
 
-
     def mainPage(request):
-        
+
         page_name = 'main.html'
-        
+
         users = CustomUser.get_count_users()  # количество пользователей
         # количество пройденных инструктажей
         passed_brief = res.objects.filter(mark='Сдан').count() or 0
@@ -58,6 +59,7 @@ class mainView(View):
         getComplex = complex.get_all_names()
         users = CustomUser.get_count_users()
         contact = contactForm()
+
         values = {
             'contact': contact,
             'instr': getInstr,
@@ -66,8 +68,8 @@ class mainView(View):
             'pb': passed_brief,
             'cb': count_brief,
         }
+
         return render(request, page_name, values)
-    
 
     def mainSendMessage(request):
         if request.method == 'POST':
@@ -84,19 +86,25 @@ class mainView(View):
                 data['status'] = 'error'
                 return JsonResponse(data)
 
-
     # подробности
+
     def mainAboutPage(request):
         page_name = 'about.html'
-        return render(request, page_name)       
-
+        return render(request, page_name)
 
     # контакты
+
     def mainContactPage(request):
         page_name = 'contact.html'
         return render(request, page_name)
 
 
+class journalView(View):
+
+    def mainPage(request):
+        pass
+
+    pass
 
 
 @login_required(login_url='account/login/')
@@ -119,7 +127,7 @@ def journalView(request):
         if 'import-doc' in request.POST:  # условие для скачивания
             print(request.POST)
             obj_result = None
-            if request.POST['date_start'] != '' and request.POST['date_end'] != '': # Если есть даты
+            if request.POST['date_start'] != '' and request.POST['date_end'] != '':  # Если есть даты
                 try:
                     obj_result = res.objects.filter(
                         user__type_user=request.POST['type_user'],
@@ -127,50 +135,50 @@ def journalView(request):
                         user__groupStud_id=request.POST['group'],
                         quiz__id=request.POST['quiz'],
                         date_instruction__range=(request.POST['date_start'],
-                                                    timezone.localtime(timezone.now()).replace(hour=0, minute=0, second=0, microsecond=0)),
-                        
+                                                 timezone.localtime(timezone.now()).replace(hour=0, minute=0, second=0, microsecond=0)),
+
                         date_instruction_end__range=(request.POST['date_end'],
-                                                    timezone.localtime(timezone.now()).replace(hour=23, minute=59, second=0, microsecond=0)),
-                        
+                                                     timezone.localtime(timezone.now()).replace(hour=23, minute=59, second=0, microsecond=0)),
+
                         mark=request.POST['mark'],
                     )
-                    
+
                 except res.DoesNotExist:
                     obj_result = []
 
             # styles for docs
             alignment_dict = {
-                'justify':WD_PARAGRAPH_ALIGNMENT.JUSTIFY,
-                'center':WD_PARAGRAPH_ALIGNMENT.CENTER,
-                'right':WD_PARAGRAPH_ALIGNMENT.RIGHT,
-                'left':WD_PARAGRAPH_ALIGNMENT.LEFT,
+                'justify': WD_PARAGRAPH_ALIGNMENT.JUSTIFY,
+                'center': WD_PARAGRAPH_ALIGNMENT.CENTER,
+                'right': WD_PARAGRAPH_ALIGNMENT.RIGHT,
+                'left': WD_PARAGRAPH_ALIGNMENT.LEFT,
             }
 
             orient_dict = {
-                'portrait':WD_ORIENT.PORTRAIT,
-                'landscape':WD_ORIENT.LANDSCAPE,
+                'portrait': WD_ORIENT.PORTRAIT,
+                'landscape': WD_ORIENT.LANDSCAPE,
             }
             #####
             print(obj_result)
-            if len(obj_result) > 0: # если есть данные то
+            if len(obj_result) > 0:  # если есть данные то
                 # code for docx
 
                 document = Document()
-                
-                section = document.sections
-                #2481×3507
 
-                for sec in section: 
+                section = document.sections
+                # 2481×3507
+
+                for sec in section:
                     sec.orientation = orient_dict['portrait']
                     sec.page_width = Cm(29.8)
                     sec.page_height = Cm(21)
 
                 font_styles = document.styles
-                font_charstyle = font_styles.add_style('Head', WD_STYLE_TYPE.CHARACTER)
+                font_charstyle = font_styles.add_style(
+                    'Head', WD_STYLE_TYPE.CHARACTER)
                 font_object = font_charstyle.font
                 font_object.size = Pt(14)
                 font_object.name = 'Times New Roman'
-
 
                 # document.add_paragraph(
                 # 'first item in unordered list', style='ListBullet'
@@ -181,19 +189,20 @@ def journalView(request):
 
                 p = document.add_paragraph('')
                 p.add_run('Отчёт по сотрудникам', style='Head').bold = True
-                p.alignment = 1 # выравнивание: 0 - влево, 1 - центр
+                p.alignment = 1  # выравнивание: 0 - влево, 1 - центр
 
-                #document.add_picture('monty-truth.png', width=Inches(1.25))
-                thead_list = ['Дата', 'Фамилия, имя, отчество (при наличии) работника, прошедшего инструктаж по охране труда', 'профессия (должность) работника', 'число, месяц, год рождения работника', 'вид инструктажа по охране труда', 'Причина прохождения инструктажа по охране труда', 'ФИО, профессия работника, проводившего инструктаж', 'Наименование ЛПА, в объеме требований которого проведен инструктаж по охране труда']
-
+                # document.add_picture('monty-truth.png', width=Inches(1.25))
+                thead_list = ['Дата', 'Фамилия, имя, отчество (при наличии) работника, прошедшего инструктаж по охране труда', 'профессия (должность) работника', 'число, месяц, год рождения работника', 'вид инструктажа по охране труда',
+                              'Причина прохождения инструктажа по охране труда', 'ФИО, профессия работника, проводившего инструктаж', 'Наименование ЛПА, в объеме требований которого проведен инструктаж по охране труда']
 
                 # заполнение шапки таблицы
-                table = document.add_table(rows=len(obj_result), cols=9, style='Table Grid')
+                table = document.add_table(
+                    rows=len(obj_result), cols=9, style='Table Grid')
                 hdr_cells = table.rows[0].cells
                 for i in range(len(thead_list)):
                     hdr_cells[i].text = thead_list[i]
                     hdr_cells[i].width = Cm(2.5)
-                # ------ 
+                # ------
 
                 # заполнение таблицы:
                 # for i in range(len(obj_result)):
@@ -201,23 +210,23 @@ def journalView(request):
                 #         row = table.add_row().cells
                 #         row[i]
 
-
-                #89274420900 Дядя Володя Нурлат Черемуха
+                # 89274420900 Дядя Володя Нурлат Черемуха
 
                 dateNameFile = f'{timezone.localtime(timezone.now()).replace(hour=23, minute=59, second=0, microsecond=0)}.docx'
-                response = HttpResponse(content_type='application/vnd.openxmlformats-officedocument.wordprocessingml.document')
-                response['Content-Disposition'] = f'attachment; filename='+ dateNameFile
+                response = HttpResponse(
+                    content_type='application/vnd.openxmlformats-officedocument.wordprocessingml.document')
+                response['Content-Disposition'] = f'attachment; filename=' + dateNameFile
 
                 document.save(response)
                 return response
-            else: 
+            else:
                 return HttpResponseBadRequest()
 
-
-        if request.POST: # для аякс условие
+        if request.POST:  # для аякс условие
             print('я здесь')
-            if request.POST['id_date_start'] != '' and request.POST['id_date_end'] != '': # Если есть даты
-            # if request.POST['id_date_start'] != '' and request.POST['id_date_end'] != '':
+            # Если есть даты
+            if request.POST['id_date_start'] != '' and request.POST['id_date_end'] != '':
+                # if request.POST['id_date_start'] != '' and request.POST['id_date_end'] != '':
                 try:
                     obj_result = res.objects.filter(
                         user__type_user=request.POST['id_type_user'],
@@ -225,17 +234,17 @@ def journalView(request):
                         user__groupStud_id=request.POST['id_group'],
                         quiz__id=request.POST['id_quiz'],
                         date_instruction__range=(request.POST['id_date_start'],
-                                                    timezone.localtime(timezone.now()).replace(hour=0, minute=0, second=0, microsecond=0)),
-                        
+                                                 timezone.localtime(timezone.now()).replace(hour=0, minute=0, second=0, microsecond=0)),
+
                         date_instruction_end__range=(request.POST['id_date_end'],
-                                                    timezone.localtime(timezone.now()).replace(hour=23, minute=59, second=0, microsecond=0)),
-                        
+                                                     timezone.localtime(timezone.now()).replace(hour=23, minute=59, second=0, microsecond=0)),
+
                         mark=request.POST['mark'],
                     )
                 except res.DoesNotExist:
                     obj_result = []
 
-            elif request.POST['id_date_start'] != '': # если есть начальная дата
+            elif request.POST['id_date_start'] != '':  # если есть начальная дата
                 try:
                     obj_result = res.objects.filter(
                         user__type_user=request.POST['id_type_user'],
@@ -243,13 +252,13 @@ def journalView(request):
                         user__groupStud_id=request.POST['id_group'],
                         quiz__id=request.POST['id_quiz'],
                         date_instruction__range=(request.POST['id_date_start'],
-                                                    timezone.localtime(timezone.now()).replace(hour=0, minute=0, second=0, microsecond=0)),
+                                                 timezone.localtime(timezone.now()).replace(hour=0, minute=0, second=0, microsecond=0)),
                         mark=request.POST['mark'],
                     )
                 except res.DoesNotExist:
                     obj_result = []
 
-            else: # иначе без дат 
+            else:  # иначе без дат
                 try:
                     obj_result = res.objects.filter(
                         user__type_user=request.POST['id_type_user'],
@@ -260,7 +269,6 @@ def journalView(request):
                     )
                 except res.DoesNotExist:
                     obj_result = []
-
 
             if len(obj_result) > 0:
 
@@ -308,149 +316,166 @@ def journalView(request):
     return render(request, page_name, values)
 
 
-# это профиль
-@login_required  # обязательная авторизация
-def profileView(request):
-
-    page_name = 'profile.html'
-
-    if request.method == 'POST':
-        data = {}  # for messages
-        user = request.user
-
-
-        if user.check_password(request.POST['password']):
-
-            # проверка на наличие номера телефона в запросе
-            if request.POST.get('phone_number'):  # если отправили номер телефона
-                if user.phone_number != request.POST['phone_number']:
-                    form = ChangeNumberUser(request.POST)
-                    if form.is_valid():
-                        user.phone_number = request.POST['phone_number']
-                        user.save()
-                        data['message'] = f'{user.first_name}, Вы успешно сменили номер телефона!'
-                        data['status'] = 'ok'
-                        return JsonResponse(data)
-                    else:
-                        data['message'] = 'Введите правильный номер телефона!'
-                        data['status'] = 'error'
-                else:
-                    data['message'] = 'Вы ввели настоящий номер телефона!'
-                    data['status'] = 'error'
-
-            # проверка на почты в запросе
-            if request.POST.get('email'):  # если отправили почту
-                if user.email != request.POST['email']:
-                    form = ChangeEmailUser(request.POST)
-                    if form.is_valid():
-                        user.email = request.POST['email']
-                        user.save()
-                        data['message'] = f'{user.first_name}, Вы успешно сменили электронную почту!'
-                        data['status'] = 'ok'
-                        return JsonResponse(data)
-                    else:
-                        data['message'] = 'Введите корректную электронную почту!'
-                        data['status'] = 'error'
-
-                else:
-                    data['message'] = 'Новая почта совпадает с старым'
-                    data['status'] = 'error'
-
-            # смена пароля
-            if request.POST.get('password2'):
-                if request.POST['password'] != request.POST['password2']:
-                    form = ChangePasswordUser(request.POST)
-                    if form.is_valid():
-                        user.set_password(request.POST['password2'])
-                        user.save()
-                        data['message'] = f'{user.first_name}, Вы успешно сменили пароль!'
-                        data['status'] = 'ok'
-                        data['reload'] = 'go'
-                        return JsonResponse(data)
-                    else:
-                        data['message'] = 'Новый пароль не соответствует по требованиям! '
-                        data['status'] = 'error'
-
-                else:
-                    data['message'] = 'Старый пароль соответствует новому'
-                    data['status'] = 'error'
-
-            # проверка на почты в запросе
-            if request.FILES:  # если отправили почту
-                form = ChangeAvatarUser(request.FILES)
-                if form.is_valid():
-                    user.avatar.delete()
-                    user.avatar = request.FILES['avatar']
-                    user.save()
-                    data['message'] = f'{user.first_name}, Вы успешно сменили фотографию!'
-                    data['status'] = 'ok'
-                    return JsonResponse(data)
-                else:
-                    data['message'] = 'Выберите корректную фотографию!'
-                    data['status'] = 'error'
-
-        else:
-            data['message'] = 'Введите корректный пароль!'
-            data['status'] = 'error'
-
-        return JsonResponse(data)
-
-    return render(request, page_name)
-
-
-# элемент  с пройденными инструктажами
+#профиль
 @login_required
-def passedView(request):
-    page_name = 'passed_inst.html'
+class profileView(View):
 
-    obj_res = res.objects.filter(
-        user=request.user).order_by("-date_instruction")
+    #профиль
+    def mainPage(request):
+        page_name = 'profile.html'
+        return render(request, page_name)
 
-    values = {
-        'obj': obj_res
-    }
+    #смена данных
+    def changeData(request):
+        if request.method == 'POST':
+            data = {}  # for messages
+            user = request.user
 
-    return render(request, page_name, values)
+            if user.check_password(request.POST['password']):
 
+                # проверка на наличие номера телефона в запросе
+                if request.POST.get('phone_number'):  # если отправили номер телефона
+                    if user.phone_number != request.POST['phone_number']:
+                        form = ChangeNumberUser(request.POST)
+                        if form.is_valid():
+                            user.phone_number = request.POST['phone_number']
+                            user.save()
+                            data['message'] = f'{user.first_name}, Вы успешно сменили номер телефона!'
+                            data['status'] = 'ok'
+                            return JsonResponse(data)
+                        else:
+                            data['message'] = 'Введите правильный номер телефона!'
+                            data['status'] = 'error'
+                    else:
+                        data['message'] = 'Вы ввели настоящий номер телефона!'
+                        data['status'] = 'error'
 
-@login_required
-def passFilterView(request):
-    obj_res = None # для результатов. 
-    if request.method == 'POST': # Если метод пост
-        if request.POST.get('filter'): # Если существует элемент фильтра
-            print(request.POST['filter'])
-            
-            try:
-                obj_res = res.objects.filter(user = request.user).order_by(request.POST['filter']) # получение данных
-            except res.DoesNotExist:
-                obj_res = [] # если не получилось, то 
-            
-            if len(obj_res) > 0: # длинна массива больше 0
+                # проверка на почты в запросе
+                if request.POST.get('email'):  # если отправили почту
+                    if user.email != request.POST['email']:
+                        form = ChangeEmailUser(request.POST)
+                        if form.is_valid():
+                            user.email = request.POST['email']
+                            user.save()
+                            data['message'] = f'{user.first_name}, Вы успешно сменили электронную почту!'
+                            data['status'] = 'ok'
+                            return JsonResponse(data)
+                        else:
+                            data['message'] = 'Введите корректную электронную почту!'
+                            data['status'] = 'error'
 
-                data_list = [] # переменная лист для фильтра
+                    else:
+                        data['message'] = 'Новая почта совпадает с старым'
+                        data['status'] = 'error'
 
-                for row in obj_res:
-                    data_list.append(
-                        {
-                            'name_brief':str(row.instruction.name_instruction),
-                            'quiz_name':str(row.quiz.name_test),
-                            'date_start':row.date_instruction,
-                            'result':row.result,
-                            'mark':row.mark
-                        }
-                    )
-                
-                obj_res = data_list
+                # смена пароля
+                if request.POST.get('password2'):
+                    if request.POST['password'] != request.POST['password2']:
+                        form = ChangePasswordUser(request.POST)
+                        if form.is_valid():
+                            user.set_password(request.POST['password2'])
+                            user.save()
+                            data['message'] = f'{user.first_name}, Вы успешно сменили пароль!'
+                            data['status'] = 'ok'
+                            data['reload'] = 'go'
+                            return JsonResponse(data)
+                        else:
+                            data['message'] = 'Новый пароль не соответствует по требованиям! '
+                            data['status'] = 'error'
 
-                message = 'Успешно!'
-                status = 'ok'
+                    else:
+                        data['message'] = 'Старый пароль соответствует новому'
+                        data['status'] = 'error'
+
+                # проверка на почты в запросе
+                if request.FILES:  # если отправили почту
+                    form = ChangeAvatarUser(request.FILES)
+                    if form.is_valid():
+                        user.avatar.delete()
+                        user.avatar = request.FILES['avatar']
+                        user.save()
+                        data['message'] = f'{user.first_name}, Вы успешно сменили фотографию!'
+                        data['status'] = 'ok'
+                        return JsonResponse(data)
+                    else:
+                        data['message'] = 'Выберите корректную фотографию!'
+                        data['status'] = 'error'
+
             else:
-                message = 'Данные не найдены'
-                status = 'error'
-            
-            return JsonResponse({'result':obj_res, 'status': status, 'message': message})
-            
-    return JsonResponse({'status':'good night'})
+                data['message'] = 'Введите корректный пароль!'
+                data['status'] = 'error'
+
+            return JsonResponse(data)
+    
+    
+    # пройденные инструктажи
+    def passedBriefs(request):
+        page_name = 'passed_inst.html'
+        obj_res = res.objects.filter(
+            user=request.user).order_by("-date_instruction")
+        values = {'obj': obj_res}
+        return render(request, page_name, values)
+
+
+    #вкладка с деталями про пользователя
+    def detail(request):
+        page_name = 'profiile_detail_remaster.html'
+        return render(request, page_name)
+
+
+    #вкладка с возможностями
+    def action(request):
+        page_name = 'action.html'
+        return render(request, page_name)
+
+
+    #редактирование профиля
+    def edit(request):
+        page_name = 'profile_edit.html'
+        return render(request, page_name)
+
+
+    # сортировка результатов прохождения инструктажей
+    def sorting(request):
+        obj_res = None  # для результатов.
+        if request.method == 'POST':  # Если метод пост
+            if request.POST.get('filter'):  # Если существует элемент фильтра
+                print(request.POST['filter'])
+
+                try:
+                    obj_res = res.objects.filter(user=request.user).order_by(
+                        request.POST['filter'])  # получение данных
+                except res.DoesNotExist:
+                    obj_res = []  # если не получилось, то
+
+                if len(obj_res) > 0:  # длинна массива больше 0
+
+                    data_list = []  # переменная лист для фильтра
+
+                    for row in obj_res:
+                        data_list.append(
+                            {
+                                'name_brief': str(row.instruction.name_instruction),
+                                'quiz_name': str(row.quiz.name_test),
+                                'date_start': row.date_instruction,
+                                'result': row.result,
+                                'mark': row.mark
+                            }
+                        )
+
+                    obj_res = data_list
+
+                    message = 'Успешно!'
+                    status = 'ok'
+                else:
+                    message = 'Данные не найдены'
+                    status = 'error'
+
+                return JsonResponse({'result': obj_res, 'status': status, 'message': message})
+
+        return HttpResponseBadRequest()
+
+
 
 # проверка о наличии файла
 @login_required
@@ -495,25 +520,7 @@ def checkPassedView(request, id):
     return JsonResponse(data)
 
 
-# элемент мои данные
-@login_required  # обязательная авторизация
-def getDetailProfile(request):
-    page_name = 'profiile_detail_remaster.html'
-    return render(request, page_name)
 
-
-# мои возможности
-@login_required  # обязательная авторизация
-def actionUserView(request):
-    page_name = 'action.html'
-    return render(request, page_name)
-
-
-# редактирование профиля
-@login_required  # обязательная авторизация
-def getEditProfile(request):
-    page_name = 'profile_edit.html'
-    return render(request, page_name)
 
 
 # страница с инструктажами

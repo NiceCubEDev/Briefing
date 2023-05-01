@@ -11,8 +11,18 @@ urlpatterns = [
     path('sendMessage/', mainView.mainSendMessage, name='post-message'),
     path('about_us/', mainView.mainAboutPage, name='about'),
     path('chat/', chatbot_responseView, name='chat_response'), 
-    path('contact/', mainView.mainContactPage, name="contact"),
-    # конец 
+    path('contact/', mainView.mainContactPage, name="contact"), 
+
+    #профиль
+    path('account/profile/', profileView.mainPage, name="profile"),
+    path('account/profile/change/', profileView.changeData, name="profile-change_data"),
+    path('account/profile/passed_inst/', profileView.passedBriefs, name="passed_brief_view"),
+    path('account/profile/detail/', profileView.detail, name="profile_detail"),
+    path('account/profile/action/', profileView.action, name="action"),
+    path('account/profile/edit/', profileView.edit, name="profile_edit"),
+    path('account/profile/passed_brief_filter/', profileView.sorting, name="passed_brief_filter_view"),
+    
+
     # user urls
     path('account/themes_inst/test/<int:id>/<int:num>/save', testDataSaveView, name = 'save_data_test'),
     path('account/themes_inst/test/<int:id>/<int:num>/data', testDataView, name = 'get_data_test'),
@@ -22,12 +32,10 @@ urlpatterns = [
     path('account/themes_inst/test/<int:id>/', testsPageView, name = "test_list"),
     path('account/themes_inst/', briefPageView, name = "brief"),
     path('account/journal/', journalView, name = "journal_view"),
-    path('account/profile/', profileView, name="profile"),
-    path('account/profile/detail/', getDetailProfile, name="profile_detail"),
-    path('account/profile/action/', actionUserView, name="action"),
-    path('account/profile/edit/', getEditProfile, name="profile_edit"),
-    path('account/profile/passed_inst/', passedView, name="passed_brief_view"),
-    path('account/profile/passed_brief_filter/', passFilterView, name="passed_brief_filter_view"),
+   
+
+
+    
     path('account/login/', auth_views.LoginView.as_view(redirect_authenticated_user=True), name='login'),
     path('account/', include('django.contrib.auth.urls')),
 ]

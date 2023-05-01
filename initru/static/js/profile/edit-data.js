@@ -122,7 +122,7 @@ changeBtn.forEach(btn => btn.addEventListener('click', () => { // делаем �
         $.ajax({
             async:true,
             type: "POST",
-            url: url,
+            url: `${url}change/`,
             enctype:'multipart/form-data',
             data: datas,
             success: (response)=> {
