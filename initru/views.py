@@ -43,10 +43,10 @@ def chatbot_responseView(request):
     return render(request, page_name)
 
 
-# Главные страницы
-class mainView(View):
+#главная
+class MainView(View):
 
-    def mainPage(request):
+    def showPage(request):
 
         page_name = 'main.html'
 
@@ -99,9 +99,9 @@ class mainView(View):
         return render(request, page_name)
 
 
-class journalView(View):
+class JournalView(View):
 
-    def mainPage(request):
+    def showPage(request):
         pass
 
     pass
@@ -318,10 +318,10 @@ def journalView(request):
 
 #профиль
 @login_required
-class profileView(View):
+class ProfileView(View):
 
     #профиль
-    def mainPage(request):
+    def showPage(request):
         page_name = 'profile.html'
         return render(request, page_name)
 
@@ -453,15 +453,7 @@ class profileView(View):
                     data_list = []  # переменная лист для фильтра
 
                     for row in obj_res:
-                        data_list.append(
-                            {
-                                'name_brief': str(row.instruction.name_instruction),
-                                'quiz_name': str(row.quiz.name_test),
-                                'date_start': row.date_instruction,
-                                'result': row.result,
-                                'mark': row.mark
-                            }
-                        )
+                        data_list.append({'name_brief': str(row.instruction.name_instruction), 'quiz_name': str(row.quiz.name_test), 'date_start': row.date_instruction, 'result': row.result, 'mark': row.mark})
 
                     obj_res = data_list
 
@@ -476,50 +468,134 @@ class profileView(View):
         return HttpResponseBadRequest()
 
 
-
-# проверка о наличии файла
+# инструктаж
 @login_required
-def checkFileDownloadedView(request, id):
-    data = {}
-    if request.method == 'POST':
-        obj_query = downloadInstructionsForTests.objects.filter(
-            user=request.user, test=request.POST['quiz-pk']).count()
-        if obj_query == 0:
-            downloadInstructionsForTests.objects.create(
-                user=request.user,
-                test_id=request.POST['quiz-pk']
-            )
-            data['status'] = 'ok'
-        else:
-            data['status'] = 'warning'
-        return JsonResponse(data)
-    else:
-        return HttpResponseBadRequest()
+class BriefBrainView(View):
 
 
-# Проверка о прохождении теста
-@login_required
-def checkPassedView(request, id):
-    data = {}
-    if request.method == 'POST':
-        obj_query_file = downloadInstructionsForTests.objects.filter(
-            user=request.user, test=request.POST['quiz']).count()
-        if obj_query_file != 0:
-            passed_brief = res.objects.filter(
-                instruction=id, quiz=request.POST['quiz'], mark='Сдан', user=request.user).count()
-            if passed_brief == 0:
-                data['status'] = True
+    # получение вопросов
+    def questions(request, num, id):
+        quiz = test.objects.get(
+        instruction=id, type_user=request.user.type_user, pk=num)
+        questions = []
+        for q in quiz.get_questions():
+            answers = []
+            for a in q.get_answers():
+                answers.append(a.text)
+            questions.append({str(q): answers})
+        return JsonResponse({
+            'data': questions,
+            'time': quiz.time
+        })
+
+
+    # сохранение теста
+    def save(request, num, id):
+         
+         if request.method == 'POST':
+            user = request.user  # пользователь
+            # получение нужного теста
+            quiz = test.objects.get(pk=num, instruction=id,
+                                    type_user=request.user.type_user)
+
+            questions = []  # list с в вопросами
+            data = request.POST
+            data_ = dict(data.lists())  # в хороший список
+            data_.pop('csrfmiddlewaretoken')
+
+            for k in data_.keys():  # прогонка по вопросам
+                quest = question.objects.get(name=k)
+                questions.append(quest)  # Добавляем в список вопросов
+
+            score = 0  # балл
+            multiper = 100 / quiz.number_of_questions
+            results = []
+            correct_answer = None
+
+            for q in questions:
+                a_selected = request.POST.get(q.name)  # выбранные ответы
+
+                if a_selected != "":  # если ответ не пустой, то
+                    question_answers = answers.objects.filter(
+                        question=q)  # получаем ответы по вопросу
+                    for a in question_answers:
+                        if a_selected == a.text:  # если выбранный ответ совпадает с ответов настоящим
+                            if a.correct:
+                                score += 1  # плюс отвеченный вопрос
+                                correct_answer = a.text  # сохраняем правильный ответ
+                        else:
+                            if a.correct:
+                                correct_answer = a.text
+                    results.append(
+                        {str(q): {'correct_answer': correct_answer, 'answered': a_selected}})
+                else:
+                    results.append({str(q): 'not answered'})
+
+            countAnswers = score
+            score_ = score * multiper
+
+            # если человек набрал больше баллов, чем в условии теста, то сохраняем его и отправляем успешно
+            if score_ >= quiz.required_score_to_pass:
+                res.objects.create(
+                    user=user,
+                    instruction_id=quiz.instruction.id,
+                    quiz=quiz,
+                    date_instruction=timezone.now(),
+                    result=score_,
+                    mark='Сдан',
+                )
+                return JsonResponse({'passed': True, 'score': score_, 'results': results, 'countAnswers': countAnswers})
             else:
-                data['message'] = 'Вы уже прошли данный инструктаж'
+                res.objects.create(
+                    user=user,
+                    instruction_id=quiz.instruction.id,
+                    quiz=quiz,
+                    date_instruction=timezone.now(),
+                    result=score_,
+                    mark='Не сдан',
+                )
+                return JsonResponse({'passed': False, 'score': score_, 'results': results, 'countAnswers': countAnswers})
+
+
+    # проверка насчет лекции
+    def checkFile(request, id):
+        data = {}
+        if request.method == 'POST':
+            obj_query = downloadInstructionsForTests.objects.filter(
+                user=request.user, test=request.POST['quiz-pk']).count()
+            if obj_query == 0:
+                downloadInstructionsForTests.objects.create(
+                    user=request.user,
+                    test_id=request.POST['quiz-pk']
+                )
+                data['status'] = 'ok'
+            else:
+                data['status'] = 'warning'
+            return JsonResponse(data)
+        else:
+            return HttpResponseBadRequest()
+        
+
+    # Проверка о прохождении теста
+    def checkPassed(request, id): 
+        data = {}
+        if request.method == 'POST':
+            obj_query_file = downloadInstructionsForTests.objects.filter(
+                user=request.user, test=request.POST['quiz']).count()
+            if obj_query_file != 0:
+                passed_brief = res.objects.filter(
+                    instruction=id, quiz=request.POST['quiz'], mark='Сдан', user=request.user).count()
+                if passed_brief == 0:
+                    data['status'] = True
+                else:
+                    data['message'] = 'Вы уже прошли данный инструктаж'
+                    data['status'] = False
+            else:
+                data['message'] = 'Вы не изучили теорию!'
                 data['status'] = False
         else:
-            data['message'] = 'Вы не изучили теорию!'
-            data['status'] = False
-    else:
-        return HttpResponseBadRequest()
-    return JsonResponse(data)
-
-
+            return HttpResponseBadRequest()
+        return JsonResponse(data)
 
 
 
@@ -565,88 +641,3 @@ def testView(request, num, id):
         return HttpResponseBadRequest()
 
 
-# получение вопросов
-@login_required
-def testDataView(request, num, id):
-
-    quiz = test.objects.get(
-        instruction=id, type_user=request.user.type_user, pk=num)
-    questions = []
-    for q in quiz.get_questions():
-        answers = []
-        for a in q.get_answers():
-            answers.append(a.text)
-        questions.append({str(q): answers})
-    return JsonResponse({
-        'data': questions,
-        'time': quiz.time
-    })
-
-
-# проверка теста
-@login_required
-def testDataSaveView(request, num, id):  # id - инструктаж # num - номер теста
-    if request.method == 'POST':
-
-        user = request.user  # пользователь
-        # получение нужного теста
-        quiz = test.objects.get(pk=num, instruction=id,
-                                type_user=request.user.type_user)
-
-        questions = []  # list с в вопросами
-        data = request.POST
-        data_ = dict(data.lists())  # в хороший список
-        data_.pop('csrfmiddlewaretoken')
-
-        for k in data_.keys():  # прогонка по вопросам
-            quest = question.objects.get(name=k)
-            questions.append(quest)  # Добавляем в список вопросов
-
-        score = 0  # балл
-        multiper = 100 / quiz.number_of_questions
-        results = []
-        correct_answer = None
-
-        for q in questions:
-            a_selected = request.POST.get(q.name)  # выбранные ответы
-
-            if a_selected != "":  # если ответ не пустой, то
-                question_answers = answers.objects.filter(
-                    question=q)  # получаем ответы по вопросу
-                for a in question_answers:
-                    if a_selected == a.text:  # если выбранный ответ совпадает с ответов настоящим
-                        if a.correct:
-                            score += 1  # плюс отвеченный вопрос
-                            correct_answer = a.text  # сохраняем правильный ответ
-                    else:
-                        if a.correct:
-                            correct_answer = a.text
-                results.append(
-                    {str(q): {'correct_answer': correct_answer, 'answered': a_selected}})
-            else:
-                results.append({str(q): 'not answered'})
-
-        countAnswers = score
-        score_ = score * multiper
-
-        # если человек набрал больше баллов, чем в условии теста, то сохраняем его и отправляем успешно
-        if score_ >= quiz.required_score_to_pass:
-            res.objects.create(
-                user=user,
-                instruction_id=quiz.instruction.id,
-                quiz=quiz,
-                date_instruction=timezone.now(),
-                result=score_,
-                mark='Сдан',
-            )
-            return JsonResponse({'passed': True, 'score': score_, 'results': results, 'countAnswers': countAnswers})
-        else:
-            res.objects.create(
-                user=user,
-                instruction_id=quiz.instruction.id,
-                quiz=quiz,
-                date_instruction=timezone.now(),
-                result=score_,
-                mark='Не сдан',
-            )
-            return JsonResponse({'passed': False, 'score': score_, 'results': results, 'countAnswers': countAnswers})
