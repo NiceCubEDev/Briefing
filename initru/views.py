@@ -1,4 +1,5 @@
 from django.shortcuts import render, redirect
+from django.views import View
 # формы
 from .forms import contactForm, CreateUserForm, ChangeNumberUser, ChangeEmailUser, ChangeAvatarUser, ChangePasswordUser
 # from django.contrib import messages
@@ -40,56 +41,62 @@ def chatbot_responseView(request):
     return render(request, page_name)
 
 
-# главная
-def mainView(request):
-
-    page_name = 'main.html'
-
-    users = CustomUser.get_count_users()  # количество пользователей
-    # количество пройденных инструктажей
-    passed_brief = res.objects.filter(mark='Сдан').count() or 0
-    count_brief = test.objects.all().count() or 0  # количество инструктажей
-
-    getInstr = inst.get_all_names()
-    getComplex = complex.get_all_names()
-    users = CustomUser.get_count_users()
-    contact = contactForm()
-
-    if request.method == 'POST':
-        data = {}
-        print(request.POST)
-        form = contactForm(request.POST)
-        if form.is_valid():
-            form.save()
-            data['message'] = 'Вы успешно отправили!'
-            data['status'] = 'ok'
-            return JsonResponse(data)
-        else:
-            data['message'] = 'Введите правильные данные!'
-            data['status'] = 'error'
-            return JsonResponse(data)
-
-    values = {
-        'contact': contact,
-        'instr': getInstr,
-        'complex': getComplex,
-        'countUser': users,
-        'pb': passed_brief,
-        'cb': count_brief,
-    }
-    return render(request, page_name, values)
+#Главные страницы
+class mainView(View):
 
 
-# get_about_us
-def aboutPageView(request):
-    page_name = 'about.html'
-    return render(request, page_name)
+    def mainPage(request):
+        
+        page_name = 'main.html'
+        
+        users = CustomUser.get_count_users()  # количество пользователей
+        # количество пройденных инструктажей
+        passed_brief = res.objects.filter(mark='Сдан').count() or 0
+        count_brief = test.objects.all().count() or 0  # количество инструктажей
+
+        getInstr = inst.get_all_names()
+        getComplex = complex.get_all_names()
+        users = CustomUser.get_count_users()
+        contact = contactForm()
+        values = {
+            'contact': contact,
+            'instr': getInstr,
+            'complex': getComplex,
+            'countUser': users,
+            'pb': passed_brief,
+            'cb': count_brief,
+        }
+        return render(request, page_name, values)
+    
+
+    def mainSendMessage(request):
+        if request.method == 'POST':
+            data = {}
+            print(request.POST)
+            form = contactForm(request.POST)
+            if form.is_valid():
+                form.save()
+                data['message'] = 'Вы успешно отправили!'
+                data['status'] = 'ok'
+                return JsonResponse(data)
+            else:
+                data['message'] = 'Введите правильные данные!'
+                data['status'] = 'error'
+                return JsonResponse(data)
 
 
-# get_contact
-def contactPageView(request):
-    page_name = 'contact.html'
-    return render(request, page_name)
+    # подробности
+    def mainAboutPage(request):
+        page_name = 'about.html'
+        return render(request, page_name)       
+
+
+    # контакты
+    def mainContactPage(request):
+        page_name = 'contact.html'
+        return render(request, page_name)
+
+
 
 
 @login_required(login_url='account/login/')

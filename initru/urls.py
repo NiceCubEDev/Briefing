@@ -6,12 +6,13 @@ from django.conf.urls.static import static
 from django.contrib.auth import views as auth_views
 
 urlpatterns = [
-    # guest urls
-    path('', mainView, name='main'),
-    path('about_us/', aboutPageView, name='about'),
+    # главная
+    path('', mainView.mainPage, name='main'),
+    path('sendMessage/', mainView.mainSendMessage, name='post-message'),
+    path('about_us/', mainView.mainAboutPage, name='about'),
     path('chat/', chatbot_responseView, name='chat_response'), 
-    path('contact/', contactPageView, name="contact"),
-
+    path('contact/', mainView.mainContactPage, name="contact"),
+    # конец 
     # user urls
     path('account/themes_inst/test/<int:id>/<int:num>/save', testDataSaveView, name = 'save_data_test'),
     path('account/themes_inst/test/<int:id>/<int:num>/data', testDataView, name = 'get_data_test'),

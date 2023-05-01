@@ -3,6 +3,7 @@ from django.contrib.auth.models import AbstractUser
 from smart_selects.db_fields import ChainedForeignKey
 import random
 
+
 # Регионы
 class Region(models.Model):
     name_region = models.CharField(
@@ -16,6 +17,7 @@ class Region(models.Model):
 
     def __str__(self):
         return f'{self.name_region}'
+
 
 # улицы
 class Street(models.Model):
@@ -211,6 +213,7 @@ class complex(models.Model):
     def get_all_names():
         return complex.objects.all()
 
+
 # кустом юзер
 class CustomUser(AbstractUser):  # custom user for Users with django
     gen = (
@@ -276,6 +279,7 @@ class CustomUser(AbstractUser):  # custom user for Users with django
         role, on_delete=models.CASCADE,
         null=True, verbose_name='Роль',
     )
+    
     date_end = models.DateField(
         'Дата завершения зачисления',
         null=True,

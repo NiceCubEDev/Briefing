@@ -1,6 +1,6 @@
 const passBtn = document.getElementById('pass_query') // кнопка отправки
 const alertContainer = document.getElementById('alertBox');
-const url = window.location.href
+const url = 'sendMessage/';
 const csrf = document.getElementsByName('csrfmiddlewaretoken')[0].value
 
 function notifFunction(type, text) { 
