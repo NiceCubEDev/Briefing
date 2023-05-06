@@ -1,10 +1,7 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render
 from django.views import View
 # формы
-from .forms import contactForm, CreateUserForm, ChangeNumberUser, ChangeEmailUser, ChangeAvatarUser, ChangePasswordUser
-# from django.contrib import messages
-# для условий
-from django.db.models import Q
+from .forms import contactForm, ChangeNumberUser, ChangeEmailUser, ChangeAvatarUser, ChangePasswordUser
 # модели
 from .models import inst, complex, CustomUser, test, question, answers, res, downloadInstructionsForTests, typeuser, Groups
 # варианты ответов
@@ -14,7 +11,7 @@ from django.contrib.auth.decorators import login_required
 # получение времени
 from django.utils import timezone
 # чат бот
-from deeppavlov import build_model
+# from deeppavlov import build_model
 # импорт ворд
 from docx import Document
 from docx.enum.text import WD_PARAGRAPH_ALIGNMENT  # выравнивание

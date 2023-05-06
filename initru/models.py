@@ -150,13 +150,17 @@ class test(models.Model):
     required_score_to_pass = models.IntegerField('Рекомендуемый балл в %', help_text='Рекомендуемый балл в %')
     type_user  = models.ForeignKey(typeuser, on_delete=models.CASCADE, verbose_name='Тип пользователя')
     file = models.FileField( 'Файл к тесту', upload_to='instr/', null=True, blank=True)
+    stud_groups = models.ForeignKey(Groups, on_delete=models.CASCADE, verbose_name='Группа')
+
 
     class Meta:
         verbose_name = 'Тест'
         verbose_name_plural = 'Тесты'
 
+
     def __str__(self):
-        return f'{self.name_test} - {self.type_user}'
+        return f'{self.name_test} - {self.type_user} '
+
 
     @staticmethod
     def get_need_instr(request, id):
@@ -341,6 +345,7 @@ class question(models.Model):
 
 # ответы на вопросы
 class answers(models.Model):
+    
     question  = models.ForeignKey(
         question, on_delete=models.CASCADE,
         verbose_name='Вопрос'
@@ -348,14 +353,8 @@ class answers(models.Model):
     text = models.CharField('Ответ', max_length=400)
     correct = models.BooleanField('Правильный или нет', default=False)
     created = models.DateTimeField(auto_now_add=True)
-    # result  = models.ForeignKey(
-    #     res,
-    #     on_delete=models.CASCADE,
-    #     verbose_name='Результат'
-    # )
-    # score = models.IntegerField(
-    #     'Балл'
-    # )
+
+
 
     def __str__(self):
         return f"{self.question.name}, ответ:{self.text}"
