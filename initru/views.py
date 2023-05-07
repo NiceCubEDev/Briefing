@@ -11,7 +11,7 @@ from django.contrib.auth.decorators import login_required
 # получение времени
 from django.utils import timezone
 # чат бот
-# from deeppavlov import build_model
+import datetime
 # импорт ворд
 from docx import Document
 from docx.enum.text import WD_PARAGRAPH_ALIGNMENT  # выравнивание
@@ -465,6 +465,7 @@ class ProfileView(View):
         return HttpResponseBadRequest()
 
 
+
 # инструктаж
 @login_required
 class BriefBrainView(View):
@@ -488,8 +489,12 @@ class BriefBrainView(View):
 
     # сохранение теста
     def save(request, num, id):
-         
-         if request.method == 'POST':
+        
+        def getDaysPassed(first_date):
+            answer = first_date - timezone.now()
+            return int(answer.total_seconds())
+
+        if request.method == 'POST':
             user = request.user  # пользователь
             # получение нужного теста
             quiz = test.objects.get(pk=num, instruction=id,
@@ -531,13 +536,18 @@ class BriefBrainView(View):
             countAnswers = score
             score_ = score * multiper
 
+            # получение разницы в датах
+            days_passed = getDaysPassed(quiz.date_target) # получение
+            
+            print(float(days_passed))
             # если человек набрал больше баллов, чем в условии теста, то сохраняем его и отправляем успешно
             if score_ >= quiz.required_score_to_pass:
                 res.objects.create(
-                    user=user,
-                    instruction_id=quiz.instruction.id,
-                    quiz=quiz,
+                    user=user, # пользователь
+                    instruction_id=quiz.instruction.id, # номер инструктажа
+                    quiz=quiz, # тесты 
                     date_instruction=timezone.now(),
+                    date_instruction_end = days_passed,
                     result=score_,
                     mark='Сдан',
                 )
@@ -548,6 +558,7 @@ class BriefBrainView(View):
                     instruction_id=quiz.instruction.id,
                     quiz=quiz,
                     date_instruction=timezone.now(),
+                    date_instruction_end= days_passed,
                     result=score_,
                     mark='Не сдан',
                 )
@@ -593,14 +604,6 @@ class BriefBrainView(View):
         else:
             return HttpResponseBadRequest()
         return JsonResponse(data)
-
-
-
-# страница с инструктажами
-@login_required  # обязательная авторизация
-
-
-
 
 
 

@@ -82,6 +82,7 @@ class inst(models.Model):
         return test.objects.filter(instruction = self.pk).count
   
 
+
 # специальности
 class Spec(models.Model):
     name_special = models.CharField(
@@ -156,7 +157,7 @@ class test(models.Model):
     type_user  = models.ForeignKey(typeuser, on_delete=models.CASCADE, verbose_name='Тип пользователя')
     file = models.FileField( 'Файл к тесту', upload_to='instr/', null=True, blank=True)
     stud_groups = models.ForeignKey(Groups, on_delete=models.CASCADE, verbose_name='Группа')
-    date_target=models.DateField('Дата назначения')
+    date_target = models.DateTimeField('Дата назначения', auto_now_add=True)
 
 
     class Meta:
@@ -319,10 +320,11 @@ class res(models.Model):
     user  = models.ForeignKey( CustomUser, on_delete=models.CASCADE, verbose_name='Пользователь')
     instruction  = models.ForeignKey( inst, on_delete=models.CASCADE, verbose_name='Инструктаж')
     quiz = models.ForeignKey(test, on_delete=models.CASCADE, verbose_name= 'Тест')
-    date_instruction = models.DateTimeField( 'Дата прохождения инструктажа')
-    date_instruction_end = models.DateField('Повторное прохождение', null=True)
+    date_instruction = models.DateTimeField('Дата прохождения инструктажа')
+    date_instruction_end = models.DateField('Прошло дней', null=True)
     result = models.IntegerField( 'Результат в %')
     mark = models.CharField('Прошел', max_length=255)
+
 
     def __str__(self):
         return f'{self.user} | Название теста: {self.quiz}'
