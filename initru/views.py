@@ -9,7 +9,8 @@ from django.http import JsonResponse, HttpResponseBadRequest, HttpResponse
 # обязательная авторизация
 from django.contrib.auth.decorators import login_required
 # получение времени
-from django.utils import timezone
+from django.utils import timezone 
+import timedelta # чтобы переводить даты
 # чат бот
 import datetime
 # импорт ворд
@@ -491,8 +492,8 @@ class BriefBrainView(View):
     def save(request, num, id):
         
         def getDaysPassed(first_date):
-            answer = first_date - timezone.now()
-            return int(answer.total_seconds())
+            answer = timedelta.Timedelta(first_date - timezone.now())
+            return answer.total.days
 
         if request.method == 'POST':
             user = request.user  # пользователь
@@ -539,7 +540,6 @@ class BriefBrainView(View):
             # получение разницы в датах
             days_passed = getDaysPassed(quiz.date_target) # получение
             
-            print(float(days_passed))
             # если человек набрал больше баллов, чем в условии теста, то сохраняем его и отправляем успешно
             if score_ >= quiz.required_score_to_pass:
                 res.objects.create(

@@ -2,12 +2,7 @@ Django
 Pillow
 django-smart-selects
 fontawesomefree
-deeppavlov
 phonenumbers
 python-docx
 django-phonenumber-field[phonenumberslite]
-torchvision
-transformers
-pytorch-crf==0.4.0
-spacy
-ru_core_news_sm-3.1.0.tar.gz
+timedelta

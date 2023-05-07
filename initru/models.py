@@ -321,7 +321,7 @@ class res(models.Model):
     instruction  = models.ForeignKey( inst, on_delete=models.CASCADE, verbose_name='Инструктаж')
     quiz = models.ForeignKey(test, on_delete=models.CASCADE, verbose_name= 'Тест')
     date_instruction = models.DateTimeField('Дата прохождения инструктажа')
-    date_instruction_end = models.DateField('Прошло дней', null=True)
+    date_instruction_end = models.IntegerField('Прошло дней', null=True)
     result = models.IntegerField( 'Результат в %')
     mark = models.CharField('Прошел', max_length=255)
 
