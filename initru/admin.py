@@ -86,7 +86,7 @@ class res(admin.ModelAdmin):
 # тесты
 @admin.register(test)
 class test(admin.ModelAdmin):
-    list_display = ['instruction', 'name_test', 'type_user','file', 'stud_groups']
+    list_display = ['instruction', 'name_test', 'type_user','file', 'stud_groups','date_target']
 
 # вопросы и ответы
 class AnswerInline(admin.TabularInline):

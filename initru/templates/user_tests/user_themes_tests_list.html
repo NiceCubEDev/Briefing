@@ -1,7 +1,7 @@
 {% extends "../base.html" %}
 
 
-{% block title %} Выбор тем {% endblock %}
+{% block title %} Инструктаж - выбор тем {% endblock %}
 
 
 {% block content %}
@@ -12,9 +12,13 @@
         Назад
     </a>
     <p class = 'fs-5 text-uppercase mt-3' style="font-family: 'Inter-Bold'; color:#E7882B;">Выберите инструктаж</p>
+    <p class = 'fs-5 text-uppercase mt-3 text-danger' style="font-family: 'Inter-Bold';">доделать отображение</p>
     <div class="list-group mt-3" style='font-family: "Inter-Regular";'>
         {% for item in themes %}
-            <a class="list-group-item list-group-item-action" href="{% url 'test_list' item.id %}">{{ item.name_instruction }}</a>
+            <a class="list-group-item list-group-item-action d-flex justify-content-between align-items-center" href="{% url 'test_list' item.id %}">{{ item.name_instruction }}
+                <!-- доделать эту часть!! -->
+                <span class="badge rounded-pill text-white bg-danger">{{ item.counttest }}</span>
+            </a>
         {% endfor %}
     </div>
 </div>

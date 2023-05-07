@@ -76,6 +76,11 @@ class inst(models.Model):
     @staticmethod  # возвращение названий
     def get_all_names():
         return inst.objects.all()[:5]
+    
+    @property
+    def counttest(self):
+        return test.objects.filter(instruction = self.pk).count
+  
 
 # специальности
 class Spec(models.Model):
@@ -151,6 +156,7 @@ class test(models.Model):
     type_user  = models.ForeignKey(typeuser, on_delete=models.CASCADE, verbose_name='Тип пользователя')
     file = models.FileField( 'Файл к тесту', upload_to='instr/', null=True, blank=True)
     stud_groups = models.ForeignKey(Groups, on_delete=models.CASCADE, verbose_name='Группа')
+    date_target=models.DateField('Дата назначения')
 
 
     class Meta:
@@ -164,9 +170,11 @@ class test(models.Model):
 
     @staticmethod
     def get_need_instr(request, id):
-        return test.objects.all().filter(
-            instruction = id
-            ).filter(type_user = request.user.type_user) 
+        return test.objects.filter(
+            instruction = id, # инструктаж
+            type_user = request.user.type_user, # тип пользователя 
+            stud_groups=request.user.groupStud # группа
+            )
     
     def get_questions(self):
         questions = list(self.question_set.all()) # получение вопросов 

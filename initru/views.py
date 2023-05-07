@@ -24,20 +24,20 @@ from docx.shared import Cm
 # чат-бот
 
 
-def chatbot_responseView(request):
+# def chatbot_responseView(request):
 
-    page_name = 'bot.html'  # страница
+#     page_name = 'bot.html'  # страница
 
-    if request.method == 'POST':
-        data = {}
-        query = request.POST
-        user_text = query['message']
-        model = build_model('kbqa_cq_ru', download=True)
-        bot_response = model([user_text])
-        data['status'] = 'ok'
-        return JsonResponse({'data': data, 'response': bot_response[0]})
+#     if request.method == 'POST':
+#         data = {}
+#         query = request.POST
+#         user_text = query['message']
+#         model = build_model('kbqa_cq_ru', download=True)
+#         bot_response = model([user_text])
+#         data['status'] = 'ok'
+#         return JsonResponse({'data': data, 'response': bot_response[0]})
 
-    return render(request, page_name)
+#     return render(request, page_name)
 
 
 #главная
@@ -598,27 +598,10 @@ class BriefBrainView(View):
 
 # страница с инструктажами
 @login_required  # обязательная авторизация
-def briefPageView(request):
-    page_name = "user_tests/user_themes_tests_list.html"
-    themesInstructions = inst.objects.all().order_by("-name_instruction")
-
-    values = {
-        'themes': themesInstructions,
-    }
-    return render(request, page_name, values)
 
 
-# страница с тестами инструктажами
-@login_required  # обязательная авторизация
-def testsPageView(request, id):
-    page_name = 'user_tests/user_tests_list.html'
-    themesInstructions = inst.objects.get(id=id)  # model inst
-    tests = test.get_need_instr(request, id)  # model test
-    values = {
-        'test': tests,
-        'themes': themesInstructions,
-    }
-    return render(request, page_name, values)
+
+
 
 
 # получение страницы теста
@@ -636,5 +619,40 @@ def testView(request, num, id):
         return render(request, page_name, values)
     else:
         return HttpResponseBadRequest()
+    
 
 
+class BriefLayoutView(View):
+
+
+    # def typeBrief(request):
+    #     page_name = 'user_tests/user_tests_list.html'
+    #     obj_themes = 
+    #     return render(request, )
+
+    @login_required
+    def listBriefs(request):
+        page_name = "user_tests/user_themes_tests_list.html"
+        themesInstructions = inst.objects.all().order_by("-name_instruction")
+ 
+        values = {
+            'themes': themesInstructions,
+        }
+
+        return render(request, page_name, values)
+    
+
+    #страница с тестами
+    @login_required 
+    def tests(request, id):
+        page_name = 'user_tests/user_tests_list.html'
+
+        themesInstructions = inst.objects.get(id=id)  # model inst
+        tests = test.get_need_instr(request, id)  # model test
+        
+        values = {
+            'test': tests,
+            'themes': themesInstructions,
+        }
+
+        return render(request, page_name, values)
