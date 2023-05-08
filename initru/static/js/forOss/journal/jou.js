@@ -30,7 +30,7 @@ $('#setBut').click((e)=>{
         url: window.location.href,
         data: dataFilter,
         success:(resp)=>{
-            
+            console.log(resp)
             if (Boolean(resp.result)) { 
                 i=0 // счетчик
 
@@ -42,12 +42,11 @@ $('#setBut').click((e)=>{
                 
                 resp.result.forEach(elem => { // проходимся по результатам
                     
-                    let date = new Date(elem.date_start)
-                    let date2 = new Date(elem.date_end)
+                    let date = new Date(elem.date_target)
+                    let date1 = new Date(elem.date_passed)
                     i++
 
                     
-    
                     if(elem.mark == 'Сдан') {
                         mark = `
                             <span class = 'text-center text-success'>
@@ -75,7 +74,8 @@ $('#setBut').click((e)=>{
                         <td>${elem.brief}</td>
                         <td>${elem.quiz_name}</td>
                         <td>${date.toLocaleString()}</td>
-                        <td class = 'text-center'>${date2.toLocaleDateString()}</td>
+                        <td>${date1.toLocaleString()}</td>
+                        <td class = 'text-center'>${elem.days_skiped} дней</td>
                         <td class="text-center">
                             <button class = 'btn btn-outline-orange'>
                                 <i class="fa-solid fa-envelope mx-2"></i>

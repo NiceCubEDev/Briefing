@@ -33,6 +33,7 @@ class Street(models.Model):
     def __str__(self):
         return f'ул. {self.name_street}'
 
+
 # города
 class City(models.Model):
     name_city = models.CharField(
@@ -80,7 +81,6 @@ class inst(models.Model):
     @property
     def counttest(self):
         return test.objects.filter(instruction = self.pk).count
-  
 
 
 # специальности
@@ -101,6 +101,7 @@ class Spec(models.Model):
     def __str__(self):
         return "%s - %s " % (self.name_special, self.encryption_special)
 
+
 # роли
 class role(models.Model):
     name_role = models.CharField(
@@ -115,11 +116,12 @@ class role(models.Model):
     def __str__(self):
         return f'{self.name_role}'
 
+
 # группы
 class Groups(models.Model):
     name_group = models.CharField(
         'Название группы',
-        max_length=8
+        max_length=10
     )
     special  = models.ForeignKey(
         Spec, on_delete=models.CASCADE,
@@ -132,6 +134,7 @@ class Groups(models.Model):
 
     def __str__(self):
         return f'{self.name_group}'
+
 
 # типы пользователей
 class typeuser(models.Model):
@@ -157,7 +160,7 @@ class test(models.Model):
     type_user  = models.ForeignKey(typeuser, on_delete=models.CASCADE, verbose_name='Тип пользователя')
     file = models.FileField( 'Файл к тесту', upload_to='instr/', null=True, blank=True)
     stud_groups = models.ForeignKey(Groups, on_delete=models.CASCADE, verbose_name='Группа')
-    date_target = models.DateTimeField('Дата назначения', auto_now_add=True)
+    date_target = models.DateTimeField('Дата назначения',)
 
 
     class Meta:
@@ -182,9 +185,6 @@ class test(models.Model):
         random.shuffle(questions) # перемешать местами вопросы.
         return questions[:self.number_of_questions] # get опред колво вопросов
 
-# вопросы
-
-
 
 # обратная связь
 class contact_us(models.Model):
@@ -203,6 +203,7 @@ class contact_us(models.Model):
     class Meta:
         verbose_name = 'Обратная связь'
         verbose_name_plural = 'Обратная связь'
+
 
 # комплекс
 class complex(models.Model):
@@ -311,6 +312,12 @@ class CustomUser(AbstractUser):  # custom user for Users with django
         return CustomUser.objects.get(
                 pk=request.user.id
                 )
+    
+    # @property
+    # def getmytests(self):
+    #     obj = {} # для моих тестов
+    #     briefs = dict(inst.objects.all()) # инструктажи
+    #     for item in range()
     
     
 

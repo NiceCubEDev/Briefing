@@ -69,6 +69,7 @@ class MainView(View):
 
         return render(request, page_name, values)
 
+
     def mainSendMessage(request):
         if request.method == 'POST':
             data = {}
@@ -84,14 +85,13 @@ class MainView(View):
                 data['status'] = 'error'
                 return JsonResponse(data)
 
-    # подробности
 
+    # подробности
     def mainAboutPage(request):
         page_name = 'about.html'
         return render(request, page_name)
 
     # контакты
-
     def mainContactPage(request):
         page_name = 'contact.html'
         return render(request, page_name)
@@ -110,22 +110,21 @@ def journalView(request):
 
     page_name = 'forOss/journal.html'
 
-    role = list(request.user.groups.values_list(
-        'name', flat=True))  # получение поли
-
-    if request.user.is_superuser or role[0] == 'Специалист по охране труда':
+    if request.user.is_superuser or str(request.user.role).casefold() == 'специалист по охране труда':
 
         obj_res = None  # Для результатов
         obj_briefs = inst.objects.all()  # получение инструктажей
         obj_type_users = typeuser.objects.all()  # получение тип пользователей
         obj_groups = Groups.objects.all()  # получение групп
         obj_quizes = test.objects.all()  # получение тестов
-        obj_results_user = res.objects.filter(mark='Сдан')  # получение зачетов
+        obj_results_user = res.objects.all() # получение зачетов
 
         if 'import-doc' in request.POST:  # условие для скачивания
             print(request.POST)
             obj_result = None
-            if request.POST['date_start'] != '' and request.POST['date_end'] != '':  # Если есть даты
+
+            if request.POST['date_start'] != '':  # Если есть даты
+                print(request.POST)
                 try:
                     obj_result = res.objects.filter(
                         user__type_user=request.POST['type_user'],
@@ -133,11 +132,7 @@ def journalView(request):
                         user__groupStud_id=request.POST['group'],
                         quiz__id=request.POST['quiz'],
                         date_instruction__range=(request.POST['date_start'],
-                                                 timezone.localtime(timezone.now()).replace(hour=0, minute=0, second=0, microsecond=0)),
-
-                        date_instruction_end__range=(request.POST['date_end'],
-                                                     timezone.localtime(timezone.now()).replace(hour=23, minute=59, second=0, microsecond=0)),
-
+                                                 timezone.now()),
                         mark=request.POST['mark'],
                     )
 
@@ -220,11 +215,9 @@ def journalView(request):
             else:
                 return HttpResponseBadRequest()
 
-        if request.POST:  # для аякс условие
-            print('я здесь')
-            # Если есть даты
-            if request.POST['id_date_start'] != '' and request.POST['id_date_end'] != '':
-                # if request.POST['id_date_start'] != '' and request.POST['id_date_end'] != '':
+        if request.POST:  # для аякс условия
+
+            if request.POST['id_date_start'] != '':  # если есть начальная дата
                 try:
                     obj_result = res.objects.filter(
                         user__type_user=request.POST['id_type_user'],
@@ -232,25 +225,7 @@ def journalView(request):
                         user__groupStud_id=request.POST['id_group'],
                         quiz__id=request.POST['id_quiz'],
                         date_instruction__range=(request.POST['id_date_start'],
-                                                 timezone.localtime(timezone.now()).replace(hour=0, minute=0, second=0, microsecond=0)),
-
-                        date_instruction_end__range=(request.POST['id_date_end'],
-                                                     timezone.localtime(timezone.now()).replace(hour=23, minute=59, second=0, microsecond=0)),
-
-                        mark=request.POST['mark'],
-                    )
-                except res.DoesNotExist:
-                    obj_result = []
-
-            elif request.POST['id_date_start'] != '':  # если есть начальная дата
-                try:
-                    obj_result = res.objects.filter(
-                        user__type_user=request.POST['id_type_user'],
-                        instruction=request.POST['id_brief'],
-                        user__groupStud_id=request.POST['id_group'],
-                        quiz__id=request.POST['id_quiz'],
-                        date_instruction__range=(request.POST['id_date_start'],
-                                                 timezone.localtime(timezone.now()).replace(hour=0, minute=0, second=0, microsecond=0)),
+                                                 timezone.now()),
                         mark=request.POST['mark'],
                     )
                 except res.DoesNotExist:
@@ -285,8 +260,9 @@ def journalView(request):
                         # название инструктажа
                         'brief': str(row.instruction.name_instruction),
                         'quiz_name': str(row.quiz.name_test),
-                        'date_start': row.date_instruction,
-                        'date_end': row.date_instruction_end,
+                        'date_target': str(row.quiz.date_target),
+                        'date_passed': row.date_instruction,
+                        'days_skiped': row.date_instruction_end,
                         'score': str(row.result),
                         'mark': str(row.mark),
                     })
@@ -438,7 +414,6 @@ class ProfileView(View):
         obj_res = None  # для результатов.
         if request.method == 'POST':  # Если метод пост
             if request.POST.get('filter'):  # Если существует элемент фильтра
-                print(request.POST['filter'])
 
                 try:
                     obj_res = res.objects.filter(user=request.user).order_by(
@@ -493,7 +468,7 @@ class BriefBrainView(View):
         
         def getDaysPassed(first_date):
             answer = timedelta.Timedelta(first_date - timezone.now())
-            return answer.total.days
+            return abs(answer.total.days)
 
         if request.method == 'POST':
             user = request.user  # пользователь

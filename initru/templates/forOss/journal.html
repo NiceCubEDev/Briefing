@@ -13,9 +13,9 @@
 
 {% block content %}
 <div>
-    <div>
-        <p class="text-center fw-bold fs-4" style='color:#E7882B; font-family: "Inter-Bold";'>Журнал</p>
-    </div>
+    <p class="text-center fw-bold fs-4" style='color:#E7882B; font-family: "Inter-Bold";'>Журнал</p>
+</div>
+<div>
     <div class='container' style ='font-family: "Inter-Regular";'>
 
         <p class='fs-5' style='font-family: "Inter-Bold";'>Фильтрация:</p>
@@ -104,37 +104,38 @@
 
                     <div class='box mb-2'>
                         <label for="id_date_start">
-                            Выберите дату прохождения инструктажа
+                            Выберите первую дату для вычисления по периоду
                         </label>
                         <input class = 'form-control  ' name = 'date_start' id ='id_date_start' type="datetime-local" placeholder="Выберите дату">
                     </div>
 
                     <!--  -->
 
-                    <div class='box mb-2'>
+                    <!-- <div class='box mb-2'>
                         <label for="id_date_end">
                             Выберите дату повторного прохождения инструктажа
                         </label>
                         <input class = 'form-control' name = 'date_end' id ='id_date_end' type="date" placeholder="Выберите дату">
-                    </div>
+                    </div> -->
 
                     <!--  -->
 
+                    <div class='box mb-2'>
+                        <label for="id_date_start">
+                            Выберите статус
+                        </label>
+                        <select class='form-control' name="mark" id="id_mark">
+                            <option selected class='text-warning fw-bold text-uppercase' value="">Не выбран</option>
+                            <option value="Сдан">Сдан</option>
+                            <option value="Не сдан">Не сдан</option>
+                        </select>
+                    </div>
 
                     <!--  -->
 
                 </div>
             </div>
-            <div class='box mb-2'>
-                <label for="id_date_start">
-                    Выберите статус
-                </label>
-                <select class='form-control' name="mark" id="id_mark">
-                    <option selected class='text-warning fw-bold text-uppercase' value="">Не выбран</option>
-                    <option value="Сдан">Сдан</option>
-                    <option value="Не сдан">Не сдан</option>
-                </select>
-            </div>
+
             <div class = 'float-end'>
                 <button id = 'setBut' class = 'btn btn-outline-orange'>
                     <i class="fa-solid fa-bolt mx-2"></i>
@@ -156,8 +157,9 @@
                     <th class = 'text-secondary' scope="col">Тип пользователя (тест)</th>
                     <th class = 'text-secondary' scope="col">Тип инструктажа</th>
                     <th class = 'text-secondary' scope="col">Тест</th>
+                    <th class = 'text-secondary' scope="col">Дата назначения</th>
                     <th class = 'text-secondary' scope="col">Дата прохождения</th>
-                    <th class = 'text-secondary text-center' scope="col">Дата повторного прохождения</th>
+                    <th class = 'text-secondary text-center' scope="col">Прошло дней</th>
                     <th class = 'text-secondary text-center' scope="col">Уведомление</th>
                     <th class = 'text-secondary' scope="col">Процент прохождения</th>
                     <th class = 'text-secondary' scope="col">Итог</th>
@@ -206,13 +208,16 @@
                             {{ u.quiz.name_test }}
                         </td>
                         <td>
+                            {{ u.quiz.date_target|date:"d.m.Y, H:i" }}
+                        </td>
+                        <td>
                             {{ u.date_instruction|date:"d.m.Y, H:i" }}
                         </td>
                         <td class="text-center">
-                            {{ u.date_instruction_end|date:"d.m.Y" }}
+                            {{ u.date_instruction_end }} дней
                         </td>
                         <td class="text-center">
-                            <button class = 'btn btn-outline-orange'>
+                            <button style = 'font-size: 13px;' class = 'btn btn-outline-orange'>
                                 <i class="fa-solid fa-envelope mx-2"></i>
                                 Отправить
                             </button>

@@ -52,6 +52,7 @@ class CustomUserAdmin(UserAdmin):
 
 admin.site.register(CustomUser, CustomUserAdmin)
 
+
 #Специальности
 @admin.register(Spec)
 class Spec(admin.ModelAdmin):
@@ -63,54 +64,65 @@ class Spec(admin.ModelAdmin):
 class Groups(admin.ModelAdmin):
     list_display = ['name_group', 'special']
 
+
 #роли
 @admin.register(role)
 class role(admin.ModelAdmin):
     list_display = ['name_role']
+
 
 #тип пользователя
 @admin.register(typeuser)
 class typeuser(admin.ModelAdmin):
     list_display = ['name_type_user']
 
+
 # инструктажи
 @admin.register(inst)
 class inst(admin.ModelAdmin):
     list_display = ['name_instruction', 'date_period']
+
 
 # Результаты
 @admin.register(res)
 class res(admin.ModelAdmin):
     list_display = ['user', 'instruction', 'quiz','date_instruction','date_instruction_end', 'result', 'mark']
 
+
 # тесты
 @admin.register(test)
 class test(admin.ModelAdmin):
     list_display = ['instruction', 'name_test', 'type_user','file', 'stud_groups','date_target']
+    list_filter = ['name_test']
 
 # вопросы и ответы
 class AnswerInline(admin.TabularInline):
     model = answers
+
 
 @admin.register(question)
 class question(admin.ModelAdmin):
     inlines = [AnswerInline]
     list_display = ['test', 'name', 'created']
 
+
 # Ответы
 @admin.register(answers)
 class answer(admin.ModelAdmin):
     list_display = ['question', 'text', 'correct', 'created']
+
 
 # связь с нами
 @admin.register(contact_us)
 class contact_us(admin.ModelAdmin):
     list_display = ['name_contact', 'email_contact', 'text_contact']
 
+
 # Комлексы для главной страницы
 @admin.register(complex)
 class complex(admin.ModelAdmin):
     list_display = ['name_complex', 'image_complex']
+
 
 # model for files brief
 @admin.register(downloadInstructionsForTests)
