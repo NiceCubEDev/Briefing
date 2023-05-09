@@ -31,40 +31,53 @@
     </div>
 </div>
 
-<div style = 'max-width: 920px;'>
+<div style = 'max-width: 920px;' style='font-family: "Inter-Regular";'>
     <p class='text-dark fs-4' style="font-family: 'Inter-Bold';">Мои возможности</p>
     <div class = 'd-flex flex-wrap mt-5'>
         {% if user.is_superuser %}
-        <div class = 'border rounded p-3 m-2'>
-            <p class = 'text-uppercase fs-5' style="font-family: 'Inter-Bold';">Администратор</p>
-            <div class="list-group"> 
-                <a href='#' class = 'list-group-item list-group-item-action fw-bold ' id="import-button">
-                    <i class="fa-regular fa-circle-down mx-1"></i>
-                    Импорт пользователей
-                </a>
-                <a class='list-group-item list-group-item-action fw-bold' href="{% url 'admin:index' %}">
-                    <i class="fa-solid fa-toolbox mx-2"></i>
-                    Панель администратора
-                </a>
+            <div class = 'border rounded p-3 m-2'>
+                <p class = 'text-uppercase fs-5' style="font-family: 'Inter-Bold';">Администратор</p>
+                <div class="list-group"> 
+                    <a href='#' class = 'list-group-item list-group-item-action ' id="import-button">
+                        <i class="fa-regular fa-circle-down mx-1"></i>
+                        Импорт пользователей
+                    </a>
+                    <a class='list-group-item list-group-item-action' href="{% url 'admin:index' %}">
+                        <i class="fa-solid fa-toolbox mx-2"></i>
+                        Панель администратора
+                    </a>
+                </div>
             </div>
-        </div>
         {% endif %} 
 
         {% if request.user.role|stringformat:"s" == 'Специалист по охране труда' %}
-        <div class = 'border rounded p-3 m-2'>
-            <p class = 'text-uppercase fs-5' style="font-family: 'Inter-Bold';">Специалист по охране труда</p>
+            <div class = 'border rounded p-3 m-2'>
+                <p class = 'text-uppercase fs-5' style="font-family: 'Inter-Bold';">Специалист по охране труда</p>
 
-            <div class="list-group"> 
-                <a class='list-group-item list-group-item-action fw-bold' href="{% url 'journal_view' %}">
-                    <i class="fa-solid fa-chart-gantt mx-2"></i>
-                    Журнал
-                </a>
-                <a class='list-group-item list-group-item-action fw-bold' href="{% url 'admin:index' %}">
-                    <i class="fa-regular fa-circle-plus mx-1"></i>
-                    Добавление инструктажей
-                </a>
+                <div class="list-group"> 
+                    <a class='list-group-item list-group-item-action' href="{% url 'journal_view' %}">
+                        <i class="fa-solid fa-chart-gantt mx-2"></i>
+                        Журнал
+                    </a>
+                    <a class='list-group-item list-group-item-action' href="{% url 'admin:index' %}">
+                        <i class="fa-regular fa-circle-plus mx-1"></i>
+                        Добавление инструктажей
+                    </a>
+                </div>
             </div>
-        </div>
+        {% endif %} 
+
+        {% if request.user.type_user|stringformat:"s" == 'Студент' or request.user.type_user|stringformat:"s" == 'Сотрудник' %}
+            <div class = 'border rounded p-3 m-2'>
+                <p class = 'text-uppercase fs-5' style="font-family: 'Inter-Bold';">Студент и Сотрудник</p>
+
+                <div class="list-group"> 
+                    <a class='list-group-item list-group-item-action' href="{% url 'brief' %}">
+                        <i class="fa-solid fa-square-pen mx-1"></i>
+                        Инструктажи
+                    </a>
+                </div>
+            </div>
         {% endif %} 
 
     </div>
