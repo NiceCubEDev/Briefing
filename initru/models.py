@@ -78,7 +78,8 @@ class inst(models.Model):
     def get_all_names():
         return inst.objects.all()[:5]
     
-    @property
+    @property # возращение количества тестов
+    # проверить через цикл: тип пользователя
     def counttest(self):
         return test.objects.filter(instruction = self.pk).count
 
@@ -284,6 +285,7 @@ class CustomUser(AbstractUser):  # custom user for Users with django
         typeuser, on_delete=models.CASCADE,
         verbose_name='Тип пользователя', null=True,
     )
+
     groupStud  = models.ForeignKey(
         Groups, on_delete=models.CASCADE,
         verbose_name='Группа', null=True, 
@@ -331,6 +333,7 @@ class res(models.Model):
     date_instruction_end = models.IntegerField('Прошло дней', null=True)
     result = models.IntegerField( 'Результат в %')
     mark = models.CharField('Прошел', max_length=255)
+    attempt  = models.IntegerField('Количество попыток прохождения',)
 
 
     def __str__(self):

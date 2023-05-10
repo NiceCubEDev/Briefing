@@ -173,13 +173,6 @@ def journalView(request):
                 font_object.size = Pt(14)
                 font_object.name = 'Times New Roman'
 
-                # document.add_paragraph(
-                # 'first item in unordered list', style='ListBullet'
-                # )
-                # document.add_paragraph(
-                # 'first item in ordered list', style='ListNumber'
-                # )
-
                 p = document.add_paragraph('')
                 p.add_run('Отчёт по сотрудникам', style='Head').bold = True
                 p.alignment = 1  # выравнивание: 0 - влево, 1 - центр
@@ -463,12 +456,42 @@ class BriefBrainView(View):
         })
 
 
+
+    
     # сохранение теста
     def save(request, num, id):
         
-        def getDaysPassed(first_date):
+        def getDaysPassed(first_date): # вычисление даты
             answer = timedelta.Timedelta(first_date - timezone.now())
             return abs(answer.total.days)
+        
+
+
+        def savetothedb(request): # сохранение в бд функция
+
+
+            def saverequest(request, count_rows): # действие сохранения данных в бд
+                count_rows.date_instruction = timezone.now()
+                count_rows.date_instruction_end = request.brief_days_passed
+                count_rows.result = request.brief_score
+                count_rows.mark = request.brief_mark
+                count_rows.attempt += 1
+                count_rows.save()
+                return True
+
+
+            count_rows = res.objects.get(user = request.user, instruction_id = request.brief_instruction_id, quiz = request.brief_quiz) # получение строк
+
+
+            if count_rows: # если есть уже строка
+                return saverequest(request, count_rows)
+            else: # создание
+                res.objects.create( user=request.user,  instruction_id=request.brief_instruction_id,  quiz=request.brief_quiz,   date_instruction=timezone.now(), date_instruction_end = request.brief_days_passed, result= request.brief_score, mark=request.brief_mark,
+                )
+                return True
+                
+              
+
 
         if request.method == 'POST':
             user = request.user  # пользователь
@@ -515,28 +538,23 @@ class BriefBrainView(View):
             # получение разницы в датах
             days_passed = getDaysPassed(quiz.date_target) # получение
             
+            # заполнение запроса
+            request.brief_instruction_id = quiz.instruction.id # номер инструктажа #
+            request.brief_quiz = quiz # сам тест  #
+            request.brief_days_passed = days_passed # разница между днями #
+            request.brief_score = score_ # баллы # 
+            request.brief_results = results # результаты
+            request.brief_countAnswers = countAnswers # количество отвеченных вопросов
             # если человек набрал больше баллов, чем в условии теста, то сохраняем его и отправляем успешно
+            #переписать 
+            # найти строку по параметрам, если существует, то +1 попытка и сохранить, а если нет, то новую.
             if score_ >= quiz.required_score_to_pass:
-                res.objects.create(
-                    user=user, # пользователь
-                    instruction_id=quiz.instruction.id, # номер инструктажа
-                    quiz=quiz, # тесты 
-                    date_instruction=timezone.now(),
-                    date_instruction_end = days_passed,
-                    result=score_,
-                    mark='Сдан',
-                )
+                request.brief_mark = 'Сдан'
+                savetothedb(request)
                 return JsonResponse({'passed': True, 'score': score_, 'results': results, 'countAnswers': countAnswers})
             else:
-                res.objects.create(
-                    user=user,
-                    instruction_id=quiz.instruction.id,
-                    quiz=quiz,
-                    date_instruction=timezone.now(),
-                    date_instruction_end= days_passed,
-                    result=score_,
-                    mark='Не сдан',
-                )
+                request.brief_mark = 'Не сдан'
+                savetothedb(request)
                 return JsonResponse({'passed': False, 'score': score_, 'results': results, 'countAnswers': countAnswers})
 
 
@@ -612,7 +630,30 @@ class BriefLayoutView(View):
     def listBriefs(request):
         page_name = "user_tests/user_themes_tests_list.html"
         themesInstructions = inst.objects.all().order_by("-name_instruction")
- 
+        
+
+        # сдедать пункт должники в журнале
+
+
+        # выводить в журнале последний результат по тесту (дублирование человека не должно быть в журнале) лучше сделать через цикл проверку.
+        # data = {}
+        # параметры
+        # user__type_user
+        # instruction
+        # user__groupStud_id
+        # quiz__id
+        # mark проверка без него
+        # row - сама строка, если нет совпадений, то добавить саму строку
+        # сделать проверку по этим параметрам в дата + сама строка
+        # если есть совпадение, то сравнивать марк и менять его, если в дата строка равняется не сдал, а в новой строке сдал, то записать новую строку
+        # в конце можно собрать все строки из дата ()
+
+        # или добавить новое поле с количеством попыток
+
+
+        for i in themesInstructions:
+            i.counttest2 = test.get_need_instr(request, i.pk).count
+
         values = {
             'themes': themesInstructions,
         }

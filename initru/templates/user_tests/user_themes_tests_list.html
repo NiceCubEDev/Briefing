@@ -17,7 +17,14 @@
         {% for item in themes %}
             <a class="list-group-item list-group-item-action d-flex justify-content-between align-items-center" href="{% url 'test_list' item.id %}">{{ item.name_instruction }}
                 <!-- доделать эту часть!! -->
-                <span class="badge rounded-pill text-white bg-danger">{{ item.counttest }}</span>
+                {% if item.counttest2|stringformat:"s" != '0' %}
+                    <span class="badge rounded-pill text-white bg-danger">
+                        {{ item.counttest2}}
+                    </span>
+                    {% else %}
+
+                    {% endif %}
+            
             </a>
         {% endfor %}
     </div>
