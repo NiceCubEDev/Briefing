@@ -12,16 +12,16 @@
         <div class="mx-2" style = "
             width:250px;
             height:250px;
-            background-image: url('{% static 'images/hotBoy.jpg' %}');
+            background-image: url('{{user.avatar.url}}');
             background-size: cover;
             background-position: center;
             border-radius:100%;
         "></div>
         <div>
-            <p class = 'fw-bold fs-5'>Гайфиев Салават Артурович</p>
-            <p class = 'fw-bold'>Разработчик</p>
-            <a class = 'text-decoration-none mt-3' href="tel:89543214212" style = 'color:#3B5B6F;'> <i class="fa-solid fa-phone mx-2 mt-2"></i> +7 (225) 123-42-12</a>
-            <a class = 'text-decoration-none mt-3' href="mailto:saInstr@ya.ru"  style = 'color:#3B5B6F;'> <i class="fa-regular fa-envelope mx-2"></i> nicecube11@ya.ru</a>
+            <p class = 'fw-bold fs-5'>{{ user.last_name }} {{ user.first_name }} {{ user.patronymic }}</p>
+            <p class = 'fw-bold'>{{ user.role }}</p>
+            <a class = 'text-decoration-none mt-3' href="tel:89543214212" style = 'color:#3B5B6F;'> <i class="fa-solid fa-phone mx-2 mt-2"></i> {{ user.phone_number }}</a>
+            <a class = 'text-decoration-none mt-3' href="mailto:saInstr@ya.ru"  style = 'color:#3B5B6F;'> <i class="fa-regular fa-envelope mx-2"></i> {{ user.email }}</a>
             <div class = 'd-flex  mt-2'>
                 <a class = 'text-decoration-none fs-3 mx-2' href="#" style = 'color:#E7882B;'>
                     <i class="fa-brands fa-telegram"></i>

@@ -77,10 +77,7 @@ $('#setBut').click((e)=>{
                         <td>${date1.toLocaleString()}</td>
                         <td class = 'text-center'>${elem.days_skiped} дней</td>
                         <td class="text-center">
-                            <button style = 'font-size: 13px;' class = 'btn btn-outline-orange'>
-                                <i class="fa-solid fa-envelope mx-2"></i>
-                                Отправить
-                            </button>
+                            ${elem.attempt}
                         </td>
                         <td class = 'text-center'>${elem.score} %</td>
                         <td>${mark}</td>

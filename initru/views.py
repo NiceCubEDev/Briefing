@@ -89,7 +89,8 @@ class MainView(View):
     # подробности
     def mainAboutPage(request):
         page_name = 'about.html'
-        return render(request, page_name)
+        obj = CustomUser.objects.get(username='admin')
+        return render(request, page_name, {'user':obj})
 
     # контакты
     def mainContactPage(request):
@@ -258,6 +259,7 @@ def journalView(request):
                         'days_skiped': row.date_instruction_end,
                         'score': str(row.result),
                         'mark': str(row.mark),
+                        'attempt': str(row.attempt),
                     })
 
                 obj_res = data_list
@@ -475,7 +477,7 @@ class BriefBrainView(View):
                 count_rows.date_instruction_end = request.brief_days_passed
                 count_rows.result = request.brief_score
                 count_rows.mark = request.brief_mark
-                count_rows.attempt += 1
+                count_rows.attempt += 1 # прибавляем попытку
                 count_rows.save()
                 return True
 
@@ -486,8 +488,7 @@ class BriefBrainView(View):
             if count_rows: # если есть уже строка
                 return saverequest(request, count_rows)
             else: # создание
-                res.objects.create( user=request.user,  instruction_id=request.brief_instruction_id,  quiz=request.brief_quiz,   date_instruction=timezone.now(), date_instruction_end = request.brief_days_passed, result= request.brief_score, mark=request.brief_mark,
-                )
+                res.objects.create( user=request.user,  instruction_id=request.brief_instruction_id,  quiz=request.brief_quiz,   date_instruction=timezone.now(), date_instruction_end = request.brief_days_passed, result= request.brief_score, mark=request.brief_mark,)
                 return True
                 
               
