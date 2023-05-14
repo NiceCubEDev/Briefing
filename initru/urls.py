@@ -36,7 +36,11 @@ urlpatterns = [
     # user urls
     path('account/themes_inst/test/<int:id>/<int:num>', testView, name = 'start_test'),
     
-    path('account/journal/', journalView, name = "journal_view"),
+    #журнал
+    path('account/journal/', JournalView.journal, name = "journal_view"),
+
+
+
     path('account/login/', auth_views.LoginView.as_view(redirect_authenticated_user=True), name='login'),
     path('account/', include('django.contrib.auth.urls')),
 ]

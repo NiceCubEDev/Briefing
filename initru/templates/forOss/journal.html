@@ -18,11 +18,12 @@
 <div>
     <div class='container' style ='font-family: "Inter-Regular";'>
 
-        <p class='fs-5' style='font-family: "Inter-Bold";'>Фильтрация:</p>
+        <p class='fs-5' style='font-family: "Inter-Bold"; color:#E7882B;'>Фильтрация:</p>
         <form action='{% url "journal_view" %}' method = 'POST' id="filter-form">
             {% csrf_token %}
-            <div class = 'd-flex flex-row-reverse mb-2'>
-                <button type = 'submit' class = 'btn btn-dark' name = 'import-doc'>
+            <div class = 'd-flex justify-content-between mb-2'>
+                <p>Чтобы вывести должников, необходимо не выбирать дату при выборке. (выбрать статус "Не сдан")</p>
+                <button type = 'submit' class = 'btn btn-orange' name = 'import-doc'>
                     <i class="fa-regular fa-circle-down mx-2"></i>
                     Экспортировать в документ
                 </button>
@@ -34,7 +35,7 @@
 
                     <div class='box mb-2'>
                         <label for="id_type_user">
-                            Тип пользователя
+                            Тип пользователя <span class = 'text-danger fw-bold'>*</span>
                         </label>
                         <select class='form-control  ' name="type_user" id="id_type_user">
                             <option selected class='text-warning fw-bold text-uppercase' value="">Не выбран</option>
@@ -50,7 +51,7 @@
 
                     <div class='box mb-2'>
                         <label for="id_type_brief">
-                            Выберите тип инструктажа
+                            Выберите тип инструктажа <span class = 'text-danger fw-bold'>*</span>
                         </label>
                         <select class='form-control  ' name="type_brief" id="id_type_brief">
                             <option selected class='text-warning fw-bold text-uppercase' value="">Не выбран</option>
@@ -66,7 +67,7 @@
 
                     <div class='box mb-2'>
                         <label for="id_group">
-                            Выберите необходимую группу
+                            Выберите необходимую группу <span class = 'text-danger fw-bold'>*</span> 
                         </label>
                         <select class='form-control' name="group" id="id_group">
                             <option selected class='text-warning fw-bold text-uppercase' value="">Не выбран</option>
@@ -88,7 +89,7 @@
 
                     <div class='box mb-2'>
                         <label for="id_quiz">
-                            Выберите необходимый тест
+                            Выберите необходимый тест <span class = 'text-danger fw-bold'>*</span> 
                         </label>
                         <select class='form-control' name="quiz" id="id_quiz">
                             <option selected class='text-warning fw-bold text-uppercase' value="">Не выбран</option>
@@ -122,7 +123,7 @@
 
                     <div class='box mb-2'>
                         <label for="id_date_start">
-                            Выберите статус
+                            Выберите статус <span class = 'text-danger fw-bold'>*</span>
                         </label>
                         <select class='form-control' name="mark" id="id_mark">
                             <option selected class='text-warning fw-bold text-uppercase' value="">Не выбран</option>
@@ -138,7 +139,7 @@
 
             <div class = 'float-end'>
                 <button id = 'setBut' class = 'btn btn-outline-orange'>
-                    <i class="fa-solid fa-bolt mx-2"></i>
+                    <i class="fa-solid fa-bolt mx-2 fa-beat"></i>
                     Выполнить
                 </button>
             </div>

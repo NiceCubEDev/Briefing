@@ -107,25 +107,19 @@ class JournalView(View):
 
 
 @login_required(login_url='account/login/')
-def journalView(request):
+class JournalView(View):
 
-    page_name = 'forOss/journal.html'
 
-    if request.user.is_superuser or str(request.user.role).casefold() == 'специалист по охране труда':
+    # журнал
+    def journal(request):
 
-        obj_res = None  # Для результатов
-        obj_briefs = inst.objects.all()  # получение инструктажей
-        obj_type_users = typeuser.objects.all()  # получение тип пользователей
-        obj_groups = Groups.objects.all()  # получение групп
-        obj_quizes = test.objects.all()  # получение тестов
-        obj_results_user = res.objects.all() # получение зачетов
+        page_name = 'forOss/journal.html'
 
-        if 'import-doc' in request.POST:  # условие для скачивания
-            print(request.POST)
+        def downloadFile(request):
+
             obj_result = None
 
             if request.POST['date_start'] != '':  # Если есть даты
-                print(request.POST)
                 try:
                     obj_result = res.objects.filter(
                         user__type_user=request.POST['type_user'],
@@ -133,14 +127,14 @@ def journalView(request):
                         user__groupStud_id=request.POST['group'],
                         quiz__id=request.POST['quiz'],
                         date_instruction__range=(request.POST['date_start'],
-                                                 timezone.now()),
+                                                timezone.now()),
                         mark=request.POST['mark'],
                     )
 
                 except res.DoesNotExist:
-                    obj_result = []
+                    obj_result = None
 
-            # styles for docs
+            # выравнивания
             alignment_dict = {
                 'justify': WD_PARAGRAPH_ALIGNMENT.JUSTIFY,
                 'center': WD_PARAGRAPH_ALIGNMENT.CENTER,
@@ -153,8 +147,8 @@ def journalView(request):
                 'landscape': WD_ORIENT.LANDSCAPE,
             }
             #####
-            print(obj_result)
-            if len(obj_result) > 0:  # если есть данные то
+            print(obj_result) # пользователи
+            if obj_result != None:  # если есть данные то
                 # code for docx
 
                 document = Document()
@@ -180,26 +174,28 @@ def journalView(request):
 
                 # document.add_picture('monty-truth.png', width=Inches(1.25))
                 thead_list = ['Дата', 'Фамилия, имя, отчество (при наличии) работника, прошедшего инструктаж по охране труда', 'профессия (должность) работника', 'число, месяц, год рождения работника', 'вид инструктажа по охране труда',
-                              'Причина прохождения инструктажа по охране труда', 'ФИО, профессия работника, проводившего инструктаж', 'Наименование ЛПА, в объеме требований которого проведен инструктаж по охране труда']
+                            'Причина прохождения инструктажа по охране труда', 'ФИО, профессия работника, проводившего инструктаж', 'Наименование ЛПА, в объеме требований которого проведен инструктаж по охране труда','Подпись работника, проводившего инструктаж','Подпись работника, прошедшего инструктаж']
 
                 # заполнение шапки таблицы
-                table = document.add_table(
-                    rows=len(obj_result), cols=9, style='Table Grid')
-                hdr_cells = table.rows[0].cells
+                table = document.add_table(rows=len(obj_result), cols=10, style='Table Grid')
+                hdr_cells = table.rows[0].cells # заголовоки таблицы
                 for i in range(len(thead_list)):
                     hdr_cells[i].text = thead_list[i]
-                    hdr_cells[i].width = Cm(2.5)
+                    hdr_cells[i].width = Cm(3)
                 # ------
+                hdr_cells = table.add_row().cells # добавление новой строки
+                for numbers in range(0, len(thead_list)):
+                    hdr_cells[numbers].text = str(numbers+1) 
+                    hdr_cells[numbers].width = Cm(3)
+                
 
-                # заполнение таблицы:
-                # for i in range(len(obj_result)):
-                #     for item in obj_result:
-                #         row = table.add_row().cells
-                #         row[i]
+                for row in range(len(obj_result)):
+                    hdr_cells = table.add_row().cells
+                    # for col in range(len(obj_result)):
+                    #     hdr_cells[i].text = str(obj_result[col].user.first_name)
 
-                # 89274420900 Дядя Володя Нурлат Черемуха
 
-                dateNameFile = f'{timezone.localtime(timezone.now()).replace(hour=23, minute=59, second=0, microsecond=0)}.docx'
+                dateNameFile = f'{timezone.now()}.docx'
                 response = HttpResponse(
                     content_type='application/vnd.openxmlformats-officedocument.wordprocessingml.document')
                 response['Content-Disposition'] = f'attachment; filename=' + dateNameFile
@@ -209,80 +205,98 @@ def journalView(request):
             else:
                 return HttpResponseBadRequest()
 
-        if request.POST:  # для аякс условия
 
-            if request.POST['id_date_start'] != '':  # если есть начальная дата
-                try:
-                    obj_result = res.objects.filter(
-                        user__type_user=request.POST['id_type_user'],
-                        instruction=request.POST['id_brief'],
-                        user__groupStud_id=request.POST['id_group'],
-                        quiz__id=request.POST['id_quiz'],
-                        date_instruction__range=(request.POST['id_date_start'],
-                                                 timezone.now()),
-                        mark=request.POST['mark'],
-                    )
-                except res.DoesNotExist:
-                    obj_result = []
+        if request.user.is_superuser or str(request.user.role).casefold() == 'специалист по охране труда':
 
-            else:  # иначе без дат
-                try:
-                    obj_result = res.objects.filter(
-                        user__type_user=request.POST['id_type_user'],
-                        instruction=request.POST['id_brief'],
-                        user__groupStud_id=request.POST['id_group'],
-                        quiz__id=request.POST['id_quiz'],
-                        mark=request.POST['mark'],
-                    )
-                except res.DoesNotExist:
-                    obj_result = []
+            obj_res = None  # Для результатов
+            obj_briefs = inst.objects.all()  # получение инструктажей
+            obj_type_users = typeuser.objects.all()  # получение тип пользователей
+            obj_groups = Groups.objects.all()  # получение групп
+            obj_quizes = test.objects.all()  # получение тестов
+            obj_results_user = res.objects.all() # получение зачетов
 
-            if len(obj_result) > 0:
 
-                data_list = []  # лист для данных после фильтра
+            if 'import-doc' in request.POST:  # условие для скачивания
+                return downloadFile(request) 
+                
 
-                for row in obj_result:
-                    data_list.append({
-                        'surname': str(row.user.last_name),
-                        'name': str(row.user.first_name),
-                        'patro': str(row.user.patronymic),
-                        'group': str(row.user.groupStud),  # группа
-                        # тип пользователя
-                        'type_user': str(row.user.type_user),
-                        # тип пользователя (параметр в тестах)
-                        'type_user_test': str(row.quiz.type_user),
-                        # название инструктажа
-                        'brief': str(row.instruction.name_instruction),
-                        'quiz_name': str(row.quiz.name_test),
-                        'date_target': str(row.quiz.date_target),
-                        'date_passed': row.date_instruction,
-                        'days_skiped': row.date_instruction_end,
-                        'score': str(row.result),
-                        'mark': str(row.mark),
-                        'attempt': str(row.attempt),
-                    })
+            if request.POST:  # для аякс условия
 
-                obj_res = data_list
-                message = 'Успешно!'
-                status = 'ok'
+                if request.POST['id_date_start'] != '':  # если есть начальная дата
+                    try:
+                        obj_result = res.objects.filter(
+                            user__type_user=request.POST['id_type_user'],
+                            instruction=request.POST['id_brief'],
+                            user__groupStud_id=request.POST['id_group'],
+                            quiz__id=request.POST['id_quiz'],
+                            date_instruction__range=(request.POST['id_date_start'],
+                                                    timezone.now()),
+                            mark=request.POST['mark'],
+                        )
+                    except res.DoesNotExist:
+                        obj_result = []
 
-            else:
-                message = 'Данные не найдены.'
-                status = 'error'
+                else:  # иначе без дат
+                    try:
+                        obj_result = res.objects.filter(
+                            user__type_user=request.POST['id_type_user'],
+                            instruction=request.POST['id_brief'],
+                            user__groupStud_id=request.POST['id_group'],
+                            quiz__id=request.POST['id_quiz'],
+                            mark=request.POST['mark'],
+                        )
+                    except res.DoesNotExist:
+                        obj_result = []
 
-            return JsonResponse({'result': obj_res, 'status': status, 'message': message}, safe=False)
-    else:
-        return render(request, "error.html")
+                if len(obj_result) > 0:
 
-    values = {
-        'type_brief': obj_briefs,
-        'type_users': obj_type_users,
-        'groups': obj_groups,
-        'quiz': obj_quizes,
-        'users': obj_results_user,
-    }
+                    data_list = []  # лист для данных после фильтра
 
-    return render(request, page_name, values)
+                    for row in obj_result:
+                        data_list.append({
+                            'surname': str(row.user.last_name),
+                            'name': str(row.user.first_name),
+                            'patro': str(row.user.patronymic),
+                            'group': str(row.user.groupStud),  # группа
+                            # тип пользователя
+                            'type_user': str(row.user.type_user),
+                            # тип пользователя (параметр в тестах)
+                            'type_user_test': str(row.quiz.type_user),
+                            # название инструктажа
+                            'brief': str(row.instruction.name_instruction),
+                            'quiz_name': str(row.quiz.name_test),
+                            'date_target': str(row.quiz.date_target),
+                            'date_passed': row.date_instruction,
+                            'days_skiped': row.date_instruction_end,
+                            'score': str(row.result),
+                            'mark': str(row.mark),
+                            'attempt': str(row.attempt),
+                        })
+
+                    obj_res = data_list
+                    message = 'Успешно!'
+                    status = 'ok'
+
+                else:
+                    message = 'Данные не найдены.'
+                    status = 'error'
+
+                return JsonResponse({'result': obj_res, 'status': status, 'message': message}, safe=False)
+        else:
+            return render(request, "error.html")
+
+        values = {
+            'type_brief': obj_briefs,
+            'type_users': obj_type_users,
+            'groups': obj_groups,
+            'quiz': obj_quizes,
+            'users': obj_results_user,
+        }
+
+        return render(request, page_name, values)
+
+
+
 
 
 #профиль
@@ -427,6 +441,7 @@ class ProfileView(View):
 
                     message = 'Успешно!'
                     status = 'ok'
+                    
                 else:
                     message = 'Данные не найдены'
                     status = 'error'
@@ -458,8 +473,6 @@ class BriefBrainView(View):
         })
 
 
-
-    
     # сохранение теста
     def save(request, num, id):
         
@@ -622,35 +635,12 @@ def testView(request, num, id):
 class BriefLayoutView(View):
 
 
-    # def typeBrief(request):
-    #     page_name = 'user_tests/user_tests_list.html'
-    #     obj_themes = 
-    #     return render(request, )
-
     @login_required
     def listBriefs(request):
         page_name = "user_tests/user_themes_tests_list.html"
         themesInstructions = inst.objects.all().order_by("-name_instruction")
         
-
-        # сдедать пункт должники в журнале
-
-
-        # выводить в журнале последний результат по тесту (дублирование человека не должно быть в журнале) лучше сделать через цикл проверку.
-        # data = {}
-        # параметры
-        # user__type_user
-        # instruction
-        # user__groupStud_id
-        # quiz__id
-        # mark проверка без него
-        # row - сама строка, если нет совпадений, то добавить саму строку
-        # сделать проверку по этим параметрам в дата + сама строка
-        # если есть совпадение, то сравнивать марк и менять его, если в дата строка равняется не сдал, а в новой строке сдал, то записать новую строку
-        # в конце можно собрать все строки из дата ()
-
-        # или добавить новое поле с количеством попыток
-
+        # сделать пункт должники в журнале
 
         for i in themesInstructions:
             i.counttest2 = test.get_need_instr(request, i.pk).count
