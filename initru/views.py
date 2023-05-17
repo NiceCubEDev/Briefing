@@ -15,6 +15,7 @@ import timedelta # чтобы переводить даты
 import datetime
 # импорт ворд
 from docx import Document
+from django.utils.dateparse import parse_datetime
 from docx.enum.text import WD_PARAGRAPH_ALIGNMENT  # выравнивание
 from docx.enum.section import WD_ORIENTATION  # jhb
 from docx.shared import Pt  # размер шрифта
@@ -147,7 +148,7 @@ class JournalView(View):
                 'landscape': WD_ORIENT.LANDSCAPE,
             }
             #####
-            print(obj_result) # пользователи
+
             if obj_result != None:  # если есть данные то
                 # code for docx
 
@@ -173,11 +174,10 @@ class JournalView(View):
                 p.alignment = 1  # выравнивание: 0 - влево, 1 - центр
 
                 # document.add_picture('monty-truth.png', width=Inches(1.25))
-                thead_list = ['Дата', 'Фамилия, имя, отчество (при наличии) работника, прошедшего инструктаж по охране труда', 'профессия (должность) работника', 'число, месяц, год рождения работника', 'вид инструктажа по охране труда',
-                            'Причина прохождения инструктажа по охране труда', 'ФИО, профессия работника, проводившего инструктаж', 'Наименование ЛПА, в объеме требований которого проведен инструктаж по охране труда','Подпись работника, проводившего инструктаж','Подпись работника, прошедшего инструктаж']
+                thead_list = ['Дата', 'Фамилия, имя, отчество (при наличии) работника, прошедшего инструктаж по охране труда', 'профессия (должность) работника', 'число, месяц, год рождения работника', 'вид инструктажа по охране труда', 'ФИО, профессия работника, проводившего инструктаж','Подпись работника, проводившего инструктаж','Подпись работника, прошедшего инструктаж']
 
                 # заполнение шапки таблицы
-                table = document.add_table(rows=len(obj_result), cols=10, style='Table Grid')
+                table = document.add_table(rows=len(obj_result), cols=8, style='Table Grid')
                 hdr_cells = table.rows[0].cells # заголовоки таблицы
                 for i in range(len(thead_list)):
                     hdr_cells[i].text = thead_list[i]
@@ -188,11 +188,25 @@ class JournalView(View):
                     hdr_cells[numbers].text = str(numbers+1) 
                     hdr_cells[numbers].width = Cm(3)
                 
+                print(obj_result[0])
 
-                for row in range(len(obj_result)):
+                for row in obj_result:
+                    print(row)
                     hdr_cells = table.add_row().cells
-                    # for col in range(len(obj_result)):
-                    #     hdr_cells[i].text = str(obj_result[col].user.first_name)
+                    hdr_cells[0].text = f'{row.date_instruction.date().strftime("%d.%m.%Y")}'
+                    hdr_cells[1].text = f'{row.user.last_name} {row.user.first_name} {row.user.patronymic}'
+                    hdr_cells[2].text = f'{row.user.role}'
+                    hdr_cells[3].text = f'{row.user.birthday_date.strftime("%d.%m.%Y")}'
+                    hdr_cells[4].text = f'{row.instruction.name_instruction}'
+                    hdr_cells[5].text = f'{request.user.last_name} {request.user.first_name} {request.user.patronymic}'
+                    hdr_cells[6].text = f'{request.user.last_name}'
+                    hdr_cells[7].text = f'{row.user.last_name}'
+                    # p = document.add_paragraph('')
+                    # p.add_run(f'{row.user.first_name}, {row.user.last_name}')
+                    # hdr_cells = table.add_row().cells
+                    # for item in len(obj_result):
+                    #     hdr_cells[item].text = str(obj_result[row].date_instruction.date())
+                        
 
 
                 dateNameFile = f'{timezone.now()}.docx'

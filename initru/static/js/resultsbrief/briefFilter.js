@@ -60,7 +60,7 @@ thead.forEach(elem => elem.addEventListener('click',(e)=>{
                         <td>${elem.name_brief}</td>
                         <td style = 'max-width: 375px;'>${elem.quiz_name}</td>
                         <td>${date.toLocaleString()}</td>
-                        <td class = 'text-center'>${elem.result} %</td>
+                        <td class = 'text-center'>${elem.result}%</td>
                         ${mark}
                     </tr>
 
