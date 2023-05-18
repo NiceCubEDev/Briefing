@@ -61,13 +61,13 @@
 				<div class="dropdown text-end d-flex mx-2">
 					<a class="d-block link-dark text-decoration-none d-flex align-items-center" id="dropdownUser1" data-bs-toggle="dropdown" aria-expanded="false">
 						<div class = 'rounded-circle mx-2 shadow-sm' style = '
-						width: 40px;
-						height: 40px;
-						background-position: center;
-						background-repeat: no-repeat;
-						background-size: cover;
-						background-clip: unset;
-						background-image: url("{{ request.user.avatar.url }}");
+							width: 40px;
+							height: 40px;
+							background-position: center;
+							background-repeat: no-repeat;
+							background-size: cover;
+							background-clip: unset;
+							background-image: url("{{ request.user.avatar.url }}");
 						'></div>
 						<!-- <i class="fa-solid fa-arrow-down-wide-short fs-4 text-primary"></i> -->
 					</a>
@@ -104,7 +104,6 @@
 						{% endif %}
 					</ul>
 				</div>
-				<i class="fa-regular fa-bell fs-4 text-warning"></i>	
 				{% else %}
 				<div class="dropdown text-end">
 					<a href="{% url 'login' %}" class="d-block link-dark text-decoration-none">

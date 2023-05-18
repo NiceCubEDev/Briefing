@@ -1,4 +1,4 @@
-const table = document.getElementById('table');
+let table = document.getElementById('table');
 let mark;
 alertContainer = document.getElementById('alertBox');
 
@@ -89,6 +89,18 @@ $('#setBut').click((e)=>{
                 table.appendChild(tbody);
                 notifFunction('success', resp.message);
             } else {
+                const tbody = document.createElement("tbody") // создаем боди таблицы
+                tbody.style='font-family:"Inter-Regular"'; // стиль
+                tbody.setAttribute("id", "id_tbody"); // id 
+                p=`
+                <tr>
+                    <td>${resp.message}</td>
+                </tr>
+                `
+                tbody.innerHTML += p
+                $('#id_tbody').remove(); // удаляем боди таблицы
+                console.log(tbody)
+                table.appendChild(tbody);
                 notifFunction('danger', resp.message);
             }
 
