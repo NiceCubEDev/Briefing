@@ -59,7 +59,7 @@
       {% for item in assigned %}
         <button class="btn-quiz list-group-item list-group-item-action"
           data-brief-name="{{item.test.instruction.name_instruction }}" data-brief-pk='{{item.test.instruction.pk }}'
-          data-quiz-pk="{{ item.id }}" data-quiz-name="{{item.test.name_test}}" data-quiz-time="{{ item.time }}"
+          data-quiz-pk="{{ item.test.pk }}" data-quiz-name="{{item.test.name_test}}" data-quiz-time="{{ item.time }}"
           data-pass="{{ item.test.required_score_to_pass }}" data-questions='{{ item.test.number_of_questions }}'
           data-bs-target="#staticBackdrop" data-file-link='{{ item.test.file.url }}' data-bs-toggle="modal">
         {{ item.test.name_test }}

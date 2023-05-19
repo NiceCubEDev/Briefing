@@ -585,13 +585,15 @@ class BriefBrainView(View):
     def checkFile(request, id):
         data = {}
         if request.method == 'POST':
+            print(request.POST)
             obj_query = downloadInstructionsForTests.objects.filter(
                 user=request.user, test=request.POST['quiz-pk']).count()
             if obj_query == 0:
-                downloadInstructionsForTests.objects.create(
-                    user=request.user,
-                    test_id=request.POST['quiz-pk']
-                )
+                #!!!
+                # downloadInstructionsForTests.objects.create(
+                #     user=request.user,
+                #     test_id=request.POST['quiz-pk']
+                # )
                 data['status'] = 'ok'
             else:
                 data['status'] = 'warning'
@@ -604,8 +606,9 @@ class BriefBrainView(View):
     def checkPassed(request, id): 
         data = {}
         if request.method == 'POST':
+            #проверим 
             obj_query_file = downloadInstructionsForTests.objects.filter(
-                user=request.user, test=request.POST['quiz']).count()
+                user=request.user, test=request.POST['quiz']).count() 
             if obj_query_file != 0:
                 passed_brief = res.objects.filter(
                     instruction=id, quiz=request.POST['quiz'], mark='Сдан', user=request.user).count()
@@ -648,14 +651,10 @@ class BriefLayoutView(View):
     def listBriefs(request):
         page_name = "user_tests/user_themes_tests_list.html"
         themesInstructions = inst.objects.all().order_by("-name_instruction")
-        briefForUser = briefsForPeoples.assignedBrief(request)
-
 
         for i in themesInstructions:
-            i.counttest2 = test.get_need_instr(request, i.pk).count() + int(briefsForPeoples.objects.filter(test__instruction = i.pk, # инструктаж
-            test__type_user = request.user.type_user, # тип пользователя 
-            ).count())
-
+            i.counttest2 = test.get_need_instr(request, i.pk).count() + int(briefsForPeoples.objects.filter(test__instruction = i.pk, test__type_user = request.user.type_user,).count()) #вычисление доступных тестов для пользователя
+ 
 
         values = {
             'themes': themesInstructions,
@@ -671,6 +670,7 @@ class BriefLayoutView(View):
 
         themesInstructions = inst.objects.get(id=id)  # model inst
         tests = test.get_need_instr(request, id)  # model test
+        #возвращаем именно назначенные тесты пользователя.
         assignedBriefs = briefsForPeoples.objects.filter(test__instruction=id, user=request.user)
 
         values = {
