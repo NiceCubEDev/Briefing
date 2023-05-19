@@ -397,7 +397,7 @@ class downloadInstructionsForTests(models.Model):
         verbose_name_plural = 'Сводная по скачанным файлам'
 
 
-#таблица для назначенных людей тесты
+#модель для назначенных людей тесты
 class briefsForPeoples(models.Model):
     user=models.ForeignKey('CustomUser', on_delete=models.CASCADE, verbose_name='Пользователь', related_name='u')
     test=models.ForeignKey('test', on_delete=models.CASCADE, verbose_name='Тест', related_name='t')
