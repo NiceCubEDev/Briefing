@@ -18,11 +18,9 @@
                 <!-- доделать эту часть!! -->
                 {% if item.counttest2|stringformat:"s" != '0' %}
                     <span class="badge rounded-pill text-white bg-danger">
-                        {{ item.counttest2}}
+                        {{ item.counttest2 }}
                     </span>
-                    {% else %}
-
-                    {% endif %}
+                {% endif %}
             
             </a>
         {% endfor %}

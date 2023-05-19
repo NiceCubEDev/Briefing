@@ -3,7 +3,7 @@ from django.views import View
 # формы
 from .forms import contactForm, ChangeNumberUser, ChangeEmailUser, ChangeAvatarUser, ChangePasswordUser
 # модели
-from .models import inst, complex, CustomUser, test, question, answers, res, downloadInstructionsForTests, typeuser, Groups
+from .models import inst, complex, CustomUser, test, question, answers, res, downloadInstructionsForTests, typeuser, Groups, briefsForPeoples
 # варианты ответов
 from django.http import JsonResponse, HttpResponseBadRequest, HttpResponse
 # обязательная авторизация
@@ -199,14 +199,9 @@ class JournalView(View):
                     hdr_cells[3].text = f'{row.user.birthday_date.strftime("%d.%m.%Y")}'
                     hdr_cells[4].text = f'{row.instruction.name_instruction}'
                     hdr_cells[5].text = f'{request.user.last_name} {request.user.first_name} {request.user.patronymic}'
-                    hdr_cells[6].text = f'{request.user.last_name}'
-                    hdr_cells[7].text = f'{row.user.last_name}'
-                    # p = document.add_paragraph('')
-                    # p.add_run(f'{row.user.first_name}, {row.user.last_name}')
-                    # hdr_cells = table.add_row().cells
-                    # for item in len(obj_result):
-                    #     hdr_cells[item].text = str(obj_result[row].date_instruction.date())
-                        
+                    hdr_cells[6].text = f'{request.user.last_name}(Электронная подпись)'
+                    hdr_cells[7].text = f'{row.user.last_name}(Электронная подпись)'
+
 
 
                 dateNameFile = f'{timezone.now()}.docx'
@@ -653,11 +648,14 @@ class BriefLayoutView(View):
     def listBriefs(request):
         page_name = "user_tests/user_themes_tests_list.html"
         themesInstructions = inst.objects.all().order_by("-name_instruction")
-        
-        # сделать пункт должники в журнале
+        briefForUser = briefsForPeoples.assignedBrief(request)
+
 
         for i in themesInstructions:
-            i.counttest2 = test.get_need_instr(request, i.pk).count
+            i.counttest2 = test.get_need_instr(request, i.pk).count() + int(briefsForPeoples.objects.filter(test__instruction = i.pk, # инструктаж
+            test__type_user = request.user.type_user, # тип пользователя 
+            ).count())
+
 
         values = {
             'themes': themesInstructions,
@@ -673,10 +671,12 @@ class BriefLayoutView(View):
 
         themesInstructions = inst.objects.get(id=id)  # model inst
         tests = test.get_need_instr(request, id)  # model test
-        
+        assignedBriefs = briefsForPeoples.objects.filter(test__instruction=id, user=request.user)
+
         values = {
             'test': tests,
             'themes': themesInstructions,
+            'assigned':assignedBriefs
         }
 
         return render(request, page_name, values)

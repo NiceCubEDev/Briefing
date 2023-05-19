@@ -160,7 +160,7 @@ class test(models.Model):
     required_score_to_pass = models.IntegerField('Рекомендуемый балл в %', help_text='Рекомендуемый балл в %')
     type_user  = models.ForeignKey(typeuser, on_delete=models.CASCADE, verbose_name='Тип пользователя')
     file = models.FileField( 'Файл к тесту', upload_to='instr/', null=True, blank=True)
-    stud_groups = models.ForeignKey(Groups, on_delete=models.CASCADE, verbose_name='Группа')
+    stud_groups = models.ForeignKey(Groups, on_delete=models.CASCADE, verbose_name='Группа', null=True, blank=True)
     date_target = models.DateTimeField('Дата назначения',)
 
 
@@ -178,7 +178,7 @@ class test(models.Model):
         return test.objects.filter(
             instruction = id, # инструктаж
             type_user = request.user.type_user, # тип пользователя 
-            stud_groups=request.user.groupStud # группа
+            stud_groups = request.user.groupStud # группа
             )
     
     def get_questions(self):
@@ -395,4 +395,24 @@ class downloadInstructionsForTests(models.Model):
     class Meta: 
         verbose_name = 'Сводная по скачанным файлам'
         verbose_name_plural = 'Сводная по скачанным файлам'
+
+
+#таблица для назначенных людей тесты
+class briefsForPeoples(models.Model):
+    user=models.ForeignKey('CustomUser', on_delete=models.CASCADE, verbose_name='Пользователь', related_name='u')
+    test=models.ForeignKey('test', on_delete=models.CASCADE, verbose_name='Тест', related_name='t')
+    date_target=models.DateTimeField('Время назначения',)
+
+    def __str__(self):
+        return f'{self.user} {self.test}'
+
+    class Meta: 
+        verbose_name='Назначенные тесты отдельным пользователям'
+        verbose_name_plural='Назначенные тесты отдельным пользователям'
+
+
+
+    @staticmethod
+    def assignedBrief(request):
+        return briefsForPeoples.objects.filter(user=request.user)
     

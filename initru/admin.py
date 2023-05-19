@@ -128,4 +128,11 @@ class complex(admin.ModelAdmin):
 @admin.register(downloadInstructionsForTests)
 class downloadInstructionsForTestsAdmin(admin.ModelAdmin):
     list_display = ['user', 'test']
-# Register your models here.
+
+
+#назначенные инструктажи отдельным людям
+@admin.register(briefsForPeoples)
+class briefsForPeoplesAdmin(admin.ModelAdmin):
+    list_display = ['user', 'test', 'date_target']
+    list_filter = ['date_target', ]
+
