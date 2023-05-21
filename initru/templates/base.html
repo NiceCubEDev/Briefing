@@ -25,92 +25,90 @@
 
 
 <header>
-	<nav class="navbar" style='font-family: "Inter-Regular";'>
+	<nav class="navbar navbar-expand-lg" style="font-family: 'Inter-Regular';">
 		<div class="container">
-			<div class='d-flex align-items-center'>
-				<a href="{% url 'main' %}" class="navbar-brand">
-					<img src="{% static 'images/logo.svg' %}" alt="logo" height="75">
-				</a>
-				<div class="d-flex mx-3 flex-wrap">
-					<a class='btn btn-orange mx-2' href="{% url 'main' %}">
-						<i class="fa-solid fa-star"></i>
-						Главная
-					</a>
-					<a class='btn btn-outline-orange mx-2' href="{% url 'about' %}">
-						<i class="fa-solid fa-check mx-1"></i>
-						О нас
-					</a>
-
+			<a href="{% url 'main' %}" class="navbar-brand">
+				<img src="{% static 'images/logo.svg' %}" alt="logo" height="75">
+			</a>
+			<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+				aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+				<span class="navbar-toggler-icon"></span>
+			</button>
+			<div class="collapse navbar-collapse justify-content-end align-items-center" id="navbarNav">
+				<ul class="navbar-nav">
+					<li class="nav-item">
+						<a class="btn btn-orange m-2 text-light button-header" href="{% url 'main' %}"><i class="fa-solid fa-star"></i>
+							Главная</a>
+					</li>
+					<li class="nav-item">
+						<a class="btn btn-outline-orange m-2 button-header" href="{% url 'about' %}"><i
+								class="fa-solid fa-check mx-1"></i> О нас</a>
+					</li>
 					{% if user.is_authenticated %}
-					<a class='btn btn-outline-secondary mx-2' href="{% url 'brief' %}">
-						<i class="fa-solid fa-square-pen mx-1"></i>
-						Инструктажи
-					</a>
+						<li class="nav-item">
+							<a class="btn btn-outline-secondary m-2 button-header" href="{% url 'brief' %}"><i
+									class="fa-solid fa-square-pen mx-1"></i> Инструктажи</a>
+						</li>
 						{% if user.is_superuser %}
-							<a class='btn btn-outline-primary mx-2' href="{% url 'admin:index' %}">
-								<i class="fa-solid fa-toolbox mx-1"></i>
-								Панель администратора
-							</a>
+							<li class="nav-item">
+								<a class="btn btn-outline-primary m-2 button-header" href="{% url 'admin:index' %}"><i
+										class="fa-solid fa-toolbox mx-1"></i> Панель администратора</a>
+							</li>
 						{% endif %}
 					{% endif %}
-				</div>
-			</div>
-
-			<div class='navbar d-flex justify-content-center'>
-				{% if user.is_authenticated %}
-				<div class="dropdown text-end d-flex mx-2">
-					<a class="d-block link-dark text-decoration-none d-flex align-items-center" id="dropdownUser1" data-bs-toggle="dropdown" aria-expanded="false">
-						<div class = 'rounded-circle mx-2 shadow-sm' style = '
-							width: 40px;
-							height: 40px;
-							background-position: center;
-							background-repeat: no-repeat;
-							background-size: cover;
-							background-clip: unset;
-							background-image: url("{{ request.user.avatar.url }}");
-						'></div>
-						<!-- <i class="fa-solid fa-arrow-down-wide-short fs-4 text-primary"></i> -->
-					</a>
-					<ul class="dropdown-menu text-small dropdown-menu-end" aria-labelledby="dropdownUser1">
+					{% if user.is_authenticated %}
+					<div class='navbar d-flex justify-content-center'>
 						{% if user.is_authenticated %}
-						<li>
-							<a class="dropdown-item" href="{% url 'profile' %}">
-								<i class="fa-regular fa-user mx-2" style = 'color:#E7882B;'></i> 
-								Мой профиль
+						<div class="dropdown text-end d-flex mx-2">
+							<a class="d-block link-dark text-decoration-none d-flex align-items-center" id="dropdownUser1" data-bs-toggle="dropdown" aria-expanded="false">
+								<div class = 'rounded-circle mx-2 shadow-sm' style = '
+									width: 40px;
+									height: 40px;
+									background-position: center;
+									background-repeat: no-repeat;
+									background-size: cover;
+									background-clip: unset;
+									background-image: url("{{ request.user.avatar.url }}");
+								'></div>
+								<!-- <i class="fa-solid fa-arrow-down-wide-short fs-4 text-primary"></i> -->
 							</a>
-						</li>
-						<!-- <li>
-							<a class="dropdown-item" href="">
-								<i class="fa-solid fa-square-pen mx-2 text-secondary"></i>
-								Мои инструктажи
+							<ul class="dropdown-menu text-small dropdown-menu-end" aria-labelledby="dropdownUser1">
+								{% if user.is_authenticated %}
+								<li>
+									<a class="dropdown-item" href="{% url 'profile' %}">
+										<i class="fa-regular fa-user mx-2" style = 'color:#E7882B;'></i> 
+										Мой профиль
+									</a>
+								</li>
+								<li>
+									<hr class="dropdown-divider">
+								</li>
+								<li class='d-flex justify-content-center mt-2'>
+									<a class="btn btn-danger" href="{% url 'logout' %}">
+										<i class="fa-solid fa-door-open mx-2"></i>
+										Выйти
+									</a>
+								</li>
+									
+								{% endif %}
+							</ul>
+						</div>
+						{% else %}
+						<div class="dropdown text-end">
+							<a href="{% url 'login' %}" class="d-block link-dark text-decoration-none">
+								<img src="{% static 'images/startPage/user/user.svg' %}" alt="user">
 							</a>
-						</li>
-						<li>
-							<a class="dropdown-item" href="#">
-								<i class="fa-solid fa-pen-to-square mx-2 text-primary" style = 'color:#E7882B;'></i>
-								Сменить данные
-							</a>
-						</li> -->
-						<li>
-							<hr class="dropdown-divider">
-						</li>
-						<li class='d-flex justify-content-center mt-2'>
-							<a class="btn btn-danger" href="{% url 'logout' %}">
-								<i class="fa-solid fa-door-open mx-2"></i>
-								Выйти
-							</a>
-						</li>
-							
+						</div>
 						{% endif %}
-					</ul>
-				</div>
-				{% else %}
-				<div class="dropdown text-end">
-					<a href="{% url 'login' %}" class="d-block link-dark text-decoration-none">
-						<img src="{% static 'images/startPage/user/user.svg' %}" alt="user">
-					</a>
-				</div>
-				{% endif %}
+					</div>
+					{% else %}
+					<li class="nav-item">
+						<a href="{% url 'login' %}" class="nav-link">
+							<img src="{% static 'images/startPage/user/user.svg' %}" alt="user">
+						</a>
+					</li>
+					{% endif %}
+				</ul>
 			</div>
 		</div>
 	</nav>

@@ -15,9 +15,12 @@
 <div>
     <p class="text-center fw-bold fs-4" style='color:#E7882B; font-family: "Inter-Bold";'>Журнал</p>
 </div>
-<div>
-    <div class='container' style ='font-family: "Inter-Regular";'>
-
+<div class='container'>
+    <a class = 'btn btn-outline-orange mb-2 fw-bold' onclick="javascript:history.back(); return false;" href ="#">
+        <i class="fa-solid fa-circle-left mx-2"></i>
+        Назад
+    </a>
+    <div  style ='font-family: "Inter-Regular";'>
         <p class='fs-5' style='font-family: "Inter-Bold"; color:#E7882B;'>Фильтрация:</p>
         <form action='{% url "journal_view" %}' method = 'POST' id="filter-form">
             {% csrf_token %}

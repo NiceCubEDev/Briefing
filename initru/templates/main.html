@@ -14,14 +14,14 @@
 	
 
 {% block content %}
-<div class="container d-flex justify-content-evenly" style ='height: 700px;'>
-	<img src="{% static 'images/startPage/girl.svg' %}" alt="girl" height="700">
+<div class="container d-flex flex-wrap justify-content-evenly" style ='height: 700px;'>
+	<img class = 'girlhello' src="{% static 'images/startPage/girl.svg' %}" alt="girl" height="700">
 	<div class = 'd-flex flex-column align-items-center justify-content-center' style ='height: 550px;'>
 		<div class = 'd-flex flex-column'>
-			<h1 class = 'text-uppercase text-center' style = 'font-family: "Roboto-medium"; font-size: 79px; color:#E7882B;'>Инструктаж</h1>
-			<p class = 'text-center' style ='font-size: 23px; max-width: 540px;'>Ознакомление с основными правилами на производстве для обеспечения Вашей безопасности</p>
+			<h1 class = 'text-uppercase text-center hello-h1' style = 'font-family: "Roboto-medium"; font-size: 79px; color:#E7882B;'>Инструктаж</h1>
+			<p class = 'text-center hello-info' style ='font-size: 23px; max-width: 540px;'>Ознакомление с основными правилами на производстве для обеспечения Вашей безопасности</p>
 			{% if user.is_authenticated %}
-			<a class = 'btn btn-outline-primary mx-auto fs-5 text-uppercase ' href="{% url 'brief' %}" style = 'font-family: "Roboto-medium";'>
+			<a class = 'btn btn-primary mx-auto fs-5 text-uppercase ' href="{% url 'brief' %}" style = 'font-family: "Roboto-medium";'>
 				<i class="fa-regular fa-pen mx-2"></i>
 				Пройти инструктаж
 			</a>
@@ -35,36 +35,41 @@
 	</div>
 </div>
 
-<div class = 'mx-auto' style = 'position: relative; top:-175px;'>
+<div class = 'mx-auto volnaas' style = 'position: relative; top:-175px;'>
 	<img class = 'img-fluid' alt = 'photo' src ="{% static 'images/startPage/volna.svg' %}" style = 'width: 100%; user-select: none;' />
 	<img class = 'img-fluid' alt = 'photo' src ="{% static 'images/startPage/volna.svg' %}" style = 'width: 100%; user-select: none;  transform: scale(1, -1);' />
 </div>
 
-<div class = 'container d-flex justify-content-evenly flex-wrap'>
+
+<div class="static-box">
+	<p class = 'fs-5 text-center text-uppercase' style="font-family: 'Inter-Bold'; color:#E7882B;">Статистика</p>
+	<div class = 'container d-flex justify-content-evenly flex-wrap'>
 	<!--  -->
-	<div class = 'shadow d-flex flex-column justify-content-center text-white mt-4' style ='max-width: 300px; width: 100%; height: 200px; box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.45); background-color: #E7882B; filter: drop-shadow(15px -10px 1px #E7882B);'>
-		<p class = 'fw-bold fs-5 text-center mt-5' style = 'font-family: "Inter-Bold";min-height: 55px;'>Пользователей</p>
-		<p class="text-center" style = 'font-size: 70px; font-family: "Inter-Bold"; text-shadow: 10px -5px 10px rgba(0, 0, 0, 0.45);'>{{ countUser }}</p>
+	<div class = 'adaptive-box shadow d-flex flex-column justify-content-center text-white mt-4' style ='max-width: 300px; width: 100%; height: 200px; box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.45); background-color: #E7882B; filter: drop-shadow(15px -10px 1px #E7882B);'>
+		<p class = 'adaptive-box-p fw-bold fs-5 text-center mt-5' style = 'font-family: "Inter-Bold";min-height: 55px;'>Пользователей</p>
+		<p class="adaptive-box-number text-center" style = 'font-size: 70px; font-family: "Inter-Bold"; text-shadow: 10px -5px 10px rgba(0, 0, 0, 0.45);'>{{ countUser }}</p>
 	</div>
 	<!--  -->
 
 	<!--  -->
-	<div class = 'shadow d-flex flex-column justify-content-center text-white mt-4' style ='max-width: 300px; width: 100%; height: 200px; box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.45); background-color: #3B5B6F; filter: drop-shadow(15px -10px 1px #3B5B6F);'>
-		<p class = 'fw-bold fs-5 text-center mt-5' style = 'font-family: "Inter-Bold";min-height: 55px;'>Число пройденных инструктажей</p>
-		<p class="text-center" style = 'font-size: 70px; font-family: "Inter-Bold"; text-shadow: 10px -5px 10px rgba(0, 0, 0, 0.45);'>{{ pb }}</p>
+	<div class = 'adaptive-box shadow d-flex flex-column justify-content-center text-white mt-4' style ='max-width: 300px; width: 100%; height: 200px; box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.45); background-color: #3B5B6F; filter: drop-shadow(15px -10px 1px #3B5B6F);'>
+		<p class = 'adaptive-box-p fw-bold fs-5 text-center mt-5' style = 'font-family: "Inter-Bold";min-height: 55px;'>Число пройденных инструктажей</p>
+		<p class="adaptive-box-number text-center" style = 'font-size: 70px; font-family: "Inter-Bold"; text-shadow: 10px -5px 10px rgba(0, 0, 0, 0.45);'>{{ pb }}</p>
 	</div>
 	<!--  -->
 
 	<!--  -->
-	<div class = 'shadow d-flex flex-column justify-content-center text-white mt-4' style ='max-width: 300px; width: 100%; height: 200px; box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.45); background-color: #E7882B; filter: drop-shadow(15px -10px 1px #E7882B);'>
-		<p class = 'fw-bold fs-5 text-center mt-5' style = 'font-family: "Inter-Bold";min-height: 55px;'>Количество тестов</p>
-		<p class="text-center" style = 'font-size: 70px; font-family: "Inter-Bold"; text-shadow: 10px -5px 10px rgba(0, 0, 0, 0.45);'>{{ cb }}</p>
+	<div class = 'adaptive-box shadow d-flex flex-column justify-content-center text-white mt-4' style ='max-width: 300px; width: 100%; height: 200px; box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.45); background-color: #E7882B; filter: drop-shadow(15px -10px 1px #E7882B);'>
+		<p class = 'adaptive-box-p fw-bold fs-5 text-center mt-5' style = 'font-family: "Inter-Bold";min-height: 55px;'>Количество тестов</p>
+		<p class="adaptive-box-number text-center" style = 'font-size: 70px; font-family: "Inter-Bold"; text-shadow: 10px -5px 10px rgba(0, 0, 0, 0.45);'>{{ cb }}</p>
 	</div>
 	<!--  -->
 </div>
+</div>
+
 
 <div class = 'container d-flex justify-content-center flex-wrap' style="margin-top: 100px;">
-	<img src="{% static 'images/startPage/girl_and_books.svg' %}" alt="girl" style ='user-select: none;'>
+	<img class ='girl_and_books' src="{% static 'images/startPage/girl_and_books.svg' %}" alt="girl" style ='user-select: none;'>
 	<div class='flex-fill d-flex flex-column align-items-center'>
 		<p class = 'fs-5 text-center text-uppercase' style="font-family: 'Inter-Bold'; color:#E7882B;">Виды инструктажей</p>
 		<div class="inst_list flex-fill" style="position: relative; max-height: 430px; max-width: 700px; width: 100%;">
@@ -79,7 +84,7 @@
 	</div>
 </div>
 
-<div class='container' style = 'margin-top: 100px;'>
+<div class='container girl_and_notebook' style = 'margin-top: 100px;'>
 	<p class = 'fs-5 text-center text-uppercase' style="font-family: 'Inter-Bold'; color:#E7882B;">Программный комплекс</p>
 	<div class = 'complex d-flex justify-content-evenly align-items-center'>
 		<div class = 'row row-cols-2' style="max-width:500px;">
@@ -100,13 +105,13 @@
 	</div>
 </div>
 
-<div class = 'mx-auto'>
+<div class = 'mx-auto volnaa volnaas'>
 	<img class = 'img-fluid' alt = 'photo' src ="{% static 'images/startPage/volna.svg' %}" style = 'width: 100%; user-select: none;' />
 	<img class = 'img-fluid' alt = 'photo' src ="{% static 'images/startPage/volna.svg' %}" style = 'width: 100%; user-select: none;  transform: scale(1, -1);' />
 </div>
 
-<div class = 'container d-flex justify-content-evenly align-items-center flex-wrap'>
-	<img src="{% static 'images/startPage/girlandheart.svg' %}" alt="photo">
+<div class = 'form-contact container d-flex justify-content-evenly align-items-center flex-wrap'>
+	<img class = 'girl_and_heart' src="{% static 'images/startPage/girlandheart.svg' %}" alt="photo">
 	<div>
 		<p class = 'fs-5 text-center text-uppercase' style="font-family: 'Inter-Bold'; color:#E7882B;">Обратная связь</p>
 		<form id="contact-form" data-pl="1">
@@ -128,11 +133,11 @@
 	</div>
 </div>
 
-<footer class = 'shadow-sm border d-flex flex-column justify-content-between'>
-    <div class ='container d-flex align-items-center justify-content-around' style="min-height: 450px;">
-        <div class="d-flex flex-column justify-content-center">
-            <p class = 'text-uppercase text-center  fw-bold' style ='font-size: 50px; font-family: "Roboto-bold"; color:#3B5B6F;'>Инструктаж</p>
-            <p class = ' mx-auto text-center' style ='font-family: "Roboto-medium"; color:#E7882B; max-width: 350px;'>Ознакомление с основными правилами на производстве для обеспечения Вашей безопасности</p>
+<footer class = 'shadow-sm border d-flex flex-column justify-content-between mt-5 '>
+    <div class ='container d-flex align-items-center justify-content-around flex-wrap' style="min-height: 450px;">
+        <div class="d-flex flex-column justify-content-center mt-5">
+            <p class = 'text-uppercase text-center  fw-bold hello-h1' style ='font-size: 50px; font-family: "Roboto-bold"; color:#3B5B6F;'>Инструктаж</p>
+            <p class = ' mx-auto text-center hello-info' style ='font-family: "Roboto-medium"; color:#E7882B; max-width: 350px;'>Ознакомление с основными правилами на производстве для обеспечения Вашей безопасности</p>
             {% if user.is_authenticated %}
 			<a class = 'btn btn-outline-primary mx-auto fs-5 text-uppercase ' href="{% url 'brief' %}" style = 'font-family: "Roboto-medium";'>
 				<i class="fa-regular fa-pen mx-2"></i>
@@ -145,7 +150,7 @@
 			</a>
 			{% endif %}
         </div>
-        <div class = 'd-flex flex-column'>
+        <div class = 'd-flex flex-column mt-5'>
             <button class = 'btn btn-outline-orange fs-5 d-flex align-items-center' style ='font-family: "Roboto-medium";'>
                 Подписаться <i class="fa-brands fa-telegram mx-2 fs-2"></i>
             </button>

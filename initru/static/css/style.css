@@ -52,6 +52,7 @@ body::-webkit-scrollbar-thumb {
 .not_visible { 
     display: none;
 }
+
 .inst_list-box:hover { box-shadow: 2px 3px 10px #E7882B; }
 .inst_list-box:nth-child(1) {
     position: absolute;
@@ -106,4 +107,95 @@ body::-webkit-scrollbar-thumb {
     display: none;
 }
 
+
+
+@media (max-width:1000px) {
+    .navbar-brand { 
+        display: none;
+    }
+    .girlhello { 
+        display: none;
+    }
+    .girl_and_notebook { 
+        display: none;
+    }
+    .girl_and_heart { 
+        display: none;
+    }
+    .girl_and_books { 
+        display: none;
+    }
+    .inst_list-box { 
+        position: static !important;
+        width: 250px !important;
+        margin-top: 15px;
+        height:50px;
+    }
+    .inst_list { 
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+    .hello-h1 { 
+        font-size: 60px !important;
+    }
+    .hello-info {
+        font-size: 19px !important;
+        max-width: 350px !important;
+        margin:15px auto !important;
+    }
+    .volnaa { 
+        margin-top: 50px;
+    }
+    .button-header { 
+        width: 100% !important;
+    }
+}
+
+@media (max-width:1400px) {
+    .menu-prifile-btns { 
+        position: static !important;
+        max-width: 100% !important;
+    }
+    .menu-prifile-btns-box { 
+        width: 100% !important;
+    }
+
+}
+
+@media (max-width:500px) {
+    .hello-h1 { 
+        font-size: 40px !important;
+    }
+    .hello-info {
+        font-size: 15px !important;
+        max-width: 350px !important;
+        margin:15px auto !important;
+    } 
+    .adaptive-box {
+        width: 200px !important;
+    }
+    .adaptive-box .adaptive-box-p{
+        width: 200px !important;
+        font-size: 15px !important;
+    }
+    .adaptive-box .adaptive-box-number{
+        font-size: 50px !important;
+    }
+    .volnaas { 
+        display: none;
+    }
+    .static-box {
+        margin-top: -150px;
+    }
+    .form-contact { 
+        margin-top: 135px;
+    }
+    .inst_list-box { 
+        position: static !important;
+        width: 200px !important;
+        margin-top: 15px;
+        height:50px;
+    }
+}
 
