@@ -44,21 +44,21 @@
 						<a class="btn btn-outline-orange m-2 button-header" href="{% url 'about' %}"><i
 								class="fa-solid fa-check mx-1"></i> О нас</a>
 					</li>
-					{% if user.is_authenticated %}
+					{% if request.user.is_authenticated %}
 						<li class="nav-item">
 							<a class="btn btn-outline-secondary m-2 button-header" href="{% url 'brief' %}"><i
 									class="fa-solid fa-square-pen mx-1"></i> Инструктажи</a>
 						</li>
-						{% if user.is_superuser %}
+						{% if request.user.is_superuser %}
 							<li class="nav-item">
 								<a class="btn btn-outline-primary m-2 button-header" href="{% url 'admin:index' %}"><i
 										class="fa-solid fa-toolbox mx-1"></i> Панель администратора</a>
 							</li>
 						{% endif %}
 					{% endif %}
-					{% if user.is_authenticated %}
+					{% if request.user.is_authenticated %}
 					<div class='navbar d-flex justify-content-center'>
-						{% if user.is_authenticated %}
+						{% if request.user.is_authenticated %}
 						<div class="dropdown text-end d-flex mx-2">
 							<a class="d-block link-dark text-decoration-none d-flex align-items-center" id="dropdownUser1" data-bs-toggle="dropdown" aria-expanded="false">
 								<div class = 'rounded-circle mx-2 shadow-sm' style = '

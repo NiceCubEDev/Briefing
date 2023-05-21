@@ -23,24 +23,6 @@ from docx.enum.style import WD_STYLE_TYPE
 from docx.enum.section import WD_ORIENT
 from docx.shared import Cm
 
-# чат-бот
-
-
-# def chatbot_responseView(request):
-
-#     page_name = 'bot.html'  # страница
-
-#     if request.method == 'POST':
-#         data = {}
-#         query = request.POST
-#         user_text = query['message']
-#         model = build_model('kbqa_cq_ru', download=True)
-#         bot_response = model([user_text])
-#         data['status'] = 'ok'
-#         return JsonResponse({'data': data, 'response': bot_response[0]})
-
-#     return render(request, page_name)
-
 
 #главная
 class MainView(View):
@@ -70,7 +52,7 @@ class MainView(View):
 
         return render(request, page_name, values)
 
-
+    
     def mainSendMessage(request):
         if request.method == 'POST':
             data = {}
@@ -99,19 +81,12 @@ class MainView(View):
         return render(request, page_name)
 
 
-class JournalView(View):
-
-    def showPage(request):
-        pass
-
-    pass
-
-
 @login_required(login_url='account/login/')
 class JournalView(View):
 
 
     # журнал
+    @login_required
     def journal(request):
 
         page_name = 'forOss/journal.html'
@@ -313,11 +288,13 @@ class JournalView(View):
 class ProfileView(View):
 
     #профиль
+    @login_required
     def showPage(request):
         page_name = 'profile.html'
         return render(request, page_name)
 
     #смена данных
+    @login_required
     def changeData(request):
         if request.method == 'POST':
             data = {}  # for messages
@@ -401,6 +378,7 @@ class ProfileView(View):
     
     
     # пройденные инструктажи
+    @login_required
     def passedBriefs(request):
         page_name = 'passed_inst.html'
         obj_res = res.objects.filter(
@@ -410,24 +388,28 @@ class ProfileView(View):
 
 
     #вкладка с деталями про пользователя
+    @login_required
     def detail(request):
         page_name = 'profiile_detail_remaster.html'
         return render(request, page_name)
 
 
     #вкладка с возможностями
+    @login_required
     def action(request):
         page_name = 'action.html'
         return render(request, page_name)
 
 
     #редактирование профиля
+    @login_required
     def edit(request):
         page_name = 'profile_edit.html'
         return render(request, page_name)
 
 
     # сортировка результатов прохождения инструктажей
+    @login_required
     def sorting(request):
         obj_res = None  # для результатов.
         if request.method == 'POST':  # Если метод пост
@@ -467,6 +449,7 @@ class BriefBrainView(View):
 
 
     # получение вопросов
+    @login_required
     def questions(request, num, id):
         quiz = test.objects.get(
         instruction=id, type_user=request.user.type_user, pk=num)
@@ -483,13 +466,13 @@ class BriefBrainView(View):
 
 
     # сохранение теста
+    @login_required
     def save(request, num, id):
         
         def getDaysPassed(first_date): # вычисление даты
             answer = timedelta.Timedelta(first_date - timezone.now())
             return abs(answer.total.days)
         
-
 
         def savetothedb(request): # сохранение в бд функция
 
@@ -581,6 +564,7 @@ class BriefBrainView(View):
                 return JsonResponse({'passed': False, 'score': score_, 'results': results, 'countAnswers': countAnswers})
 
 
+    @login_required
     # проверка насчет лекции
     def checkFile(request, id):
         data = {}
@@ -601,7 +585,7 @@ class BriefBrainView(View):
         else:
             return HttpResponseBadRequest()
         
-
+    @login_required
     # Проверка о прохождении теста
     def checkPassed(request, id): 
         data = {}
@@ -653,7 +637,7 @@ class BriefLayoutView(View):
         themesInstructions = inst.objects.all().order_by("-name_instruction")
 
         for i in themesInstructions:
-            i.counttest2 = test.get_need_instr(request, i.pk).count() + int(briefsForPeoples.objects.filter(test__instruction = i.pk, test__type_user = request.user.type_user,).count()) #вычисление доступных тестов для пользователя
+            i.counttest2 = test.get_need_instr(request, i.pk).count() + int(briefsForPeoples.objects.filter(test__instruction = i.pk, test__type_user = request.user.type_user, user=request.user).count()) #вычисление доступных тестов для пользователя
  
 
         values = {
