@@ -27,6 +27,7 @@ from docx.shared import Cm
 #главная
 class MainView(View):
 
+    # получение инструктажей
     def showPage(request):
 
         page_name = 'main.html'
@@ -52,7 +53,7 @@ class MainView(View):
 
         return render(request, page_name, values)
 
-    
+    # для формы отправки сообщения.
     def mainSendMessage(request):
         if request.method == 'POST':
             data = {}
@@ -81,6 +82,7 @@ class MainView(View):
         return render(request, page_name)
 
 
+#Обязательная авторизация.
 @login_required(login_url='account/login/')
 class JournalView(View):
 
@@ -91,11 +93,12 @@ class JournalView(View):
 
         page_name = 'forOss/journal.html'
 
+        #функция для экспорта в ворд
         def downloadFile(request):
 
             obj_result = None
 
-            if request.POST['date_start'] != '':  # Если есть даты
+            if request.POST['date_start'] != '':  # Если есть дата
                 try:
                     obj_result = res.objects.filter(
                         user__type_user=request.POST['type_user'],
@@ -110,20 +113,15 @@ class JournalView(View):
                 except res.DoesNotExist:
                     obj_result = None
 
-            # выравнивания
-            alignment_dict = {
-                'justify': WD_PARAGRAPH_ALIGNMENT.JUSTIFY,
-                'center': WD_PARAGRAPH_ALIGNMENT.CENTER,
-                'right': WD_PARAGRAPH_ALIGNMENT.RIGHT,
-                'left': WD_PARAGRAPH_ALIGNMENT.LEFT,
-            }
 
+            #тип листка(портрет или обычный лист)
             orient_dict = {
                 'portrait': WD_ORIENT.PORTRAIT,
                 'landscape': WD_ORIENT.LANDSCAPE,
             }
             #####
 
+            #если данные нашлись
             if obj_result != None:  # если есть данные то
                 # code for docx
 
@@ -133,7 +131,7 @@ class JournalView(View):
                 # 2481×3507
 
                 for sec in section:
-                    sec.orientation = orient_dict['portrait']
+                    sec.orientation = orient_dict['portrait'] # тип портрет
                     sec.page_width = Cm(29.8)
                     sec.page_height = Cm(21)
 
@@ -145,10 +143,14 @@ class JournalView(View):
                 font_object.name = 'Times New Roman'
 
                 p = document.add_paragraph('')
-                p.add_run('Отчёт по сотрудникам', style='Head').bold = True
-                p.alignment = 1  # выравнивание: 0 - влево, 1 - центр
 
-                # document.add_picture('monty-truth.png', width=Inches(1.25))
+                if request.POST['type_user'] == '2':
+                    p.add_run('Отчёт по сотрудникам', style='Head').bold = True
+                    p.alignment = 1  # выравнивание: 0 - влево, 1 - центр
+                else:
+                    p.add_run('Отчёт по студентам', style='Head').bold = True
+                    p.alignment = 1 
+
                 thead_list = ['Дата', 'Фамилия, имя, отчество (при наличии) работника, прошедшего инструктаж по охране труда', 'профессия (должность) работника', 'число, месяц, год рождения работника', 'вид инструктажа по охране труда', 'ФИО, профессия работника, проводившего инструктаж','Подпись работника, проводившего инструктаж','Подпись работника, прошедшего инструктаж']
 
                 # заполнение шапки таблицы
@@ -163,10 +165,8 @@ class JournalView(View):
                     hdr_cells[numbers].text = str(numbers+1) 
                     hdr_cells[numbers].width = Cm(3)
                 
-                print(obj_result[0])
-
-                for row in obj_result:
-                    print(row)
+                # заполнение данными таблицу
+                for row in obj_result: 
                     hdr_cells = table.add_row().cells
                     hdr_cells[0].text = f'{row.date_instruction.date().strftime("%d.%m.%Y")}'
                     hdr_cells[1].text = f'{row.user.last_name} {row.user.first_name} {row.user.patronymic}'
@@ -178,14 +178,14 @@ class JournalView(View):
                     hdr_cells[7].text = f'{row.user.last_name}(Электронная подпись)'
 
 
-
+                # Название файла
                 dateNameFile = f'{timezone.now()}.docx'
                 response = HttpResponse(
                     content_type='application/vnd.openxmlformats-officedocument.wordprocessingml.document')
-                response['Content-Disposition'] = f'attachment; filename=' + dateNameFile
+                response['Content-Disposition'] = f'attachment; filename=' + dateNameFile 
 
                 document.save(response)
-                return response
+                return response #возвращение файла
             else:
                 return HttpResponseBadRequest()
 
@@ -206,7 +206,7 @@ class JournalView(View):
 
             if request.POST:  # для аякс условия
 
-                if request.POST['id_date_start'] != '':  # если есть начальная дата
+                if request.POST['id_date_start'] != '':  # если есть дата
                     try:
                         obj_result = res.objects.filter(
                             user__type_user=request.POST['id_type_user'],
@@ -287,7 +287,7 @@ class JournalView(View):
 @login_required
 class ProfileView(View):
 
-    #профиль
+    # получение профиля
     @login_required
     def showPage(request):
         page_name = 'profile.html'
@@ -297,9 +297,10 @@ class ProfileView(View):
     @login_required
     def changeData(request):
         if request.method == 'POST':
-            data = {}  # for messages
+            data = {}  # для сообщений
             user = request.user
 
+            #проверка на правильность пароля
             if user.check_password(request.POST['password']):
 
                 # проверка на наличие номера телефона в запросе
@@ -341,12 +342,14 @@ class ProfileView(View):
                 if request.POST.get('password2'):
                     if request.POST['password'] != request.POST['password2']:
                         form = ChangePasswordUser(request.POST)
+
                         if form.is_valid():
                             user.set_password(request.POST['password2'])
                             user.save()
                             data['message'] = f'{user.first_name}, Вы успешно сменили пароль!'
                             data['status'] = 'ok'
                             data['reload'] = 'go'
+
                             return JsonResponse(data)
                         else:
                             data['message'] = 'Новый пароль не соответствует по требованиям! '
@@ -358,13 +361,17 @@ class ProfileView(View):
 
                 # проверка на почты в запросе
                 if request.FILES:  # если отправили почту
+
                     form = ChangeAvatarUser(request.FILES)
+
                     if form.is_valid():
+
                         user.avatar.delete()
                         user.avatar = request.FILES['avatar']
                         user.save()
                         data['message'] = f'{user.first_name}, Вы успешно сменили фотографию!'
                         data['status'] = 'ok'
+
                         return JsonResponse(data)
                     else:
                         data['message'] = 'Выберите корректную фотографию!'
@@ -381,8 +388,7 @@ class ProfileView(View):
     @login_required
     def passedBriefs(request):
         page_name = 'passed_inst.html'
-        obj_res = res.objects.filter(
-            user=request.user).order_by("-date_instruction")
+        obj_res = res.objects.filter(user=request.user).order_by("-date_instruction")
         values = {'obj': obj_res}
         return render(request, page_name, values)
 
@@ -411,28 +417,21 @@ class ProfileView(View):
     # сортировка результатов прохождения инструктажей
     @login_required
     def sorting(request):
-        obj_res = None  # для результатов.
-        if request.method == 'POST':  # Если метод пост
+        obj_res = None 
+        if request.method == 'POST': 
             if request.POST.get('filter'):  # Если существует элемент фильтра
-
                 try:
-                    obj_res = res.objects.filter(user=request.user).order_by(
-                        request.POST['filter'])  # получение данных
+                    obj_res = res.objects.filter(user=request.user).order_by(request.POST['filter'])  # получение данных
                 except res.DoesNotExist:
-                    obj_res = []  # если не получилось, то
-
+                    obj_res = []  
                 if len(obj_res) > 0:  # длинна массива больше 0
-
                     data_list = []  # переменная лист для фильтра
-
                     for row in obj_res:
                         data_list.append({'name_brief': str(row.instruction.name_instruction), 'quiz_name': str(row.quiz.name_test), 'date_start': row.date_instruction, 'result': row.result, 'mark': row.mark})
 
                     obj_res = data_list
-
                     message = 'Успешно!'
                     status = 'ok'
-                    
                 else:
                     message = 'Данные не найдены'
                     status = 'error'
@@ -442,18 +441,17 @@ class ProfileView(View):
         return HttpResponseBadRequest()
 
 
-
 # инструктаж
 @login_required
 class BriefBrainView(View):
 
 
-    # получение вопросов
+    # получение вопросов с временем num-пк теста; id - пк инструктажа
     @login_required
     def questions(request, num, id):
         quiz = test.objects.get(
         instruction=id, type_user=request.user.type_user, pk=num)
-        questions = []
+        questions = [] # для вопросов
         for q in quiz.get_questions():
             answers = []
             for a in q.get_answers():
@@ -465,16 +463,19 @@ class BriefBrainView(View):
         })
 
 
-    # сохранение теста
     @login_required
+    # сохранение теста | num-пк теста; id - пк инструктажа
     def save(request, num, id):
-        
+    
+
+        # функция для получения разницы между датами.
         def getDaysPassed(first_date): # вычисление даты
             answer = timedelta.Timedelta(first_date - timezone.now())
             return abs(answer.total.days)
         
 
-        def savetothedb(request): # сохранение в бд функция
+        # функция сохранения результатов теста
+        def savetothedb(request):
 
 
             def saverequest(request, count_rows): # действие сохранения данных в бд
@@ -485,26 +486,19 @@ class BriefBrainView(View):
                 count_rows.attempt += 1 # прибавляем попытку
                 count_rows.save()
                 return True
+            
 
-
-            count_rows = res.objects.get(user = request.user, instruction_id = request.brief_instruction_id, quiz = request.brief_quiz) # получение строк
-
-
-            if count_rows: # если есть уже строка
-                return saverequest(request, count_rows)
-            else: # создание
-                res.objects.create( user=request.user,  instruction_id=request.brief_instruction_id,  quiz=request.brief_quiz,   date_instruction=timezone.now(), date_instruction_end = request.brief_days_passed, result= request.brief_score, mark=request.brief_mark,)
-                return True
-                
-              
-
-
+            try:
+                count_rows = res.objects.get(user = request.user, instruction_id = request.brief_instruction_id, quiz = request.brief_quiz) # получение строк
+                saverequest(request, count_rows)
+            except res.DoesNotExist:
+                res.objects.create( user=request.user,  instruction_id=request.brief_instruction_id,  quiz=request.brief_quiz,   date_instruction=timezone.now(), date_instruction_end = request.brief_days_passed, result= request.brief_score, mark=request.brief_mark, attempt = 1)
+             
+               
         if request.method == 'POST':
             user = request.user  # пользователь
             # получение нужного теста
-            quiz = test.objects.get(pk=num, instruction=id,
-                                    type_user=request.user.type_user)
-
+            quiz = test.objects.get(pk=num, instruction=id, type_user=request.user.type_user)
             questions = []  # list с в вопросами
             data = request.POST
             data_ = dict(data.lists())  # в хороший список
@@ -523,8 +517,7 @@ class BriefBrainView(View):
                 a_selected = request.POST.get(q.name)  # выбранные ответы
 
                 if a_selected != "":  # если ответ не пустой, то
-                    question_answers = answers.objects.filter(
-                        question=q)  # получаем ответы по вопросу
+                    question_answers = answers.objects.filter(question=q)  # получаем ответы по вопросу
                     for a in question_answers:
                         if a_selected == a.text:  # если выбранный ответ совпадает с ответов настоящим
                             if a.correct:
@@ -552,7 +545,7 @@ class BriefBrainView(View):
             request.brief_results = results # результаты
             request.brief_countAnswers = countAnswers # количество отвеченных вопросов
             # если человек набрал больше баллов, чем в условии теста, то сохраняем его и отправляем успешно
-            #переписать 
+            # переписать 
             # найти строку по параметрам, если существует, то +1 попытка и сохранить, а если нет, то новую.
             if score_ >= quiz.required_score_to_pass:
                 request.brief_mark = 'Сдан'
@@ -569,21 +562,21 @@ class BriefBrainView(View):
     def checkFile(request, id):
         data = {}
         if request.method == 'POST':
-            print(request.POST)
             obj_query = downloadInstructionsForTests.objects.filter(
                 user=request.user, test=request.POST['quiz-pk']).count()
             if obj_query == 0:
                 #!!!
-                # downloadInstructionsForTests.objects.create(
-                #     user=request.user,
-                #     test_id=request.POST['quiz-pk']
-                # )
+                downloadInstructionsForTests.objects.create(
+                    user=request.user,
+                    test_id=request.POST['quiz-pk']
+                )
                 data['status'] = 'ok'
             else:
                 data['status'] = 'warning'
             return JsonResponse(data)
         else:
             return HttpResponseBadRequest()
+        
         
     @login_required
     # Проверка о прохождении теста
@@ -613,11 +606,11 @@ class BriefBrainView(View):
 # получение страницы теста
 @login_required  # обязательная авторизация
 def testView(request, num, id):
+
     page_name = 'user_tests/user_tests_test.html'
-    quiz = test.objects.get(
-        instruction=id, type_user=request.user.type_user, pk=num)
-    passed_brief = res.objects.filter(
-        instruction=id, quiz=quiz, mark='Сдан', user=request.user).count()
+    quiz = test.objects.get(instruction=id, type_user=request.user.type_user, pk=num)
+    passed_brief = res.objects.filter(instruction=id, quiz=quiz, mark='Сдан', user=request.user).count()
+
     if passed_brief == 0:
         values = {
             'test': quiz,
@@ -654,6 +647,7 @@ class BriefLayoutView(View):
 
         themesInstructions = inst.objects.get(id=id)  # model inst
         tests = test.get_need_instr(request, id)  # model test
+
         #возвращаем именно назначенные тесты пользователя.
         assignedBriefs = briefsForPeoples.objects.filter(test__instruction=id, user=request.user)
 

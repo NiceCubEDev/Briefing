@@ -11,7 +11,6 @@ urlpatterns = [
     path('', MainView.showPage, name='main'),
     path('sendMessage/', MainView.mainSendMessage, name='post-message'),
     path('about_us/', MainView.mainAboutPage, name='about'),
-    # path('chat/', chatbot_responseView, name='chat_response'), 
     path('contact/', MainView.mainContactPage, name="contact"), 
 
 

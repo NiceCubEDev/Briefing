@@ -5,11 +5,9 @@ mark = null;
 
 
 thead.forEach(elem => elem.addEventListener('click',(e)=>{
+
     e.preventDefault();
-
-    
     data = {}
-
     data['csrfmiddlewaretoken'] = $('input[name="csrfmiddlewaretoken"]').val();
 
     if (elem.getAttribute('data-name').includes("-")) { // если есть минус, то 
@@ -20,20 +18,15 @@ thead.forEach(elem => elem.addEventListener('click',(e)=>{
         data['filter'] = elem.getAttribute('data-name'); // записываем
     }
 
-    // console.log(data)
-
     $.post(`${window.location.href}passed_brief_filter/`, data, (resp)=>{
         if (resp.status == 'ok') { 
-
 
             i = 0
             const tbody = document.createElement("tbody") // создаем боди таблицы
             tbody.style='font-family:"Inter-Regular"'; // стиль
             tbody.setAttribute("id", "id_tbody"); // id 
-
-            // console.log(resp);
-
             result = resp.result
+            
             result.forEach(elem=>{
 
                 let date = new Date(elem.date_start) // переводим в нормальное время

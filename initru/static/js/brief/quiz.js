@@ -1,5 +1,5 @@
 const url = window.location.href
-
+let timerBool = false;
 const quizBox = document.getElementById('quiz-box');
 const scoreBox = document.getElementById('score-box');
 const resultBox = document.getElementById('result-box');
@@ -27,32 +27,37 @@ const activateTimer = (time) => {
     let seconds = 60;
     let displaySeconds;
     let displayMinutes;
+  
+
+
 
     const timer = setInterval(() => {
-        seconds--
-        if (seconds < 0) {
-            seconds = 59;
-            minutes--
-        };
-        if (minutes.toString().length < 2) {
-            displayMinutes = '0' + minutes;
-        } else {
-            displayMinutes = minutes;
-        };
-        if (seconds.toString().length < 2) {
-            displaySeconds = '0' + seconds;
-        } else { 
-            displaySeconds = seconds
-        };
-        if (minutes === 0 && seconds === 0) { 
-            timerBox.innerHTML = '00:00';
-            setTimeout(() => {
-                clearInterval(timer);
-                notifFunction('success', 'Конец теста.');
-                sendData();
-            }, 500);
-        }
-        timerBox.innerHTML = `${displayMinutes}:${displaySeconds}`;
+        if (timerBool == false) { 
+            seconds--
+            if (seconds < 0) {
+                seconds = 59;
+                minutes--
+            };
+            if (minutes.toString().length < 2) {
+                displayMinutes = '0' + minutes;
+            } else {
+                displayMinutes = minutes;
+            };
+            if (seconds.toString().length < 2) {
+                displaySeconds = '0' + seconds;
+            } else { 
+                displaySeconds = seconds
+            };
+            if (minutes === 0 && seconds === 0) { 
+                timerBox.innerHTML = '00:00';
+                setTimeout(() => {
+                    clearInterval(timer);
+                    notifFunction('success', 'Конец теста.');
+                    sendData();
+                }, 500);
+            }
+            timerBox.innerHTML = `${displayMinutes}:${displaySeconds}`;
+        } 
     }, 1000);
 };
 
@@ -63,7 +68,8 @@ $.ajax({
     success: (res) => {
         // console.log(res)
         const data = res.data
-        let i = 0
+        // Для нумерации вопросов
+        let i = 0 
         data.forEach(el => {
             i+=1
             for (const [question, answers] of Object.entries(el)) { // через цикл извлекаем данные из объекта
@@ -77,7 +83,7 @@ $.ajax({
 
                     quizBox.innerHTML += `
                     <div>
-                        <input class = "ans" id = '${question}-${answer}' name = '${question}' value = '${answer}' type = 'radio'/>
+                        <input required class = "ans" id = '${question}-${answer}' name = '${question}' value = '${answer}' type = 'radio'/>
                         <label for = "${question}">${answer} </label>
                     </div>
                     `;
@@ -97,11 +103,9 @@ const csrf = document.getElementsByName('csrfmiddlewaretoken'); // взяли т
 
 const sendData = () => {
     const elements = [...document.getElementsByClassName('ans')]; // получили варианты 
-    // console.log(elements)
-
-    const data = {}
-
+    const data = {} // переменная для сохранения в неё данных
     data['csrfmiddlewaretoken'] = csrf[0].value;
+
     elements.forEach(el => {
         if (el.checked) {
             data[el.name] = el.value // записываем
@@ -112,26 +116,23 @@ const sendData = () => {
         }
     });
 
-    console.log(data)
 
     $.ajax({
         type: 'POST',
         url: `${url}/save`,
         data: data,
         success: (res) => {
-            const results = res.results
-            console.log(res)
-            quizForm.remove(); // удаление формы
 
+            timerBool = true;
+            const results = res.results
+            quizForm.remove(); // удаление формы
             scoreBox.innerHTML = `Итог: ${res.passed ? '<b class = "text-success">Вы сдали!</b>' : '<b class = "text-danger">Вы не сдали!</b>'} <br/> Ваш результат: <b>${res.score.toFixed(2)}%</b> <br/> Количество верных ответов: ${res.countAnswers} шт.`;
 
-
             results.forEach(res => {
-                const resDiv = document.createElement("div");
-                for (const [question, resp] of Object.entries(res)) {
-                    // console.log(question)
-                    // console.log(resp)
 
+                const resDiv = document.createElement("div");
+
+                for (const [question, resp] of Object.entries(res)) {
                     resDiv.innerHTML += `<b>${question}</b>` + '<br/>' // добавление вопросов в див
                     const cls = ['container', 'p-3', 'text-white', 'mt-2'] // классы для див
                     resDiv.classList.add(...cls)

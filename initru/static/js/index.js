@@ -30,6 +30,9 @@ $('#contact-form').submit((e)=>{
         success: (resp)=>{
             if(resp.status == 'ok') { 
                 notifFunction('success', resp.message)
+                $("#id_name_contact").val('');
+                $("#id_email_contact").val('');
+                $("#id_text_contact").val('');
             } else { 
                 notifFunction('danger', resp.message)
             }

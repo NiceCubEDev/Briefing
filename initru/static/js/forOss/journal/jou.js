@@ -34,8 +34,6 @@ $('#setBut').click((e)=>{
             if (Boolean(resp.result)) { 
                 i=0 // счетчик
 
-                
-    
                 const tbody = document.createElement("tbody") // создаем боди таблицы
                 tbody.style='font-family:"Inter-Regular"'; // стиль
                 tbody.setAttribute("id", "id_tbody"); // id 
@@ -46,7 +44,6 @@ $('#setBut').click((e)=>{
                     let date1 = new Date(elem.date_passed)
                     i++
 
-                    
                     if(elem.mark == 'Сдан') {
                         mark = `
                             <span class = 'text-center text-success'>
@@ -85,10 +82,13 @@ $('#setBut').click((e)=>{
                     `
                     tbody.innerHTML += p
                 });
+
                 $('#id_tbody').remove(); // удаляем боди таблицы
                 table.appendChild(tbody);
                 notifFunction('success', resp.message);
+
             } else {
+
                 const tbody = document.createElement("tbody") // создаем боди таблицы
                 tbody.style='font-family:"Inter-Regular"'; // стиль
                 tbody.setAttribute("id", "id_tbody"); // id 
@@ -102,6 +102,7 @@ $('#setBut').click((e)=>{
                 console.log(tbody)
                 table.appendChild(tbody);
                 notifFunction('danger', resp.message);
+                
             }
 
         },

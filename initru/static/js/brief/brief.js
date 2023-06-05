@@ -1,5 +1,3 @@
-console.log('hello')
-
 const modalBtns = [...document.getElementsByClassName('btn-quiz')]; // массив с кнопками
 const modalBody = document.getElementById('body-form'); // тело модального окна
 const url = window.location.href 
@@ -40,6 +38,7 @@ function sendData(pk) { // функция проверки
         });
     });
 }
+
 
 modalBtns.forEach(modalBtn=>modalBtn.addEventListener('click', ()=>{
     const briefName = modalBtn.getAttribute('data-brief-name');

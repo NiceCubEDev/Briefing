@@ -7,26 +7,38 @@
 {% block content %}
 
 <div class="d-flex justify-content-center">
-    <form class = "d-flex flex-column shadow-sm rounded p-3" action="." method="post" style = "max-width: 350px; width: 100%;">
+    <form class="d-flex flex-column shadow-sm rounded p-3" action="." method="post"
+        style="max-width: 350px; width: 100%;">
         {% csrf_token %}
-        <div class ="mb-2">
-            <h3 class ="text-center fw-bold" style = 'color:#E7882B;'>Авторизация</h3>
+        <div class="mb-2">
+            <h3 class="text-center fw-bold" style='color:#E7882B;'>Авторизация</h3>
         </div>
-        <div class = "mb-2">
-            <input class = "form-control" placeholder = 'Введите логин пользователя' type="text" name ="username" id="id_username">
+        <div class="mb-2">
+            <input class="form-control" placeholder='Введите логин пользователя' type="text" name="username"
+                id="id_username">
         </div>
-        <div class = "mb-2">
-            <input class = "form-control" placeholder = 'Введите пароль' type="password" name ="password" id="id_password">
+        <div class="mb-2">
+            <input class="form-control" placeholder='Введите пароль' type="password" name="password" id="id_password">
         </div>
-        <div class = 'd-flex flex-column'>
-            <p class = "fw-bold text-center mx-auto " style = 'max-width: 200px;'>Забыли пароль? <a class = "text-decoration-none" href="{% url 'password_reset' %}">Восстановить пароль</a></p>
+        <div class="mb-2 text-danger" style="margin-left:-30px; text-align: center;">
+            {% if form.errors %}
+                {% for key,value in form.errors.items %}
+                    {{ value|escape }}
+                {% endfor %}
+            {% endif %}
+        </div>
+
+        <div class='d-flex flex-column'>
+            <p class="fw-bold text-center mx-auto " style='max-width: 200px;'>Забыли пароль? <a
+                    class="text-decoration-none" href="{% url 'password_reset' %}">Восстановить пароль</a></p>
             <button class="btn btn-outline-orange mx-auto">
                 <i class="fa-solid fa-door-open"></i>
                 Войти
             </button>
         </div>
+
     </form>
-   
+
 </div>
 
 {% endblock %}
