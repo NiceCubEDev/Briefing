@@ -1,0 +1,50 @@
+services:
+
+  db:
+    image: mysql:8.0
+    container_name: briefing_db
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpassword
+      MYSQL_DATABASE: briefing
+      MYSQL_USER: briefing_user
+      MYSQL_PASSWORD: briefing_pass
+    ports:
+      - "3307:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+    command: >
+      --default-authentication-plugin=mysql_native_password
+      --character-set-server=utf8mb4
+      --collation-server=utf8mb4_unicode_ci
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-prootpassword"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  web:
+    build:
+      context: ..
+      dockerfile: build/Dockerfile
+    container_name: briefing_web
+    restart: always
+    ports:
+      - "8000:8000"
+    environment:
+      DB_ENGINE: django.db.backends.mysql
+      DB_NAME: briefing
+      DB_USER: briefing_user
+      DB_PASSWORD: briefing_pass
+      DB_HOST: db
+      DB_PORT: "3306"
+      DEBUG: "True"
+      ALLOWED_HOSTS: "localhost,127.0.0.1,0.0.0.0"
+    volumes:
+      - ..:/app
+    depends_on:
+      db:
+        condition: service_healthy
+
+volumes:
+  mysql_data:

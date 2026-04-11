@@ -68,7 +68,11 @@
 									background-repeat: no-repeat;
 									background-size: cover;
 									background-clip: unset;
+									{% if request.user.avatar %}
 									background-image: url("{{ request.user.avatar.url }}");
+									{% else %}
+									background-color: #f2f2f2;
+									{% endif %}
 								'></div>
 								<!-- <i class="fa-solid fa-arrow-down-wide-short fs-4 text-primary"></i> -->
 							</a>
