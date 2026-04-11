@@ -19,8 +19,8 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 
 WORKDIR /app
 
-COPY pyproject.toml README.md ./
-RUN uv sync --system --no-dev --no-cache
+COPY pyproject.toml uv.lock README.md ./
+RUN UV_PROJECT_ENVIRONMENT=/usr/local uv sync --frozen --no-dev --no-cache
 
 COPY . .
 COPY build/entrypoint.sh /entrypoint.sh
