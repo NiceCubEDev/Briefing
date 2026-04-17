@@ -1,7 +1,5 @@
 # чат бот
 
-import timedelta  # чтобы переводить даты
-
 # обязательная авторизация
 from django.contrib.auth.decorators import login_required
 
@@ -491,8 +489,8 @@ class BriefBrainView(View):
 
         # функция для получения разницы между датами.
         def getDaysPassed(first_date):  # вычисление даты
-            answer = timedelta.Timedelta(first_date - timezone.now())
-            return abs(answer.total.days)
+            delta = first_date - timezone.now()
+            return int(abs(delta.total_seconds()) // 86400)
 
         # функция сохранения результатов теста
         def savetothedb(request):
