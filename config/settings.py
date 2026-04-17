@@ -84,8 +84,9 @@ TEMPLATES = [
 
 WSGI_APPLICATION = "config.wsgi.application"
 EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
-LOGIN_REDIRECT_URL = "/"
-LOGOUT_REDIRECT_URL = "/"
+LOGIN_URL = "/account/login/"
+LOGIN_REDIRECT_URL = "/account/themes_inst/"
+LOGOUT_REDIRECT_URL = "/account/login/"
 
 # Database
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases

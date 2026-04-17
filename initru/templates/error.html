@@ -14,7 +14,13 @@
             <div class = "">
                 <p class = "fs-1 text-danger fw-bold">Что-то пошло не так</p>
                 <p class = "fs-3 fw-bold">Попробуй зайти позже.... </p>
-                <p class ="fw-bold text-uppercase mt-5"><a class = 'btn btn-orange' href="{% url 'main' %}">На главную</a></p>
+                <p class ="fw-bold text-uppercase mt-5">
+                    {% if request.user.is_authenticated %}
+                        <a class = 'btn btn-orange' href="{% url 'brief' %}">К инструктажам</a>
+                    {% else %}
+                        <a class = 'btn btn-orange' href="{% url 'login' %}">Войти</a>
+                    {% endif %}
+                </p>
             </div>
            
         </div>

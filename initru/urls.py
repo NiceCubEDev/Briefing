@@ -2,23 +2,20 @@ from django.conf import settings
 from django.conf.urls.static import static
 from django.contrib.auth import views as auth_views
 from django.urls import include, path
+from django.views.generic import RedirectView
 
 from .views import (
     BriefBrainView,
     BriefLayoutView,
     JournalView,
-    MainView,
     ProfileView,
     testView,
 )
 
 
 urlpatterns = [
-    # главная
-    path("", MainView.showPage, name="main"),
-    path("sendMessage/", MainView.mainSendMessage, name="post-message"),
-    path("about_us/", MainView.mainAboutPage, name="about"),
-    path("contact/", MainView.mainContactPage, name="contact"),
+    # стартовая страница
+    path("", RedirectView.as_view(pattern_name="login", permanent=False), name="main"),
     # профиль
     path("account/profile/", ProfileView.showPage, name="profile"),
     path("account/profile/change/", ProfileView.changeData, name="profile-change_data"),
