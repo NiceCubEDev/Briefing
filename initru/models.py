@@ -43,17 +43,17 @@ class City(models.Model):
         return f"{self.name_city}"
 
 
-# инструктажи
+# категории тестов
 class inst(models.Model):
-    name_instruction = models.CharField("Название инструктажа", max_length=64)
-    date_period = models.IntegerField("Период инструктажа")
+    name_instruction = models.CharField("Название теста", max_length=64)
+    date_period = models.IntegerField("Период теста")
 
     def __str__(self):
         return f"{self.name_instruction}"
 
     class Meta:
-        verbose_name = "Инструктаж"
-        verbose_name_plural = "Инструктажи"
+        verbose_name = "Тест"
+        verbose_name_plural = "Тесты"
 
     @staticmethod  # возвращение названий
     def get_all_names():
@@ -122,8 +122,8 @@ class typeuser(models.Model):
 
 # тест
 class test(models.Model):
-    instruction = models.ForeignKey(inst, on_delete=models.CASCADE, verbose_name="Инструктаж")
-    name_test = models.CharField("Название теста инструктажа", max_length=125)
+    instruction = models.ForeignKey(inst, on_delete=models.CASCADE, verbose_name="Тест")
+    name_test = models.CharField("Название теста", max_length=125)
     number_of_questions = models.IntegerField("Количество вопросов")  #
     time = models.IntegerField("Ограничение по времени")  #
     required_score_to_pass = models.IntegerField(
@@ -150,7 +150,7 @@ class test(models.Model):
     @staticmethod
     def get_need_instr(request, id):
         return test.objects.filter(
-            instruction=id,  # инструктаж
+            instruction=id,  # тест
             type_user=request.user.type_user,  # тип пользователя
             stud_groups=request.user.groupStud,  # группа
         )
@@ -290,16 +290,16 @@ class CustomUser(AbstractUser):  # custom user for Users with django
     # @property
     # def getmytests(self):
     #     obj = {} # для моих тестов
-    #     briefs = dict(inst.objects.all()) # инструктажи
+    #     briefs = dict(inst.objects.all()) # тесты
     #     for item in range()
 
 
 # результаты
 class res(models.Model):
     user = models.ForeignKey(CustomUser, on_delete=models.CASCADE, verbose_name="Пользователь")
-    instruction = models.ForeignKey(inst, on_delete=models.CASCADE, verbose_name="Инструктаж")
+    instruction = models.ForeignKey(inst, on_delete=models.CASCADE, verbose_name="Тест")
     quiz = models.ForeignKey(test, on_delete=models.CASCADE, verbose_name="Тест")
-    date_instruction = models.DateTimeField("Дата прохождения инструктажа")
+    date_instruction = models.DateTimeField("Дата прохождения теста")
     date_instruction_end = models.IntegerField("Прошло дней", null=True)
     result = models.IntegerField("Результат в %")
     mark = models.CharField("Прошел", max_length=255)

@@ -2,7 +2,7 @@
 {% load static %}
 
 {% block title %}
-    Специалист: Журнал
+    Выборка данных
 {% endblock title %}
 
 
@@ -13,7 +13,7 @@
 
 {% block content %}
 <div>
-    <p class="text-center fw-bold fs-4" style='color:#E7882B; font-family: "Inter-Bold";'>Журнал</p>
+    <p class="text-center fw-bold fs-4" style='color:#E7882B; font-family: "Inter-Bold";'>Выборка данных</p>
 </div>
 <div class='container'>
     <a class = 'btn btn-outline-orange mb-2 fw-bold' onclick="javascript:history.back(); return false;" href ="#">
@@ -54,7 +54,7 @@
 
                     <div class='box mb-2'>
                         <label for="id_type_brief">
-                            Выберите тип инструктажа <span class = 'text-danger fw-bold'>*</span>
+                            Выберите тип теста <span class = 'text-danger fw-bold'>*</span>
                         </label>
                         <select class='form-control  ' name="type_brief" id="id_type_brief">
                             <option selected class='text-warning fw-bold text-uppercase' value="">Не выбран</option>
@@ -117,7 +117,7 @@
 
                     <!-- <div class='box mb-2'>
                         <label for="id_date_end">
-                            Выберите дату повторного прохождения инструктажа
+                            Выберите дату повторного прохождения теста
                         </label>
                         <input class = 'form-control' name = 'date_end' id ='id_date_end' type="date" placeholder="Выберите дату">
                     </div> -->
@@ -159,7 +159,7 @@
                     <th class = 'text-secondary' scope="col">Группа</th>
                     <th class = 'text-secondary' scope="col">Тип пользователя</th>
                     <th class = 'text-secondary' scope="col">Тип пользователя (тест)</th>
-                    <th class = 'text-secondary' scope="col">Тип инструктажа</th>
+                    <th class = 'text-secondary' scope="col">Тип теста</th>
                     <th class = 'text-secondary' scope="col">Тест</th>
                     <th class = 'text-secondary' scope="col">Дата назначения</th>
                     <th class = 'text-secondary' scope="col">Дата прохождения</th>

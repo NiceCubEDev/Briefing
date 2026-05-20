@@ -1,7 +1,7 @@
 [project]
 name = "briefing"
 version = "0.1.0"
-description = "Django service for briefings, tests, users, and training results."
+description = "Django service for tests, users, assigned tasks, and training results."
 readme = "README.md"
 requires-python = ">=3.11,<3.12"
 dependencies = [

@@ -3,7 +3,7 @@ DC_FILE = build/docker-compose.yml
 UV ?= $(HOME)/.local/bin/uv
 UVX ?= $(HOME)/.local/bin/uvx
 
-.PHONY: up down restart build logs shell db-shell migrate makemigrations createsuperuser create-demo-users uv-sync uv-lock uv-check uv-runserver ruff-check ruff-fix ruff-format ps clean help
+.PHONY: up down restart build logs shell db-shell migrate makemigrations createsuperuser create-demo-users seed-test-data uv-sync uv-lock uv-check uv-runserver ruff-check ruff-fix ruff-format ps clean help
 
 ## Запустить все сервисы (в фоне)
 up:
@@ -65,6 +65,13 @@ createsuperuser:
 create-demo-users:
 	$(DC) -f $(DC_FILE) exec web python manage.py create_demo_users
 
+## Load neutral demo data for the Testing theme
+seed-test-data:
+	$(DC) -f $(DC_FILE) up -d db
+	$(DC) -f $(DC_FILE) run --rm --entrypoint python web manage.py migrate --fake-initial --noinput
+	docker exec -i briefing_db mysql --default-character-set=utf8mb4 -u briefing_user -pbriefing_pass briefing < build/seed_testing.sql
+	$(DC) -f $(DC_FILE) up -d web
+
 ## Install/update local dependencies with uv
 uv-sync:
 	$(UV) sync
@@ -104,7 +111,7 @@ clean:
 ## Показать все доступные команды
 help:
 	@echo ""
-	@echo "  Briefing — доступные команды Make:"
+	@echo "  Testing — доступные команды Make:"
 	@echo ""
 	@echo "  make up              — запустить сервисы в фоне"
 	@echo "  make up-build        — пересобрать и запустить"
@@ -121,6 +128,7 @@ help:
 	@echo "  make makemigrations  — создать новые миграции"
 	@echo "  make createsuperuser — создать суперпользователя"
 	@echo "  make create-demo-users - create admin and user"
+	@echo "  make seed-test-data    - load neutral testing demo data"
 	@echo "  make uv-sync          - install dependencies with uv"
 	@echo "  make uv-lock          - generate or update uv.lock"
 	@echo "  make uv-check         - run Django check through uv"

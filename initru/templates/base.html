@@ -39,9 +39,9 @@
 					{% if request.user.is_authenticated %}
 						<li class="nav-item">
 							<a class="btn btn-orange m-2 text-light button-header" href="{% url 'brief' %}"><i
-									class="fa-solid fa-square-pen mx-1"></i> Инструктажи</a>
+									class="fa-solid fa-square-pen mx-1"></i> Тесты</a>
 						</li>
-						{% if request.user.is_superuser or request.user.role|stringformat:"s" == 'Специалист по охране труда' %}
+						{% if request.user.is_superuser or request.user.role|stringformat:"s" == 'Ответственный' %}
 							<li class="nav-item">
 								<a class="btn btn-outline-primary m-2 button-header" href="{% url 'admin:index' %}"><i
 										class="fa-solid fa-toolbox mx-1"></i> Панель администратора</a>

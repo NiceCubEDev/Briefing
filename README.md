@@ -1,6 +1,6 @@
-# Briefing
+# Testing
 
-Briefing is a Django application for safety briefings, tests, assigned tasks, user profiles, and training result journals. The project is configured for MySQL in Docker and uses `uv` as the Python dependency manager.
+Testing is a Django application for tests, assigned tasks, user profiles, and training result journals. The project is configured for MySQL in Docker and uses `uv` as the Python dependency manager.
 
 ## Stack
 
@@ -64,6 +64,36 @@ Default credentials:
 | `admin` | `admin12345` | Django admin / superuser |
 | `user` | `user12345` | Regular user |
 
+## Testing Seed Data
+
+Load neutral demo data for the "Testing" theme:
+
+```bash
+make seed-test-data
+```
+
+The command starts Docker services if needed, applies migrations, and imports
+`build/seed_testing.sql` into MySQL.
+
+Seeded users all use the same password:
+
+```text
+test12345
+```
+
+| Username | Role |
+| --- | --- |
+| `admin_test` | Administrator / superuser |
+| `responsible_test` | Responsible user / staff |
+| `student_ivanov` | Student |
+| `student_smirnova` | Student |
+| `employee_petrov` | Employee |
+| `employee_orlova` | Employee |
+
+The seed creates neutral testing data: user roles, groups, the themes
+`Информатика` and `Цифровая грамотность`, three available tests, and 10
+informatics questions with answer options for each test.
+
 ## Make Commands
 
 ```bash
@@ -82,6 +112,7 @@ make migrate            # Apply migrations
 make makemigrations     # Create migrations
 make createsuperuser    # Create a Django superuser interactively
 make create-demo-users  # Create admin and regular demo user
+make seed-test-data     # Load neutral testing demo data
 make ps                 # Show container status
 make clean              # Prune Docker cache
 ```

@@ -26,7 +26,7 @@ urlpatterns = [
     path(
         "account/profile/passed_brief_filter/", ProfileView.sorting, name="passed_brief_filter_view"
     ),
-    # инструктажи
+    # тесты
     path(
         "account/themes_inst/test/<int:id>/checkFile/",
         BriefBrainView.checkFile,

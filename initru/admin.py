@@ -154,7 +154,7 @@ class typeuser(admin.ModelAdmin):
     list_display = ["name_type_user"]
 
 
-# инструктажи
+# тесты
 @admin.register(inst)
 class inst(admin.ModelAdmin):
     list_display = ["name_instruction", "date_period"]
@@ -225,7 +225,7 @@ class downloadInstructionsForTestsAdmin(admin.ModelAdmin):
     list_display = ["user", "test"]
 
 
-# назначенные инструктажи отдельным людям
+# назначенные тесты отдельным людям
 @admin.register(briefsForPeoples)
 class briefsForPeoplesAdmin(admin.ModelAdmin):
     list_display = ["user", "test", "date_target"]

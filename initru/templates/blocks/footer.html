@@ -2,17 +2,17 @@
 <footer class = 'shadow-sm border d-flex flex-column justify-content-between'>
     <div class ='container d-flex align-items-center justify-content-around' style="min-height: 450px;">
         <div class="d-flex flex-column justify-content-center">
-            <p class = 'text-uppercase text-center  fw-bold' style ='font-size: 50px; font-family: "Roboto-bold"; color:#3B5B6F;'>Инструктаж</p>
+            <p class = 'text-uppercase text-center  fw-bold' style ='font-size: 50px; font-family: "Roboto-bold"; color:#3B5B6F;'>Тест</p>
             <p class = ' mx-auto text-center' style ='font-family: "Roboto-medium"; color:#E7882B; max-width: 350px;'>Ознакомление с основными правилами на производстве для обеспечения Вашей безопасности</p>
             {% if user.is_authenticated %}
 			<a class = 'btn btn-outline-primary mx-auto fs-5 text-uppercase ' href="#" style = 'font-family: "Roboto-medium";'>
 				<i class="fa-regular fa-pen mx-2"></i>
-				Пройти инструктаж
+				Пройти тест
 			</a>
 			{% else %}
 			<a class = 'btn btn-outline-pink mx-auto fs-5 text-uppercase ' href="{% url 'login' %}" style = 'font-family: "Roboto-medium";'>
 				<i class="fa-regular fa-pen mx-2"></i>
-				Начать Инструктаж
+				Начать тест
 			</a>
 			{% endif %}
         </div>
@@ -36,6 +36,5 @@
         </div>
     </div>
 </footer>
-
 
 

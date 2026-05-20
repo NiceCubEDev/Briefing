@@ -49,15 +49,15 @@ from .models import (
 
 # главная
 class MainView(View):
-    # получение инструктажей
+    # получение тестов
     def showPage(request):
 
         page_name = "main.html"
 
         users = CustomUser.get_count_users()  # количество пользователей
-        # количество пройденных инструктажей
+        # количество пройденных тестов
         passed_brief = res.objects.filter(mark="Сдан").count() or 0
-        count_brief = test.objects.all().count() or 0  # количество инструктажей
+        count_brief = test.objects.all().count() or 0  # количество тестов
 
         getInstr = inst.get_all_names()
         getComplex = complex.get_all_names()
@@ -169,13 +169,13 @@ class JournalView(View):
 
                 thead_list = [
                     "Дата",
-                    "Фамилия, имя, отчество (при наличии) работника, прошедшего инструктаж по охране труда",
+                    "Фамилия, имя, отчество (при наличии) пользователя, прошедшего тест",
                     "профессия (должность) работника",
                     "число, месяц, год рождения работника",
-                    "вид инструктажа по охране труда",
-                    "ФИО, профессия работника, проводившего инструктаж",
-                    "Подпись работника, проводившего инструктаж",
-                    "Подпись работника, прошедшего инструктаж",
+                    "вид теста",
+                    "ФИО ответственного за тест",
+                    "Подпись ответственного за тест",
+                    "Подпись пользователя, прошедшего тест",
                 ]
 
                 # заполнение шапки таблицы
@@ -220,10 +220,10 @@ class JournalView(View):
 
         if (
             request.user.is_superuser
-            or str(request.user.role).casefold() == "специалист по охране труда"
+            or str(request.user.role).casefold() == "ответственный"
         ):
             obj_res = None  # Для результатов
-            obj_briefs = inst.objects.all()  # получение инструктажей
+            obj_briefs = inst.objects.all()  # получение тестов
             obj_type_users = typeuser.objects.all()  # получение тип пользователей
             obj_groups = Groups.objects.all()  # получение групп
             obj_quizes = test.objects.all()  # получение тестов
@@ -271,7 +271,7 @@ class JournalView(View):
                             "type_user": str(row.user.type_user),
                             # тип пользователя (параметр в тестах)
                             "type_user_test": str(row.quiz.type_user),
-                            # название инструктажа
+                            # название теста
                             "brief": str(row.instruction.name_instruction),
                             "quiz_name": str(row.quiz.name_test),
                             "date_target": str(row.quiz.date_target),
@@ -407,7 +407,7 @@ class ProfileView(View):
 
             return JsonResponse(data)
 
-    # пройденные инструктажи
+    # пройденные тесты
     @login_required
     def passedBriefs(request):
         page_name = "passed_inst.html"
@@ -433,7 +433,7 @@ class ProfileView(View):
         page_name = "profile_edit.html"
         return render(request, page_name)
 
-    # сортировка результатов прохождения инструктажей
+    # сортировка результатов прохождения тестов
     @login_required
     def sorting(request):
         obj_res = None
@@ -468,10 +468,10 @@ class ProfileView(View):
         return HttpResponseBadRequest()
 
 
-# инструктаж
+# тест
 @login_required
 class BriefBrainView(View):
-    # получение вопросов с временем num-пк теста; id - пк инструктажа
+    # получение вопросов с временем num-пк теста; id - пк категории теста
     @login_required
     def questions(request, num, id):
         quiz = test.objects.get(instruction=id, type_user=request.user.type_user, pk=num)
@@ -484,7 +484,7 @@ class BriefBrainView(View):
         return JsonResponse({"data": questions, "time": quiz.time})
 
     @login_required
-    # сохранение теста | num-пк теста; id - пк инструктажа
+    # сохранение теста | num-пк теста; id - пк категории теста
     def save(request, num, id):
 
         # функция для получения разницы между датами.
@@ -571,7 +571,7 @@ class BriefBrainView(View):
             days_passed = getDaysPassed(quiz.date_target)  # получение
 
             # заполнение запроса
-            request.brief_instruction_id = quiz.instruction.id  # номер инструктажа #
+            request.brief_instruction_id = quiz.instruction.id  # номер категории теста #
             request.brief_quiz = quiz  # сам тест  #
             request.brief_days_passed = days_passed  # разница между днями #
             request.brief_score = score_  # баллы #
@@ -635,7 +635,7 @@ class BriefBrainView(View):
                 if passed_brief == 0:
                     data["status"] = True
                 else:
-                    data["message"] = "Вы уже прошли данный инструктаж"
+                    data["message"] = "Вы уже прошли данный тест"
                     data["status"] = False
             else:
                 data["message"] = "Вы не изучили теорию!"

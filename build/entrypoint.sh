@@ -8,7 +8,7 @@ done
 echo "MySQL готов!"
 
 echo "Применение миграций..."
-python manage.py migrate --noinput
+python manage.py migrate --fake-initial --noinput
 
 echo "Сбор статики..."
 python manage.py collectstatic --noinput 2>/dev/null || true
