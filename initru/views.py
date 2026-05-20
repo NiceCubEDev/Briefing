@@ -8,7 +8,7 @@ from django.http import HttpResponse, HttpResponseBadRequest, JsonResponse
 from django.shortcuts import render
 
 # получение времени
-from django.utils import timezone
+from django.utils import dateparse, timezone
 from django.views import View
 
 # импорт ворд
@@ -115,21 +115,24 @@ class JournalView(View):
         # функция для экспорта в ворд
         def downloadFile(request):
 
-            obj_result = None
-
-            if request.POST["date_start"] != "":  # Если есть дата
-                try:
-                    obj_result = res.objects.filter(
-                        user__type_user=request.POST["type_user"],
-                        instruction=request.POST["type_brief"],
-                        user__groupStud_id=request.POST["group"],
-                        quiz__id=request.POST["quiz"],
-                        date_instruction__range=(request.POST["date_start"], timezone.now()),
-                        mark=request.POST["mark"],
-                    )
-
-                except res.DoesNotExist:
-                    obj_result = None
+            filter_params = {
+                "user__type_user": request.POST["type_user"],
+                "instruction": request.POST["type_brief"],
+                "user__groupStud_id": request.POST["group"],
+                "quiz__id": request.POST["quiz"],
+                "mark": request.POST["mark"],
+            }
+            if request.POST["date_start"] != "":
+                date_start = dateparse.parse_datetime(request.POST["date_start"])
+                if date_start is None:
+                    return HttpResponseBadRequest()
+                if timezone.is_naive(date_start):
+                    date_start = timezone.make_aware(date_start)
+                filter_params["date_instruction__range"] = (
+                    date_start,
+                    timezone.now(),
+                )
+            obj_result = res.objects.filter(**filter_params)
 
             # тип листка(портрет или обычный лист)
             orient_dict = {
@@ -139,7 +142,7 @@ class JournalView(View):
             #####
 
             # если данные нашлись
-            if obj_result is not None:  # если есть данные то
+            if obj_result.exists():  # если есть данные то
                 # code for docx
 
                 document = Document()
@@ -170,8 +173,8 @@ class JournalView(View):
                 thead_list = [
                     "Дата",
                     "Фамилия, имя, отчество (при наличии) пользователя, прошедшего тест",
-                    "профессия (должность) работника",
-                    "число, месяц, год рождения работника",
+                    "роль пользователя",
+                    "число, месяц, год рождения пользователя",
                     "вид теста",
                     "ФИО ответственного за тест",
                     "Подпись ответственного за тест",
@@ -179,7 +182,7 @@ class JournalView(View):
                 ]
 
                 # заполнение шапки таблицы
-                table = document.add_table(rows=len(obj_result), cols=8, style="Table Grid")
+                table = document.add_table(rows=1, cols=8, style="Table Grid")
                 hdr_cells = table.rows[0].cells  # заголовоки таблицы
                 for i in range(len(thead_list)):
                     hdr_cells[i].text = thead_list[i]
